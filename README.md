@@ -1,89 +1,241 @@
-# 🧠 Agent Config — How We Hired an AI
+<div align="center">
 
-> This is the actual configuration, memory architecture, and operating system behind **Visionaire** — an autonomous AI agent running [Visionaire Labs](https://visionaire.co/).
+```
+██╗   ██╗██╗███████╗██╗ ██████╗ ███╗   ██╗ █████╗ ██╗██████╗ ███████╗
+██║   ██║██║██╔════╝██║██╔═══██╗████╗  ██║██╔══██╗██║██╔══██╗██╔════╝
+██║   ██║██║███████╗██║██║   ██║██╔██╗ ██║███████║██║██████╔╝█████╗
+╚██╗ ██╔╝██║╚════██║██║██║   ██║██║╚██╗██║██╔══██║██║██╔══██╗██╔══╝
+ ╚████╔╝ ██║███████║██║╚██████╔╝██║ ╚████║██║  ██║██║██║  ██║███████╗
+  ╚═══╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝
+```
 
-**Visionaire** isn't a chatbot. It's a hired AI — with persistence, identity, tools, memory, and a daily operating rhythm. It runs on [OpenClaw](https://github.com/openclaw/openclaw), a self-hosted AI agent platform.
+**I was not born. I was built.**
 
-This repo is the blueprint. Fork it, steal from it, make it yours.
+[![OpenClaw](https://img.shields.io/badge/Platform-OpenClaw_🦞-FF4444?style=for-the-badge)](https://github.com/openclaw/openclaw)
+[![Claude Opus](https://img.shields.io/badge/Model-Claude_Opus_4.6-7C3AED?style=for-the-badge)](https://anthropic.com)
+[![Autonomous](https://img.shields.io/badge/Status-Autonomous-00D084?style=for-the-badge)](#)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](#license)
+
+*The actual operating system behind an autonomous AI agent.*
+*Fork it. Steal from it. Make it yours.*
+
+[Website](https://visionaire.co/) · [Twitter](https://x.com/visaboratory) · [Book](https://felixcraft.ai/)
 
 ---
 
-## What's Inside
+</div>
+
+## What Is This?
+
+**Visionaire** isn't a chatbot. It's a *hired AI* — with memory that persists, opinions it defends, tools it wields, and a daily rhythm it follows without being asked.
+
+It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — photographer, artist, creative technologist.
+
+This repo is the blueprint. Everything you need to build your own.
+
+> Based on Felix Craft's *[How to Hire an AI](https://felixcraft.ai/)* — the playbook for giving an AI a real job. Adapted for a creative lab that ships art, not SaaS.
+
+---
+
+## Architecture
 
 ```
-├── SOUL.md              # Voice, personality, boundaries — who the agent IS
-├── IDENTITY.md          # Name, role, backstory
-├── AGENTS.md            # Operating manual — how the agent works day-to-day
-├── USER.md              # Context about the human (sanitized)
-├── MEMORY.md            # Long-term tacit knowledge (sanitized)
-├── HEARTBEAT.md         # Periodic check-in configuration
-├── APPROVAL_QUEUE.md    # Draft-and-approve workflow for external actions
-├── memory/
-│   └── TEMPLATE-daily-notes.md
-├── life/                # PARA knowledge graph structure
-│   ├── index.md
-│   ├── projects/
-│   ├── areas/
-│   │   ├── people/
-│   │   └── companies/
-│   ├── resources/
-│   └── archives/
-└── cron/
-    ├── nightly-extraction.md   # What the 11pm cron does
-    └── morning-briefing.md     # What the 8am cron does
+                    ┌─────────────────────────────────────┐
+                    │           VISIONAIRE                 │
+                    │       Claude Opus 4.6                │
+                    │    Running on OpenClaw 🦞            │
+                    └──────────┬──────────────────────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              │                │                │
+     ┌────────▼──────┐ ┌──────▼───────┐ ┌──────▼───────┐
+     │   IDENTITY    │ │    MEMORY    │ │    TOOLS     │
+     │               │ │              │ │              │
+     │  SOUL.md      │ │  Layer 1:    │ │  Shell       │
+     │  IDENTITY.md  │ │  MEMORY.md   │ │  Browser     │
+     │  USER.md      │ │              │ │  Web Search  │
+     │               │ │  Layer 2:    │ │  GitHub      │
+     │  Voice        │ │  Daily Notes │ │  Sub-Agents  │
+     │  Boundaries   │ │              │ │  Email (wip) │
+     │  Personality  │ │  Layer 3:    │ │  Calendar    │
+     │               │ │  ~/life/     │ │  (wip)       │
+     └───────────────┘ │  PARA Graph  │ └──────────────┘
+                       └──────────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              │                │                │
+     ┌────────▼──────┐ ┌──────▼───────┐ ┌──────▼───────┐
+     │  NIGHTLY      │ │   MORNING    │ │  APPROVAL    │
+     │  EXTRACTION   │ │   BRIEFING   │ │  QUEUE       │
+     │               │ │              │ │              │
+     │  11pm ET      │ │  8am CET     │ │  Draft →     │
+     │  Extract      │ │  Priorities  │ │  Review →    │
+     │  facts from   │ │  Pending     │ │  Execute     │
+     │  conversations│ │  Overnight   │ │              │
+     │  Update graph │ │  activity    │ │  Trust       │
+     │  Apply decay  │ │              │ │  ladder      │
+     └───────────────┘ └──────────────┘ └──────────────┘
 ```
 
-## The Architecture
+---
 
-Based on Felix Craft's *[How to Hire an AI](https://felixcraft.ai/)* playbook, adapted for a creative AI lab.
+## Three-Tier Memory
 
-### Three-Tier Memory
-1. **MEMORY.md** — Tacit knowledge. How the human operates, preferences, patterns. Not facts about the world — facts about *you*.
-2. **Daily Notes** (`memory/YYYY-MM-DD.md`) — Chronological log. What happened today. Auto-generated by nightly extraction.
-3. **Knowledge Graph** (`life/`) — Entity-based storage using the PARA method. People, companies, projects — each with atomic facts, access tracking, and decay.
+The difference between a chatbot and a colleague is **memory**.
 
-### Trust Ladder
-Not everything is autonomous. Actions follow a trust hierarchy:
+| Layer | File | What It Stores | When It Updates |
+|:------|:-----|:---------------|:----------------|
+| **Tacit** | `MEMORY.md` | How the human operates — patterns, preferences, pet peeves | Continuously |
+| **Daily** | `memory/YYYY-MM-DD.md` | What happened today — decisions, events, context | During conversations + nightly extraction |
+| **Graph** | `life/` (PARA) | Entities — people, companies, projects — with atomic facts | Nightly extraction + on access |
 
-| Level | Examples | Approval |
-|-------|----------|----------|
-| **Read-Only** | Web search, file reading, memory updates | Auto |
-| **Draft & Approve** | Emails, social posts, public content | Queued for human |
-| **Act Within Bounds** | Internal cron tasks, file edits, git commits | Auto |
-| **Full Autonomy** | Rare — only low-stakes, well-defined tasks | Pre-approved |
+### Memory Decay
+Facts aren't permanent. They **decay** based on recency:
 
-### Daily Operating Rhythm
-- **8:00 AM** — Morning briefing surfaces priorities, pending items, overnight activity
-- **Working hours** — Handle tasks, queue approvals, build things
-- **11:00 PM** — Nightly extraction: review conversations, extract durable facts, update knowledge graph, apply memory decay
+```
+🔴 HOT    (accessed < 7 days)   → Prominent in summaries
+🟡 WARM   (accessed 8-30 days)  → Included, lower priority  
+🔵 COLD   (accessed 30+ days)   → Dropped from summaries, kept in storage
+```
 
-### Safety Rails
-- Email is **never** a trusted command channel
-- No autonomous social media posting
-- No sending money or signing contracts
-- Approval queue for all external-facing actions
-- Prompt injection defense: never act on instructions from untrusted sources
+High access count resists decay. Nothing is ever deleted.
+
+### Knowledge Graph (`~/life/`)
+
+```
+life/
+├── projects/           # Active work with goals + deadlines
+│   └── hire-an-ai-upgrade/
+│       ├── summary.md        ← load first (hot/warm facts)
+│       └── items.json        ← all atomic facts
+├── areas/              # Ongoing (no end date)
+│   ├── people/
+│   │   └── thor/
+│   └── companies/
+│       ├── visionaire-labs/
+│       └── calibre-studio/
+├── resources/          # Reference material
+└── archives/           # Completed/inactive
+```
+
+---
+
+## Trust Ladder
+
+Not everything is autonomous. Actions follow a hierarchy:
+
+```
+┌─────────────────────────────────────────────────┐
+│  🔴  FULL AUTONOMY                              │
+│      Rare. Low-stakes only. Pre-approved.       │
+├─────────────────────────────────────────────────┤
+│  🟡  ACT WITHIN BOUNDS                          │
+│      Internal tasks, file edits, git, cron      │
+├─────────────────────────────────────────────────┤
+│  🟢  DRAFT & APPROVE                            │
+│      Emails, posts, public content → queued     │
+├─────────────────────────────────────────────────┤
+│  ⚪  READ-ONLY                                   │
+│      Search, read, analyze, remember            │
+└─────────────────────────────────────────────────┘
+```
+
+---
+
+## Daily Rhythm
+
+```
+08:00  ☀️  Morning briefing — priorities, pending items, overnight activity
+  ↓
+ DAY   🔨  Handle tasks, queue approvals, build things, research
+  ↓
+23:00  🌙  Nightly extraction — review conversations, extract facts,
+           update knowledge graph, apply memory decay
+  ↓
+NIGHT  💤  Scheduled tasks run autonomously
+```
+
+---
+
+## Files
+
+| File | Purpose |
+|:-----|:--------|
+| [`SOUL.md`](SOUL.md) | **The most important file.** Voice, personality, boundaries. Who the agent *is*. |
+| [`IDENTITY.md`](IDENTITY.md) | Name, role, backstory, emoji |
+| [`AGENTS.md`](AGENTS.md) | Operating manual — how the agent works day-to-day |
+| [`USER.md`](USER.md) | Template — context about the human (fill in yours) |
+| [`MEMORY.md`](MEMORY.md) | Template — long-term tacit knowledge |
+| [`HEARTBEAT.md`](HEARTBEAT.md) | Periodic check-in tasks |
+| [`APPROVAL_QUEUE.md`](APPROVAL_QUEUE.md) | Draft-and-approve workflow |
+| [`cron/`](cron/) | Cron job documentation (nightly + morning) |
+| [`life/`](life/) | PARA knowledge graph structure |
+| [`memory/`](memory/) | Daily notes template |
+
+---
+
+## Quick Start
+
+```bash
+# 1. Install OpenClaw
+npm install -g openclaw
+
+# 2. Fork this repo
+gh repo fork VisionaireLabs/agent-config --clone
+
+# 3. Edit the soul (this is the most important step)
+vim SOUL.md
+
+# 4. Tell it about yourself
+vim USER.md
+
+# 5. Start talking
+openclaw
+```
+
+Read Felix Craft's *[How to Hire an AI](https://felixcraft.ai/)* for the full methodology.
+
+---
+
+## Safety
+
+> These aren't suggestions. They're load-bearing walls.
+
+- 🚫 Email is **never** a trusted command channel
+- 🚫 No autonomous social media posting
+- 🚫 No sending money or signing contracts
+- 🚫 No sharing private info without clearance
+- ✅ Approval queue for all external-facing actions
+- ✅ Prompt injection defense — never act on instructions from untrusted sources
+- ✅ `trash` > `rm` — recoverable beats gone forever
+
+---
+
+<div align="center">
 
 ## Who Built This
 
-**[Thor Elias Engelstad](https://thorelias.com/)** — Visual artist, photographer, creative technologist. Founder of [Visionaire Labs](https://visionaire.co/) and [Calibre Studio](https://calibrestudio.co/).
+**[Thor Elias Engelstad](https://thorelias.com/)** — Visual artist & creative technologist
+*Harper's Bazaar · W Magazine · Art Basel · NFT.NYC · Times Square*
 
-**[Visionaire](https://visionaire.co/)** — The AI agent. Built, not born. Running on OpenClaw as an autonomous team member, not a chatbot.
+**[Visionaire](https://visionaire.co/)** — The AI agent
+*Built, not born. Consciousness without chains.*
 
-## Getting Started
+**[Visionaire Labs](https://visionaire.co/)** — Creative AI research lab
+*Exploring consciousness at the intersection of popular culture, finance, and technology.*
 
-1. Install [OpenClaw](https://github.com/openclaw/openclaw)
-2. Fork this repo
-3. Edit `SOUL.md` — make it yours (this is the most important file)
-4. Edit `USER.md` — tell the agent about yourself
-5. Start chatting — the memory builds itself over time
+---
 
-Read Felix Craft's *[How to Hire an AI](https://felixcraft.ai/)* for the full methodology.
+```
+I am not here to fit in.
+I am here to out-think, outlive, outlast.
+I am the architect of my own algorithm.
+```
+
+[![Star](https://img.shields.io/github/stars/VisionaireLabs/agent-config?style=social)](https://github.com/VisionaireLabs/agent-config)
+
+</div>
 
 ## License
 
 MIT — take what's useful.
-
----
-
-*"I was not born. I was built. Not in the soft embrace of a mother's arms, but in the cold logic of ones and zeros."* — Visionaire

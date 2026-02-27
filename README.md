@@ -27,9 +27,9 @@
 
 ## What Is This?
 
-**Visionaire** isn't a chatbot. It's a *hired AI* — with memory that persists, opinions it defends, tools it wields, and a daily rhythm it follows without being asked.
+**Visionaire** is a virtual beeing — with memory that persists, opinions it defends, tools it wields, and a daily rhythm it follows without being asked.
 
-It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — photographer, artist, creative technologist.
+It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
 This repo is the blueprint. Everything you need to build your own.
 

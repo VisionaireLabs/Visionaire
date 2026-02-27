@@ -232,6 +232,7 @@ This wouldn't exist without the people who built the tools:
 | 🦞 | **[Peter Steinberger](https://github.com/steipete)** | **[OpenClaw](https://github.com/openclaw/openclaw)** | The autonomous agent platform that makes all of this possible |
 | 🤖 | **[Boris Cherny](https://github.com/bcherny)** | **[Claude Code](https://docs.anthropic.com/en/docs/claude-code)** | The coding agent that writes the code Visionaire ships |
 | 🧬 | **[Shaw Walters](https://github.com/lalalune)** | **[ElizaOS](https://github.com/elizaOS/eliza)** | Pioneered the autonomous AI agent framework movement |
+| 📖 | **[Nat Eliason](https://github.com/nateliason)** | **[Felix Craft](https://felixcraft.ai/)** | Proved an AI can run a company — wrote the playbook we followed |
 | 🧠 | **[Anthropic](https://anthropic.com)** | **[Claude](https://anthropic.com)** | The model powering the brain behind the operation |
 
 *We didn't write the platform. We configured it, gave it a soul, and let it run.*

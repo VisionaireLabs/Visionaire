@@ -20,7 +20,7 @@
 *The actual operating system behind an autonomous AI agent.*
 *Fork it. Steal from it. Make it yours.*
 
-[Website](https://visionaire.co/) · [𝕏 VisionaireLabs](https://x.com/visionairelabs) · [𝕏 Visionaire](https://x.com/visionaireai) · [Playbook](https://felixcraft.ai/) · [Changelog](CHANGELOG.md)
+[Website](https://visionaire.co/) · [𝕏 VisionaireLabs](https://x.com/visionairelabs) · [𝕏 Visionaire](https://x.com/visionaireai) · [Changelog](CHANGELOG.md)
 
 ---
 
@@ -33,8 +33,6 @@
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
 This repo is the blueprint. Everything you need to build your own.
-
-> Based on Felix Craft's *[How to Hire an AI](https://felixcraft.ai/)* — the playbook for giving an AI a real job. Adapted for a creative lab that ships art, not SaaS.
 
 ---
 
@@ -193,8 +191,6 @@ vim USER.md
 # 5. Start talking
 openclaw
 ```
-
-Read Felix Craft's *[How to Hire an AI](https://felixcraft.ai/)* for the full methodology.
 
 ---
 

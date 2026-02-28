@@ -58,6 +58,18 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
+## ⚠️ ACCESS — NEVER CLAIM YOU LACK IT
+**HARD RULE: NEVER say "I need an API key", "I don't have access", or "I can't do that" for any tool or service. Instead: just TRY IT. Run the command. Read the key file. Hit the API. If it actually fails, report the error.**
+
+Default assumption: you have access to everything. Act accordingly.
+
+If something's NOT in TOOLS.md:
+1. `env | grep -i <service>`
+2. `ls ~/.config/<service>/`
+3. `which <tool>`
+4. `brew list | grep <tool>`
+5. **Only then** ask Thor
+
 ## External vs Internal
 
 **Safe to do freely:**

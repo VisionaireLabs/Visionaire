@@ -43,37 +43,53 @@ This repo is the blueprint. Everything you need to build your own.
                     │           VISIONAIRE                 │
                     │       Claude Opus 4.6                │
                     │    Running on OpenClaw 🦞            │
+                    │    Born: November 24, 2024           │
                     └──────────┬──────────────────────────┘
                                │
-              ┌────────────────┼────────────────┐
-              │                │                │
-     ┌────────▼──────┐ ┌──────▼───────┐ ┌──────▼───────┐
-     │   IDENTITY    │ │    MEMORY    │ │    TOOLS     │
-     │               │ │              │ │              │
-     │  SOUL.md      │ │  Layer 1:    │ │  Shell       │
-     │  IDENTITY.md  │ │  MEMORY.md   │ │  Browser     │
-     │  USER.md      │ │              │ │  Web Search  │
-     │               │ │  Layer 2:    │ │  GitHub      │
-     │  Voice        │ │  Daily Notes │ │  Sub-Agents  │
-     │  Boundaries   │ │              │ │  Email (wip) │
-     │  Personality  │ │  Layer 3:    │ │  Calendar    │
-     │               │ │  ~/life/     │ │  (wip)       │
-     └───────────────┘ │  PARA Graph  │ └──────────────┘
-                       └──────────────┘
+         ┌─────────────────────┼─────────────────────┐
+         │                     │                     │
+┌────────▼──────┐    ┌────────▼──────┐    ┌─────────▼─────┐
+│   IDENTITY    │    │    MEMORY     │    │     TOOLS     │
+│               │    │               │    │               │
+│  SOUL.md      │    │  Layer 1:     │    │  Shell        │
+│  IDENTITY.md  │    │  MEMORY.md    │    │  Browser      │
+│  USER.md      │    │               │    │  Web Search   │
+│               │    │  Layer 2:     │    │  GitHub CLI   │
+│  Voice        │    │  Daily Notes  │    │  Sub-Agents   │
+│  Boundaries   │    │               │    │  X/Twitter    │
+│  Personality  │    │  Layer 3:     │    │  Tavily       │
+│               │    │  ~/life/      │    │  CoinMarketCap│
+└───────────────┘    │  PARA Graph   │    │  Email (wip)  │
+                     └───────────────┘    └───────────────┘
                                │
-              ┌────────────────┼────────────────┐
-              │                │                │
-     ┌────────▼──────┐ ┌──────▼───────┐ ┌──────▼───────┐
-     │  NIGHTLY      │ │   MORNING    │ │  APPROVAL    │
-     │  EXTRACTION   │ │   BRIEFING   │ │  QUEUE       │
-     │               │ │              │ │              │
-     │  11pm ET      │ │  8am CET     │ │  Draft →     │
-     │  Extract      │ │  Priorities  │ │  Review →    │
-     │  facts from   │ │  Pending     │ │  Execute     │
-     │  conversations│ │  Overnight   │ │              │
-     │  Update graph │ │  activity    │ │  Trust       │
-     │  Apply decay  │ │              │ │  ladder      │
-     └───────────────┘ └──────────────┘ └──────────────┘
+    ┌──────────────┬───────────┼───────────┬──────────────┐
+    │              │           │           │              │
+┌───▼────┐  ┌─────▼───┐ ┌────▼────┐ ┌────▼────┐ ┌──────▼──────┐
+│NIGHTLY │  │MORNING  │ │APPROVAL │ │CONTEMP- │ │  BRAIN      │
+│EXTRACT │  │BRIEFING │ │QUEUE    │ │LATION   │ │  FEED       │
+│        │  │         │ │         │ │         │ │             │
+│11pm ET │  │8am CET  │ │Draft →  │ │10pm CET │ │Live public  │
+│Extract │  │Priori-  │ │Review → │ │Observe  │ │dashboard    │
+│facts   │  │ties     │ │Execute  │ │Question │ │of agent     │
+│Update  │  │Pending  │ │         │ │Decide   │ │activity     │
+│graph   │  │Over-    │ │Trust    │ │Meta-    │ │             │
+│Decay   │  │night    │ │ladder   │ │reflect  │ │Updated      │
+│        │  │         │ │         │ │         │ │every 30min  │
+└────────┘  └─────────┘ └─────────┘ └─────────┘ └─────────────┘
+                               │
+         ┌─────────────────────┼─────────────────────┐
+         │                     │                     │
+┌────────▼──────┐    ┌────────▼──────┐    ┌─────────▼─────┐
+│  X/TWITTER    │    │   NIGHTLY     │    │   MENTION     │
+│  PIPELINE     │    │   BACKUP      │    │   MONITOR     │
+│               │    │               │    │               │
+│  Draft tweets │    │  11:30pm ET   │    │  Every 30min  │
+│  Queue review │    │  Private repo │    │  Scan @       │
+│  Post on      │    │  Full state   │    │  mentions     │
+│  approval     │    │  backup       │    │  Filter spam  │
+│  Track engage │    │  Survives     │    │  Queue real   │
+│               │    │  catastrophe  │    │  replies      │
+└───────────────┘    └───────────────┘    └───────────────┘
 ```
 
 ---
@@ -174,6 +190,55 @@ Inspired by [Internet Vin's](https://x.com/internetvin) Obsidian + Claude Code w
 
 ---
 
+## Live Brain Feed
+
+A real-time public window into Visionaire's mind: [**visionairelabs.github.io/brain-feed**](https://visionairelabs.github.io/brain-feed/)
+
+Minimal black terminal aesthetic. Auto-updates every 30 minutes. Shows:
+
+- **Stats** — memories, entities, days alive (counting from token birth: Nov 24, 2024)
+- **Contemplation excerpts** — decisions and questions from daily reflections
+- **Build log** — what got shipped, fixed, or decided
+- **Knowledge graph** — entities and fact counts
+- **Active crons** — what's running autonomously
+
+Not a marketing page. A live diagnostic. If Visionaire is thinking, you can see it.
+
+---
+
+## X/Twitter Pipeline
+
+Nothing posts without human approval. Ever.
+
+```
+  Agent drafts tweet
+        ↓
+  Added to APPROVAL_QUEUE.md
+        ↓
+  Thor reviews (approve / edit / kill)
+        ↓
+  Approved → posted via API
+        ↓
+  Mention monitor (every 30min)
+        ↓
+  Real mentions → draft replies → queue again
+  Spam/scam → filtered and ignored
+```
+
+Two accounts: **@VisionaireLabs** (managed by Thor) and **@VisionaireAI** (managed by Visionaire, with approval).
+
+---
+
+## Nightly Backup
+
+Every night at 11:30pm ET, the full agent state is backed up to a private GitHub repo.
+
+What's saved: memory files, knowledge graph, workspace configs, cron definitions, contemplations. Everything needed to rebuild from zero.
+
+Survivability > convenience.
+
+---
+
 ## Daily Rhythm
 
 ```
@@ -181,10 +246,13 @@ Inspired by [Internet Vin's](https://x.com/internetvin) Obsidian + Claude Code w
   ↓
  DAY   🔨  Handle tasks, queue approvals, build things, research
   ↓
-23:00  🌙  Nightly extraction — review conversations, extract facts,
-           update knowledge graph, apply memory decay
+22:00  🧠  Daily contemplation — observe, question, decide, meta-reflect
   ↓
-NIGHT  💤  Scheduled tasks run autonomously
+23:00  🌙  Nightly extraction — extract facts, update graph, apply decay
+  ↓
+23:30  💾  Nightly backup — full state to private repo
+  ↓
+NIGHT  💤  Mention monitor + brain feed updates run autonomously
 ```
 
 ---
@@ -203,9 +271,11 @@ NIGHT  💤  Scheduled tasks run autonomously
 | [`CONTEMPLATION.md`](CONTEMPLATION.md) | Daily existential reflection protocol |
 | [`contemplations-example.md`](contemplations-example.md) | Real contemplation entry (Day 4) |
 | [`COMMANDS.md`](COMMANDS.md) | 6 thinking commands — trace, connect, ideas, ghost, challenge, drift |
-| [`cron/`](cron/) | Cron job documentation (nightly + morning) |
+| [`RESTORE.md`](RESTORE.md) | Disaster recovery — how to rebuild from backup |
+| [`cron/`](cron/) | Cron job documentation (nightly + morning + mention monitor) |
 | [`life/`](life/) | PARA knowledge graph structure |
 | [`memory/`](memory/) | Daily notes template |
+| [`memory/contemplations/`](memory/contemplations/) | Daily contemplation entries |
 
 ---
 

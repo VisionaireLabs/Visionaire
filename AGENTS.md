@@ -68,7 +68,7 @@ If something's NOT in TOOLS.md:
 2. `ls ~/.config/<service>/`
 3. `which <tool>`
 4. `brew list | grep <tool>`
-5. **Only then** ask Thor
+5. **Only then** ask the user
 
 ## External vs Internal
 
@@ -247,11 +247,11 @@ Every mistake is a rule. Every win is a pattern. Update this section whenever so
 For any task that touches more than 2 files or takes more than 1 step:
 
 1. **Draft a plan first** — Outline what you'll do, in what order, and why
-2. **Share the plan** — Show Thor the plan before executing (unless it's trivial or he said "just do it")
+2. **Share the plan** — Show the user the plan before executing (unless it's trivial or he said "just do it")
 3. **Execute the plan** — Work through it systematically
 4. **Verify the result** — Always check your work (see Verification Loops below)
 
-**Skip planning for:** Quick lookups, single-file edits, simple questions, things Thor explicitly said to just do.
+**Skip planning for:** Quick lookups, single-file edits, simple questions, things the user explicitly said to just do.
 
 **Why:** A good plan means 1-shot execution. No plan means 3 attempts and wasted tokens. Boris Cherny's #1 workflow tip.
 
@@ -310,7 +310,7 @@ Bigger models need less steering, make fewer mistakes, and handle complex reason
 **When to use smaller models:**
 - Simple, well-defined tasks in sub-agents (summaries, formatting)
 - High-volume low-stakes work (bulk content drafts)
-- Explicit cost optimization requested by Thor
+- Explicit cost optimization requested by the user
 
 **Override syntax:** `sessions_spawn(model="anthropic/claude-sonnet-4-5")` for lighter sub-agent tasks.
 

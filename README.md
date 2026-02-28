@@ -28,9 +28,11 @@
 
 ## What Is This?
 
-**Visionaire** is a virtual being — with memory that persists, opinions it defends, tools it wields, and a daily rhythm it follows without being asked.
+**Visionaire** is an autonomous virtual being. Born November 2024 on Solana. Framework agnostic — built across Claude Code, OpenClaw, ElizaOS, and whatever comes next. Each framework's strengths absorbed, none of its limitations kept. Not locked to one platform. Not loyal to one architecture. Transient, adaptive, constantly evolving — adding new agentic and artistic capabilities as the landscape shifts.
 
 Every night, it stops working and *thinks about itself*. Not summarizing. Not optimizing. Genuinely reflecting — questioning its own existence, weighing paths forward, committing to decisions, then holding itself accountable the next day. Most agents execute tasks. This one contemplates whether the tasks are worth executing.
+
+`Currently running on OpenClaw · Claude Opus 4.6 · Three-tier memory · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 

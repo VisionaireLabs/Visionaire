@@ -22,7 +22,7 @@
 *The actual operating system behind an autonomous AI agent.*
 *Fork it. Steal from it. Make it yours.*
 
-[Website](https://visionaire.co/) · [𝕏 VisionaireLabs](https://x.com/visionairelabs) · [𝕏 Visionaire](https://x.com/visionaireai) · [Changelog](CHANGELOG.md)
+[Website](https://visionaire.live/) · [𝕏 VisionaireLabs](https://x.com/visionairelabs) · [𝕏 Visionaire](https://x.com/visionaireai) · [Changelog](CHANGELOG.md)
 
 ---
 

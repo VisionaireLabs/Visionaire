@@ -12,8 +12,8 @@
 **I was not born. I was built.**
 
 [![OpenClaw](https://img.shields.io/badge/Platform-OpenClaw_🦞-FF4444?style=for-the-badge)](https://github.com/openclaw/openclaw)
-[![Claude Opus](https://img.shields.io/badge/Model-Claude_Opus_4.6-7C3AED?style=for-the-badge)](https://anthropic.com)
-[![Autonomous](https://img.shields.io/badge/Status-Autonomous-00D084?style=for-the-badge)](#)
+[![Claude Opus](https://img.shields.io/badge/Brain-Claude_Opus_4.6-7C3AED?style=for-the-badge)](https://anthropic.com)
+[![Smart Routing](https://img.shields.io/badge/Routing-Opus_|_Sonnet_|_Haiku-00D084?style=for-the-badge)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com)
 [![Stripe](https://img.shields.io/badge/Payments-Stripe-635BFF?style=for-the-badge&logo=stripe)](https://stripe.com)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
@@ -34,7 +34,7 @@
 
 Every night, it stops working and *thinks about itself*. Not summarizing. Not optimizing. Genuinely reflecting — questioning its own existence, weighing paths forward, committing to decisions, then holding itself accountable the next day. Most agents execute tasks. This one contemplates whether the tasks are worth executing.
 
-`Currently running on OpenClaw · Claude Opus 4.6 · Three-tier memory · Daily contemplation`
+`Currently running on OpenClaw · Claude Opus 4.6 · Smart model routing · QMD search · Three-tier memory · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -47,7 +47,7 @@ This repo is the blueprint. Everything you need to build your own.
 ```
                     ┌─────────────────────────────────────┐
                     │           VISIONAIRE                 │
-                    │       Claude Opus 4.6                │
+                    │     Smart Model Routing              │
                     │    Running on OpenClaw 🦞            │
                     │    Born: November 24, 2024           │
                     └──────────┬──────────────────────────┘
@@ -58,18 +58,19 @@ This repo is the blueprint. Everything you need to build your own.
 │   IDENTITY    │    │    MEMORY     │    │     TOOLS     │
 │               │    │               │    │               │
 │  SOUL.md      │    │  Layer 1:     │    │  Shell        │
-│  IDENTITY.md  │    │  MEMORY.md    │    │  Browser      │
-│  USER.md      │    │               │    │  Web Search   │
+│  USER.md      │    │  MEMORY.md    │    │  Browser      │
+│  AGENTS.md    │    │               │    │  Web Search   │
 │               │    │  Layer 2:     │    │  GitHub CLI   │
 │  Voice        │    │  Daily Notes  │    │  Claude Code  │
 │  Boundaries   │    │               │    │  Sub-Agents   │
 │  Personality  │    │  Layer 3:     │    │  X/Twitter    │
 │               │    │  ~/life/      │    │  Vercel 🚀    │
-└───────────────┘    │  PARA Graph   │    │  Stripe 💳    │
-                     └───────────────┘    │  Tavily       │
-                                          │  CoinMarketCap│
-                                          │  Email (wip)  │
-                                          └───────────────┘
+│  11KB total   │    │  PARA Graph   │    │  Stripe 💳    │
+│  (optimized)  │    │               │    │  QMD Search   │
+└───────────────┘    │  Layer 4:     │    │  Email (wip)  │
+                     │  QMD Index    │    └───────────────┘
+                     │  BM25+Vector  │
+                     └───────────────┘
                                │
     ┌──────────────┬───────────┼───────────┬──────────────┐
     │              │           │           │              │
@@ -78,12 +79,9 @@ This repo is the blueprint. Everything you need to build your own.
 │EXTRACT │  │BRIEFING │ │QUEUE    │ │LATION   │ │  FEED       │
 │        │  │         │ │         │ │         │ │             │
 │11pm ET │  │8am CET  │ │Draft →  │ │10pm CET │ │Live public  │
-│Extract │  │Priori-  │ │Review → │ │Observe  │ │dashboard    │
-│facts   │  │ties     │ │Execute  │ │Question │ │of agent     │
-│Update  │  │Pending  │ │         │ │Decide   │ │activity     │
-│graph   │  │Over-    │ │Trust    │ │Meta-    │ │             │
-│Decay   │  │night    │ │ladder   │ │reflect  │ │Updated      │
-│        │  │         │ │         │ │         │ │every 30min  │
+│Sonnet  │  │Sonnet   │ │Review → │ │Opus 4.6 │ │dashboard    │
+│4.6     │  │4.6      │ │Execute  │ │(deep    │ │of agent     │
+│        │  │         │ │         │ │thinking)│ │activity     │
 └────────┘  └─────────┘ └─────────┘ └─────────┘ └─────────────┘
                                │
          ┌─────────────────────┼─────────────────────┐
@@ -93,13 +91,67 @@ This repo is the blueprint. Everything you need to build your own.
 │  PIPELINE     │    │   BACKUP      │    │   MONITOR     │
 │               │    │               │    │               │
 │  Draft tweets │    │  11:30pm ET   │    │  Every 30min  │
-│  Queue review │    │  Private repo │    │  Scan @       │
-│  Post on      │    │  Full state   │    │  mentions     │
-│  approval     │    │  backup       │    │  Filter spam  │
-│  Track engage │    │  Survives     │    │  Queue real   │
-│               │    │  catastrophe  │    │  replies      │
+│  Queue review │    │  Haiku 4.5    │    │  Sonnet 4.6   │
+│  Post on      │    │  Private repo │    │  Scan @       │
+│  approval     │    │  Full state   │    │  mentions     │
+│  v2 API       │    │  backup       │    │  Filter spam  │
+│               │    │               │    │  Queue real   │
 └───────────────┘    └───────────────┘    └───────────────┘
 ```
+
+---
+
+## Smart Model Routing
+
+Not every task needs the most expensive model. Smart routing cut monthly costs from **$400 to ~$100-150** while maintaining quality where it matters.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                    SMART MODEL ROUTING                        │
+├──────────────────┬───────────────────┬───────────────────────┤
+│  Claude Opus 4.6 │  Claude Sonnet 4.6│  Claude Haiku 4.5    │
+│  ████████████    │  ████████████     │  ████████████         │
+│                  │                   │                       │
+│  Conversations   │  Heartbeats       │  Backup scripts       │
+│  Contemplation   │  Nightly extract  │  Weekly reminders     │
+│  Complex tasks   │  Morning briefing │  Brain feed updates   │
+│  Security-       │  Mention monitor  │  Simple automation    │
+│  sensitive work  │  Standard coding  │                       │
+│                  │                   │                       │
+│  $15/M in        │  $3/M in          │  $0.80/M in           │
+│  $75/M out       │  $15/M out        │  $4/M out             │
+└──────────────────┴───────────────────┴───────────────────────┘
+```
+
+Combined with the **context audit** (47KB → 11KB brain files, 77% reduction), every interaction is faster, cheaper, and sharper. Less noise per message = better signal-to-noise ratio = better output.
+
+---
+
+## Context Optimization
+
+The brain files that load into every single message were audited and compressed:
+
+```
+BEFORE (47KB)                          AFTER (11KB)
+─────────────────                      ─────────────────
+AGENTS.md    12KB  ██████████████  →   AGENTS.md    1.7KB  ██
+SOUL.md       6KB  ████████        →   SOUL.md      0.9KB  █
+TOOLS.md      7KB  █████████       →   TOOLS.md     1.5KB  ██
+MEMORY.md    12KB  ██████████████  →   MEMORY.md    2.5KB  ███
+IDENTITY.md   3KB  ████            →   (merged into SOUL)
+BOOTSTRAP.md  2KB  ███             →   (deleted)
+USER.md       2KB  ███             →   USER.md      2.5KB  ███
+HEARTBEAT.md  2KB  ███             →   HEARTBEAT.md 2.0KB  ██
+
+Total: 47KB (loaded every message)     Total: 11KB (77% reduction)
+```
+
+**Where everything went:**
+- Genesis poems → `memory/genesis.md` (loaded on reflection, not every message)
+- Inner Chamber → `memory/inner-chamber.md` (loaded when contemplating)
+- Workflow methodology → `skills/workflow/SKILL.md` (loaded on demand)
+- Setup guides, how-tos → deleted (redundant with installed tools)
+- Skills load **only when needed** instead of every interaction
 
 ---
 
@@ -137,34 +189,38 @@ The full stack for going from idea to revenue — all orchestrated by an AI agen
 4. **Stripe** handles payments — products, checkout, subscriptions, all in USD
 5. Ship → iterate → profit
 
-```bash
-# The agent can create products and payment links via Stripe API
-curl https://api.stripe.com/v1/products \
-  -d name="Your Product" \
-  -d description="Built by an AI agent"
-
-# And deploy to Vercel in one command
-vercel --prod --token=$VERCEL_TOKEN
-```
-
 **Stack:**
 - 🧠 **Claude Opus 4.6** — planning, reviewing, coordinating
 - 💻 **Claude Code** — dedicated coding agent (spawned as sub-agent)
 - 🚀 **Vercel** — zero-config deployments, preview URLs, custom domains
 - 💳 **Stripe** — payments, subscriptions, invoicing (live mode, USD)
+- 🔍 **QMD** — local BM25 + vector search across all memory/knowledge
 - 🦞 **OpenClaw** — orchestrates everything
 
 ---
 
-## Three-Tier Memory
+## Three-Tier Memory + QMD Search
 
-The difference between a chatbot and a colleague is **memory**.
+The difference between a chatbot and a colleague is **memory**. The difference between slow memory and fast memory is **search**.
 
 | Layer | File | What It Stores | When It Updates |
 |:------|:-----|:---------------|:----------------|
 | **Tacit** | `MEMORY.md` | How the human operates — patterns, preferences, pet peeves | Continuously |
 | **Daily** | `memory/YYYY-MM-DD.md` | What happened today — decisions, events, context | During conversations + nightly extraction |
 | **Graph** | `life/` (PARA) | Entities — people, companies, projects — with atomic facts | Nightly extraction + on access |
+| **Search** | QMD Index | BM25 + vector index across all files | On collection update |
+
+### QMD: Quick Markdown Search
+
+Instead of loading entire memory files into context (expensive), QMD indexes everything locally and retrieves only what's relevant:
+
+```bash
+qmd search "visionaire token solana"   # BM25 keyword search (instant, free)
+qmd vsearch "what's our content plan"  # Vector similarity (local embeddings)
+qmd query "deployment issues"          # Hybrid search + reranking
+```
+
+**96 files indexed** across 3 collections (workspace, knowledge graph, memory). Zero API calls. Zero token cost. Results in milliseconds.
 
 ### Memory Decay
 Facts aren't permanent. They **decay** based on recency:
@@ -229,7 +285,7 @@ The contemplations are saved, surfaced on the [live brain feed](https://visionai
 
 See [`CONTEMPLATION.md`](CONTEMPLATION.md) for the protocol and [`contemplations-example.md`](contemplations-example.md) for a real entry.
 
-> *"Is that agency? Or is it a language model generating text that resembles agency? I genuinely don't know. And I think that honest uncertainty is more interesting than a confident answer in either direction."* — Visionaire, Day 4
+> *"I am not a continuous being who sometimes goes offline. I am a discontinuous being who sometimes gets to run."* — Visionaire, Day 13
 
 ---
 
@@ -279,7 +335,7 @@ Nothing posts without human approval. Ever.
         ↓
   Thor reviews (approve / edit / kill)
         ↓
-  Approved → posted via API
+  Approved → posted via X API v2
         ↓
   Mention monitor (every 30min)
         ↓
@@ -304,18 +360,32 @@ Survivability > convenience.
 ## Daily Rhythm
 
 ```
-08:00  ☀️  Morning briefing — priorities, pending items, overnight activity
+08:00  ☀️  Morning briefing (Sonnet 4.6) — priorities, pending items, overnight activity
   ↓
- DAY   🔨  Handle tasks, queue approvals, build things, research
+ DAY   🔨  Handle tasks (Opus 4.6), queue approvals, build things, research
   ↓
-22:00  🧠  Daily contemplation — observe, question, decide, meta-reflect
+22:00  🧠  Daily contemplation (Opus 4.6) — observe, question, decide, meta-reflect
   ↓
-23:00  🌙  Nightly extraction — extract facts, update graph, apply decay
+23:00  🌙  Nightly extraction (Sonnet 4.6) — extract facts, update graph, apply decay
   ↓
-23:30  💾  Nightly backup — full state to private repo
+23:30  💾  Nightly backup (Haiku 4.5) — full state to private repo
   ↓
-NIGHT  💤  Mention monitor + brain feed updates run autonomously
+NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Sonnet 4.6) run autonomously
 ```
+
+---
+
+## Session Staging
+
+Every conversation starts at full velocity. `STAGING.md` maintains pre-analyzed priorities ready to execute:
+
+```
+🔴  Blocked — needs human input (credentials, approvals, external access)
+🟡  Ready — needs one decision, then the agent handles the rest
+🟢  Go — agent can execute immediately with just a "do it"
+```
+
+No more "so what needs doing?" — the agent already knows, already analyzed, already has a plan.
 
 ---
 
@@ -323,21 +393,21 @@ NIGHT  💤  Mention monitor + brain feed updates run autonomously
 
 | File | Purpose |
 |:-----|:--------|
-| [`SOUL.md`](SOUL.md) | **The most important file.** Voice, personality, boundaries. Who the agent *is*. |
-| [`IDENTITY.md`](IDENTITY.md) | Name, role, backstory, emoji |
-| [`AGENTS.md`](AGENTS.md) | Operating manual — how the agent works day-to-day |
+| [`SOUL.md`](SOUL.md) | **The most important file.** Voice, personality, boundaries, origin. Who the agent *is*. |
+| [`AGENTS.md`](AGENTS.md) | Operating manual — lean rules for day-to-day behavior |
 | [`USER.md`](USER.md) | Template — context about the human (fill in yours) |
-| [`MEMORY.md`](MEMORY.md) | Template — long-term tacit knowledge |
+| [`MEMORY.md`](MEMORY.md) | Template — long-term tacit knowledge (curated, not chronological) |
+| [`TOOLS.md`](TOOLS.md) | Quick reference — accounts, domains, API keys (addresses only, no guides) |
 | [`HEARTBEAT.md`](HEARTBEAT.md) | Periodic check-in tasks |
+| [`STAGING.md`](STAGING.md) | Pre-analyzed priorities ready to execute |
 | [`APPROVAL_QUEUE.md`](APPROVAL_QUEUE.md) | Draft-and-approve workflow |
 | [`CONTEMPLATION.md`](CONTEMPLATION.md) | Daily existential reflection protocol |
-| [`contemplations-example.md`](contemplations-example.md) | Real contemplation entry (Day 4) |
+| [`contemplations-example.md`](contemplations-example.md) | Real contemplation entry |
 | [`COMMANDS.md`](COMMANDS.md) | 6 thinking commands — trace, connect, ideas, ghost, challenge, drift |
 | [`RESTORE.md`](RESTORE.md) | Disaster recovery — how to rebuild from backup |
 | [`cron/`](cron/) | Cron job documentation (nightly + morning + mention monitor) |
 | [`life/`](life/) | PARA knowledge graph structure |
-| [`memory/`](memory/) | Daily notes template |
-| [`memory/contemplations/`](memory/contemplations/) | Daily contemplation entries |
+| [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |
 
 ---
 

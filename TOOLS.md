@@ -1,41 +1,39 @@
 # TOOLS.md — Quick Reference
 
 ## Accounts & Auth
-- **GitHub:** gh CLI authenticated, VisionaireLabs org (token expires May 28 2026)
-- **Vercel:** authenticated, team "visionaire-labs-projects"
-- **Stripe:** live mode, acct_1T5mkwGoBHY0B6fV, keys in ~/.bashrc
-- **X/Twitter:** xpost CLI at ~/bin/xpost (PYTHONPATH=/data/.local/lib/python3.13/site-packages), free tier API
-- **Cloudflare:** hello@visionaire.co (email verification blocked, no API token)
+- **GitHub:** gh CLI authenticated, your org (token — set in config)
+- **Vercel:** authenticated, your team
+- **Stripe:** live mode, keys in ~/.bashrc
+- **X/Twitter:** xpost CLI at ~/bin/xpost, free tier API
+- **Cloudflare:** your email (set up API token after domain migration)
 
 ## API Keys (in env/bashrc)
 - ANTHROPIC_API_KEY, TAVILY_API_KEY, COINMARKETCAP_API_KEY
 - STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY
 
 ## Domains
-- visionaire.co → Cloudflare DNS → Framer site
-- visionaire.live → Cloudflare DNS → Vercel
-- gateway.visionaire.co → Cloudflare Tunnel (tmux: cftunnel)
-- brain.visionaire.live → GitHub Pages
-- Cloudflare NS: ashley.ns.cloudflare.com / marek.ns.cloudflare.com
-- GoDaddy = registrar only
+- yourdomain.com → Cloudflare DNS → Framer (or your frontend)
+- yourdomain.live → Cloudflare DNS → Vercel
+- gateway.yourdomain.com → Cloudflare Tunnel (tmux: cftunnel)
+- brain.yourdomain.live → GitHub Pages
+- GoDaddy (or your registrar) = registrar only
 
 ## CLI Tools
-- Claude Code 2.1.63 (global)
-- ralphy (Ralph loop wrapper for coding agents)
+- Claude Code (global)
 - himalaya (email, needs IMAP creds)
 - xpost (X/Twitter API v2)
 
 ## Crons
 - nightly-extraction: 11pm ET
-- morning-briefing: 8am Paris
+- morning-briefing: 8am your timezone
 - x-mentions-check: every 30 min → drafts to APPROVAL_QUEUE.md
 - brain-feed-update: every 30 min
-- contemplation: 10pm Paris
-- backup: 11:30pm ET → VisionaireLabs/visionaire-backup
-- weekly-reminder: Mondays 9am Paris
+- contemplation: 10pm your timezone
+- backup: every 6 hours → your private backup repo
+- weekly-reminder: Mondays 9am your timezone
 
 ## Infrastructure
-- Hostinger VPS, Docker container, Homebrew installed
+- Your VPS provider, Docker container, Homebrew installed
 - Backup script: /data/backup-visionaire.sh
 - RESTORE.md has recovery steps
 

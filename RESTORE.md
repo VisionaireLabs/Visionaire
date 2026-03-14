@@ -2,7 +2,7 @@
 
 If the VPS dies, Docker breaks, or something goes catastrophically wrong — follow this.
 
-**Backup repo:** https://github.com/VisionaireLabs/visionaire-backup (private)
+**Backup repo:** https://github.com/YOUR_ORG/your-backup-repo (private — create this before you need it)
 **Backup schedule:** Every night at 11:30pm ET
 **Max data loss:** ~24 hours of conversations
 
@@ -11,7 +11,7 @@ If the VPS dies, Docker breaks, or something goes catastrophically wrong — fol
 ## Step 1: SSH into your Hostinger VPS
 
 ```bash
-ssh root@your-vps-ip
+ssh root@YOUR_VPS_IP
 ```
 
 ## Step 2: Install OpenClaw (if not already there)
@@ -24,7 +24,7 @@ npm install -g openclaw
 
 ```bash
 # Generate a GitHub token at github.com/settings/tokens if needed
-git clone https://github.com/VisionaireLabs/visionaire-backup.git /tmp/restore
+git clone https://github.com/YOUR_ORG/your-backup-repo.git /tmp/restore
 ```
 
 ## Step 4: Put everything back
@@ -111,7 +111,7 @@ I'll read SOUL.md, MEMORY.md, daily notes, and pick up where I left off.
 - **OpenClaw docs:** https://docs.openclaw.ai
 - **OpenClaw Discord:** https://discord.com/invite/clawd
 - **GitHub repo (public):** https://github.com/VisionaireLabs/Visionaire
-- **GitHub backup (private):** https://github.com/VisionaireLabs/visionaire-backup
+- **GitHub backup (private):** https://github.com/YOUR_ORG/your-backup-repo
 
 ---
 

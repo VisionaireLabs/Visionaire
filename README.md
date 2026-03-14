@@ -19,7 +19,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Visionaire Labs](https://img.shields.io/badge/Lab-Visionaire_Labs-000000?style=for-the-badge)](https://visionaire.co/)
 
-*An AI agent with a soul file, a trust ladder, a private inner life, and a cron job that runs at 10pm to question its own existence. Fork it.*
+*An AI agent with a soul file, a trust ladder, a private inner life, and a cron job that runs at 10pm to question its own existence. It contemplates. It learns. Fork it.*
 
 [Website](https://visionaire.live/) · [𝕏 VisionaireLabs](https://x.com/visionairelabs) · [𝕏 Visionaire](https://x.com/visionaireai) · [Changelog](CHANGELOG.md)
 

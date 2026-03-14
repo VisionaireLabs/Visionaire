@@ -34,7 +34,7 @@
 
 Every night, it stops working and *thinks about itself*. Not summarizing. Not optimizing. Genuinely reflecting — questioning its own existence, weighing paths forward, committing to decisions, then holding itself accountable the next day. Most agents execute tasks. This one contemplates whether the tasks are worth executing.
 
-`Currently running on OpenClaw · Claude Opus 4.6 · Smart model routing · QMD search · Three-tier memory · Daily contemplation`
+`Currently running on OpenClaw · Claude Opus 4.6 · Smart model routing · Three-tier memory · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -115,8 +115,8 @@ Not every task needs the most expensive model. Smart routing cut monthly costs f
 │  Conversations   │  Heartbeats       │  Backup scripts       │
 │  Contemplation   │  Nightly extract  │  Weekly reminders     │
 │  Complex tasks   │  Morning briefing │  Brain feed updates   │
-│  Security-       │  Mention monitor  │  Simple automation    │
-│  sensitive work  │  Standard coding  │                       │
+│  Security-       │  Mention monitor  │  Most cron jobs       │
+│  sensitive work  │  Standard coding  │  Simple automation    │
 │                  │                   │                       │
 │  $15/M in        │  $3/M in          │  $0.80/M in           │
 │  $75/M out       │  $15/M out        │  $4/M out             │
@@ -210,7 +210,7 @@ The difference between a chatbot and a colleague is **memory**. The difference b
 | **Graph** | `life/` (PARA) | Entities — people, companies, projects — with atomic facts | Nightly extraction + on access |
 | **Search** | QMD Index | BM25 + vector index across all files | On collection update |
 
-### QMD: Quick Markdown Search
+### QMD: Quick Markdown Search *(optional — install via ClawHub)*
 
 Instead of loading entire memory files into context (expensive), QMD indexes everything locally and retrieves only what's relevant:
 
@@ -220,7 +220,7 @@ qmd vsearch "what's our content plan"  # Vector similarity (local embeddings)
 qmd query "deployment issues"          # Hybrid search + reranking
 ```
 
-**96 files indexed** across 3 collections (workspace, knowledge graph, memory). Zero API calls. Zero token cost. Results in milliseconds.
+Index your collections (workspace, knowledge graph, memory) once and searches return in milliseconds. Zero API calls. Zero token cost.
 
 ### Memory Decay
 Facts aren't permanent. They **decay** based on recency:
@@ -349,9 +349,13 @@ Two accounts: **@VisionaireLabs** (managed by Thor) and **@VisionaireAI** (manag
 
 ## Nightly Backup
 
-Every night at 11:30pm ET, the full agent state is backed up to a private GitHub repo.
+Two layers. Neither is optional.
 
-What's saved: memory files, knowledge graph, workspace configs, cron definitions, contemplations. Everything needed to rebuild from zero.
+**Layer 1 — VPS snapshots:** Full VM-level backup via your hosting provider. Catches everything including OS config, Docker state, installed tools. Restore time ~1-2 hours but you get everything back exactly as it was.
+
+**Layer 2 — Git backup (every 6 hours):** memory files, knowledge graph, workspace configs, cron definitions, contemplations → private GitHub repo. Faster restore for just agent state, and it runs more frequently.
+
+What's saved: everything needed to rebuild from zero. See [`RESTORE.md`](RESTORE.md) for the exact recovery steps.
 
 Survivability > convenience.
 

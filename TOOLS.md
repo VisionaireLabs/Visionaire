@@ -38,3 +38,9 @@
 - Hostinger VPS, Docker container, Homebrew installed
 - Backup script: /data/backup-visionaire.sh
 - RESTORE.md has recovery steps
+
+## Backups (two layers)
+- **VPS daily snapshots** — full VM restore via your hosting panel (~1-2h restore time)
+  - Restore: hosting panel → your server → Snapshots & Backups → Restore
+- **Git backup every 6 hours** — memory/configs/keys → private backup repo
+  - Restore: see RESTORE.md

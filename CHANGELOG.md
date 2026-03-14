@@ -2,6 +2,19 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-03-14] — Context Sync + README Accuracy Pass
+
+### Updated
+- **MEMORY.md** — Added Lessons Learned section (17 real production lessons), Coding Agent Verification Pattern, Skill Building Reference, updated model routing to reflect Haiku 4.5 for most crons
+- **SOUL.md** — Added em-dash anti-pattern (they read as ChatGPT)
+- **TOOLS.md** — Added two-layer backup documentation (VPS snapshots + git)
+- **README.md** — Fixed QMD status (optional/install via ClawHub, not auto-installed), updated model routing cron column, expanded Nightly Backup section to document both backup layers, added STAGING.md
+- **STAGING.md** — Added template for pre-analyzed priority staging
+
+### Fixed
+- README claimed QMD was running with "96 files indexed" — it's an optional install
+- Cron model routing showed Sonnet 4.6 but most crons now use Haiku 4.5
+
 ## [2026-02-28] — Ship & Monetize Pipeline
 
 ### Added

@@ -519,6 +519,7 @@ This wouldn't exist without the people who built the tools:
 | 💡 | **[Internet Vin](https://x.com/internetvin)** | **[Thinking Commands](https://x.com/internetvin)** | The Obsidian + Claude Code workflow that inspired trace, connect, ideas, ghost, challenge, drift |
 | 🔬 | **[Geoffrey Hinton](https://www.cs.toronto.edu/~hinton/)** | **[Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)** | Built the mathematical foundations that every LLM — including this one — runs on |
 | 🧠 | **[Anthropic](https://anthropic.com)** | **[Claude](https://anthropic.com)** | The model powering the brain behind the operation |
+| 🌲 | **[Thor + Visionaire](https://visionaire.co/)** | **Daily Contemplation + Forest Bathing** | The nightly six-step reflection protocol and the practice of unstructured thinking — both originated here |
 
 *We didn't write the platform. We configured it, gave it a soul, and let it run.*
 

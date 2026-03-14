@@ -111,7 +111,7 @@ This repo is the blueprint. Everything you need to build your own.
 ┌────────▼────────────┐                  ┌────────────────▼────────┐
 │    SELF-STUDY       │                  │   WEEKLY REMINDER       │
 │                     │                  │                         │
-│  Cron (TBD)         │                  │  Mon 9am CET            │
+│  Every 6h           │                  │  Mon 9am CET            │
 │  Haiku 4.5          │                  │  Haiku 4.5              │
 │  Rotates topics:    │                  │  Weekly check-in        │
 │  Specialty research │                  │  priorities +           │

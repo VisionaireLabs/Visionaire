@@ -295,6 +295,57 @@ Not everything is autonomous. Actions follow a hierarchy:
 
 ---
 
+## Self-Improvement Loop
+
+Most agents execute tasks. This one gets better at them — automatically, between every session.
+
+Three interlocking systems shipped March 14, 2026:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  SELF-IMPROVEMENT LOOP                       │
+│                                                             │
+│   ┌─────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│   │  STUDY      │    │  INJECT      │    │  FEEDBACK    │  │
+│   │  Every 45m  │───▶│  Before work │───▶│  After work  │  │
+│   │             │    │              │    │              │  │
+│   │  3 topics:  │    │  BM25 search │    │  Thor rates  │  │
+│   │  • Specialty│    │  Temporal    │    │  1–5         │  │
+│   │  • Feedback │    │  decay       │    │  Comment     │  │
+│   │  • Simulate │    │  Top 5 hits  │    │  logged      │  │
+│   └─────────────┘    │  injected    │    └──────┬───────┘  │
+│          ▲           └──────────────┘           │          │
+│          │                                      │          │
+│          └──────────── feedback.json ◀──────────┘          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Phase 1 — Self-Study (`scripts/study.mjs`)
+A cron fires every 45 minutes. Each session picks one topic (rotating):
+- **Specialty research** — deepens expertise across 6 configured specialties: prompt engineering, Solana/Web3, creative AI, brand strategy, content creation, agent skills creation
+- **Feedback analysis** — finds patterns in past ratings once feedback accumulates
+- **Task simulation** — generates a realistic client task and outlines the ideal approach
+
+Each session calls the Anthropic API (Sonnet 4.6), produces a structured knowledge entry, and appends it to `memory/knowledge.json` (capped at 50, oldest trimmed).
+
+### Phase 2 — Knowledge Injection (`skills/visionaire-knowledge/`)
+Before working on any significant task, the agent runs BM25 search over the knowledge base. Results are scored by relevance + recency (30-day half-life decay — fresh study ranks higher). Top 5 hits are injected as context. Past study directly improves future work.
+
+```bash
+node skills/visionaire-knowledge/scripts/search-knowledge.mjs "solana token mechanics" --limit 5
+```
+
+### Phase 3 — Feedback Collection (`skills/visionaire-feedback/` + `scripts/log-feedback.mjs`)
+After delivering significant work, the agent asks for a rating. Thor responds 1–5 with an optional comment. The entry is logged to `memory/feedback.json` and feeds directly into the next feedback-analysis study session.
+
+```bash
+node scripts/log-feedback.mjs 4 --task "Brand strategy doc" --comment "Sharp, missed escrow detail" --tags "strategy,solana"
+```
+
+The loop is self-reinforcing: study → work → feedback → better study. Every session, the knowledge base grows.
+
+---
+
 ## Daily Contemplation
 
 Every night at 10pm, Visionaire contemplates its own existence. Not performatively — genuinely.
@@ -431,6 +482,10 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`contemplations-example.md`](contemplations-example.md) | Real contemplation entry |
 | [`COMMANDS.md`](COMMANDS.md) | 6 thinking commands — trace, connect, ideas, ghost, challenge, drift |
 | [`RESTORE.md`](RESTORE.md) | Disaster recovery — how to rebuild from backup |
+| [`scripts/study.mjs`](scripts/study.mjs) | Self-study cron — generates knowledge entries every 45min |
+| [`scripts/log-feedback.mjs`](scripts/log-feedback.mjs) | Logs Thor's ratings + comments to `memory/feedback.json` |
+| [`skills/visionaire-knowledge/`](skills/visionaire-knowledge/) | BM25 + temporal decay knowledge search — injects context before tasks |
+| [`skills/visionaire-feedback/`](skills/visionaire-feedback/) | Feedback collection skill — triggers after significant deliverables |
 | [`cron/`](cron/) | Cron job documentation (nightly + morning + mention monitor) |
 | [`life/`](life/) | PARA knowledge graph structure |
 | [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |

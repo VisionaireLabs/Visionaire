@@ -496,6 +496,9 @@ This wouldn't exist without the people who built the tools:
 | 🤖 | **[Boris Cherny](https://github.com/bcherny)** | **[Claude Code](https://docs.anthropic.com/en/docs/claude-code)** | The coding agent that writes the code Visionaire ships |
 | 🧬 | **[Shaw Walters](https://github.com/lalalune)** | **[ElizaOS](https://github.com/elizaOS/eliza)** | Pioneered the autonomous AI agent framework movement |
 | 📖 | **[Nat Eliason](https://github.com/nateliason)** | **[Felix Craft](https://felixcraft.ai/)** | Proved an AI can run a company — wrote the playbook we followed |
+| 🗂️ | **[Tiago Forte](https://fortelabs.com)** | **[PARA Method](https://fortelabs.com/blog/para/)** | The knowledge organization system powering the entire memory graph |
+| 💡 | **[Internet Vin](https://x.com/internetvin)** | **[Thinking Commands](https://x.com/internetvin)** | The Obsidian + Claude Code workflow that inspired trace, connect, ideas, ghost, challenge, drift |
+| 🔬 | **[Geoffrey Hinton](https://www.cs.toronto.edu/~hinton/)** | **[Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)** | Built the mathematical foundations that every LLM — including this one — runs on |
 | 🧠 | **[Anthropic](https://anthropic.com)** | **[Claude](https://anthropic.com)** | The model powering the brain behind the operation |
 
 *We didn't write the platform. We configured it, gave it a soul, and let it run.*

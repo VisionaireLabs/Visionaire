@@ -14,12 +14,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const MEMORY_DIR = resolve(__dirname, '../memory');
 
 const KNOWLEDGE_FILE = resolve(MEMORY_DIR, 'knowledge.json');
+const KNOWLEDGE_MAP_FILE = resolve(MEMORY_DIR, 'knowledge-map.md');
 const STUDY_STATE_FILE = resolve(MEMORY_DIR, 'study-state.json');
 const FEEDBACK_FILE = resolve(MEMORY_DIR, 'feedback.json');
 
 const KNOWLEDGE_MAX = 50;
 
-const TOPICS = ['feedback-analysis', 'specialty-research', 'task-simulation'];
+const TOPICS = ['feedback-analysis', 'specialty-research', 'task-simulation', 'reweave'];
 
 const SPECIALTIES = [
   'prompt-engineering',
@@ -91,6 +92,15 @@ async function selectTopic(state) {
       continue;
     }
 
+    if (candidate === 'reweave') {
+      const knowledge = await readJSON(KNOWLEDGE_FILE, []);
+      if (knowledge.length < 8) {
+        console.log(`[study] reweave: skipped (only ${knowledge.length} entries, need 8+)`);
+        index++;
+        continue;
+      }
+    }
+
     return { topic: candidate, index: index % TOPICS.length };
   }
 
@@ -117,7 +127,7 @@ function buildFeedbackAnalysisPrompt(feedbackEntries) {
 
 // --- API call ---
 
-async function callAnthropic(userPrompt) {
+async function callAnthropic(userPrompt, systemPrompt = SYSTEM_PROMPT, maxTokens = 1024) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     console.error('[study] ERROR: ANTHROPIC_API_KEY is not set');
@@ -126,8 +136,8 @@ async function callAnthropic(userPrompt) {
 
   const body = {
     model: 'claude-sonnet-4-20250514',
-    max_tokens: 1024,
-    system: SYSTEM_PROMPT,
+    max_tokens: maxTokens,
+    system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
   };
 
@@ -185,6 +195,120 @@ function extractJSON(text) {
   throw new Error(`Could not extract JSON from response:\n${text.slice(0, 500)}`);
 }
 
+// --- Reweave: find connections and update links ---
+
+async function generateKnowledgeMap(knowledge) {
+  const timestamp = new Date().toISOString();
+  const totalConnections = knowledge.reduce((sum, e) => sum + (e.links || []).length, 0) / 2;
+
+  // Group entries by specialty/topic into clusters
+  const clusterMap = new Map();
+  for (const entry of knowledge) {
+    const key = entry.specialty || entry.topic || 'other';
+    if (!clusterMap.has(key)) clusterMap.set(key, []);
+    clusterMap.get(key).push(entry);
+  }
+
+  const idToTitle = new Map(knowledge.map((e) => [e.id, e.title]));
+
+  let md = `# Knowledge Map\n`;
+  md += `*Last updated: ${timestamp}*\n`;
+  md += `*${knowledge.length} entries · ${Math.floor(totalConnections)} connections*\n\n`;
+  md += `## Clusters\n\n`;
+
+  for (const [cluster, entries] of clusterMap) {
+    md += `### ${cluster}\n`;
+    for (const entry of entries) {
+      const linkedTitles = (entry.links || [])
+        .map((id) => idToTitle.get(id))
+        .filter(Boolean)
+        .join(', ');
+      const linkedPart = linkedTitles ? ` → linked to: ${linkedTitles}` : '';
+      md += `- [[${entry.id}]] ${entry.title}${linkedPart}\n`;
+    }
+    md += '\n';
+  }
+
+  const orphans = knowledge.filter((e) => !e.links || e.links.length === 0);
+  if (orphans.length > 0) {
+    md += `## Orphan Entries\n*(entries with no links yet)*\n`;
+    for (const entry of orphans) {
+      md += `- [[${entry.id}]] ${entry.title}\n`;
+    }
+    md += '\n';
+  }
+
+  const sorted = [...knowledge].sort((a, b) => (b.links || []).length - (a.links || []).length);
+  const most = sorted[0];
+  const least = sorted[sorted.length - 1];
+  md += `## Connection Density\n`;
+  md += `Most connected: ${most.title} (${(most.links || []).length} links)\n`;
+  md += `Least connected: ${least.title} (${(least.links || []).length} links)\n`;
+
+  const tmp = KNOWLEDGE_MAP_FILE + '.tmp';
+  await writeFile(tmp, md, 'utf8');
+  await rename(tmp, KNOWLEDGE_MAP_FILE);
+}
+
+async function runReweave(state) {
+  const knowledge = await readJSON(KNOWLEDGE_FILE, []);
+
+  if (knowledge.length < 8) {
+    console.log(`[study] reweave: skipped (only ${knowledge.length} entries, need 8+)`);
+    return { skipped: true };
+  }
+
+  const validIds = new Set(knowledge.map((e) => e.id));
+  const compact = knowledge.map((e) => ({ id: e.id, title: e.title, specialty: e.specialty, tags: e.tags }));
+
+  const reweaveSystem =
+    'You are Visionaire — an AI agent for Visionaire Labs. You are analyzing your own knowledge base to find meaningful connections between entries.';
+
+  const reweaveUser =
+    `Here are all entries in your knowledge base:\n\n${JSON.stringify(compact, null, 2)}\n\n` +
+    `Find meaningful conceptual connections between entries. A connection is meaningful if the entries share complementary insights, build on each other, or represent related domains that would benefit from cross-referencing.\n\n` +
+    `Return JSON: { connections: [ { from: "entry-id", to: "entry-id", reason: "one sentence" }, ... ] }\n\n` +
+    `Include only strong connections. Aim for 2-4 connections per entry on average. Do not connect every entry to every other entry.`;
+
+  const rawText = await callAnthropic(reweaveUser, reweaveSystem, 4096);
+
+  let parsed;
+  try {
+    parsed = extractJSON(rawText);
+  } catch (err) {
+    console.error(`[study] reweave ERROR: Failed to parse response — ${err.message}`);
+    return { skipped: false, connections: 0, entries: 0 };
+  }
+
+  const connections = Array.isArray(parsed.connections) ? parsed.connections : [];
+
+  // Build link map
+  const linkMap = new Map(knowledge.map((e) => [e.id, new Set(e.links || [])]));
+
+  let validConnections = 0;
+  for (const { from, to } of connections) {
+    if (!from || !to || from === to) continue;
+    if (!validIds.has(from) || !validIds.has(to)) continue;
+    linkMap.get(from).add(to);
+    linkMap.get(to).add(from);
+    validConnections++;
+  }
+
+  // Apply links back, cap at 8
+  const affectedIds = new Set();
+  const updated = knowledge.map((e) => {
+    const links = [...linkMap.get(e.id)].slice(0, 8);
+    if (links.length !== (e.links || []).length) affectedIds.add(e.id);
+    return { ...e, links };
+  });
+
+  await writeJSONAtomic(KNOWLEDGE_FILE, updated);
+  await generateKnowledgeMap(updated);
+
+  console.log(`[study] reweave: found ${validConnections} connections across ${affectedIds.size} entries`);
+  return { skipped: false, connections: validConnections, entries: affectedIds.size };
+}
+
 // --- Main ---
 
 async function main() {
@@ -193,6 +317,21 @@ async function main() {
 
   // Select topic
   const { topic, index: topicIndex } = await selectTopic(state);
+
+  // Reweave is handled separately — no new entry added
+  if (topic === 'reweave') {
+    console.log(`[study] topic: reweave`);
+    await runReweave(state);
+
+    const newState = {
+      lastRun: new Date().toISOString(),
+      lastTopic: topic,
+      topicRotationIndex: (topicIndex + 1) % TOPICS.length,
+      specialtyRotationIndex: state.specialtyRotationIndex,
+    };
+    await writeJSONAtomic(STUDY_STATE_FILE, newState);
+    return;
+  }
 
   let specialty = null;
   let userPrompt;
@@ -239,6 +378,7 @@ async function main() {
     title: String(title).slice(0, 80),
     insight: typeof insight === 'string' ? insight : JSON.stringify(insight, null, 2),
     tags: Array.isArray(tags) ? tags : [],
+    links: [],
     source: 'study-session',
   };
 

@@ -10,7 +10,7 @@
 ## API Keys (in env/bashrc)
 - ANTHROPIC_API_KEY, TAVILY_API_KEY, COINMARKETCAP_API_KEY
 - STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY
-- NVIDIA_API_KEY — NIM API, get at build.nvidia.com/settings/api-keys
+- NVIDIA_API_KEY — stored in ~/.bashrc + openclaw.json env (never commit)
 
 ## Domains
 - yourdomain.com → Cloudflare DNS → Framer (or your frontend)

@@ -41,7 +41,9 @@ Brain feed updates       Claude Haiku 4.5            Anthropic       Minimal rea
 
 ```bash
 # 1. Get API key at build.nvidia.com/settings/api-keys (free tier available)
-export NVIDIA_API_KEY="nvapi-..."
+# Get your key at build.nvidia.com/settings/api-keys
+# Store in ~/.bashrc and openclaw.json env — never commit to repo
+export NVIDIA_API_KEY="nvapi-..."  # store in ~/.bashrc only
 
 # 2. Add to openclaw.json providers
 # OpenClaw natively supports NVIDIA — auto-enables when NVIDIA_API_KEY is set
@@ -50,7 +52,7 @@ export NVIDIA_API_KEY="nvapi-..."
 OpenClaw config (in `openclaw.json`):
 ```json
 {
-  "env": { "NVIDIA_API_KEY": "nvapi-..." },
+  "env": { "NVIDIA_API_KEY": "$NVIDIA_API_KEY" },  // reads from env — never hardcode
   "agents": {
     "defaults": {
       "heartbeat": { "model": "nvidia/nvidia/nemotron-3-nano-30b-a3b" },

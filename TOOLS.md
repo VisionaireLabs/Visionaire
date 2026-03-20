@@ -10,6 +10,7 @@
 ## API Keys (in env/bashrc)
 - ANTHROPIC_API_KEY, TAVILY_API_KEY, COINMARKETCAP_API_KEY
 - STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY
+- NVIDIA_API_KEY — NIM API, get at build.nvidia.com/settings/api-keys
 
 ## Domains
 - yourdomain.com → Cloudflare DNS → Framer (or your frontend)
@@ -22,6 +23,12 @@
 - Claude Code (global)
 - himalaya (email, needs IMAP creds)
 - xpost (X/Twitter API v2)
+
+## NVIDIA NIM Models
+- **Nemotron 3 Nano** → `nvidia/nvidia/nemotron-3-nano-30b-a3b` — heartbeats, lightweight crons
+- **Nemotron 3 Super** → `nvidia/nvidia/nemotron-3-super-120b-a12b` — sub-agents, technical tasks
+- Endpoint: `integrate.api.nvidia.com/v1` (OpenAI-compatible)
+- See `AI_STACK.md` for full setup and benchmark
 
 ## Crons
 - nightly-extraction: 11pm ET

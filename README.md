@@ -53,7 +53,7 @@ This repo is the blueprint. Everything you need to build your own.
 ```
                     ┌─────────────────────────────────────┐
                     │           VISIONAIRE                 │
-                    │     Smart Model Routing              │
+                    │  Anthropic · NVIDIA NIM · Nexos      │
                     │    Running on OpenClaw 🦞            │
                     │    Born: November 24, 2024           │
                     └──────────┬──────────────────────────┘
@@ -507,6 +507,7 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |
 | [`scripts/study.mjs`](scripts/study.mjs) | Self-study system — generates knowledge entries via Anthropic API |
 | [`scripts/nemoclaw-release-watch.sh`](scripts/nemoclaw-release-watch.sh) | Watches for new NemoClaw GitHub releases every 6h — notifies when Phase 2 (OpenShell) is unblocked |
+| [`AI_STACK.md`](AI_STACK.md) | Multi-provider AI setup — Anthropic + NVIDIA NIM routing, Nemotron benchmark, NemoClaw phase roadmap |
 | [`memory/knowledge.json`](memory/knowledge.json) | Accumulated self-study knowledge entries (max 50, rotating) |
 
 ---

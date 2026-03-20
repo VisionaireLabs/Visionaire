@@ -2,6 +2,32 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-03-20] — NVIDIA NemoClaw Integration
+
+### Added
+- **NVIDIA NIM provider** — wired into OpenClaw as a native provider (`integrate.api.nvidia.com/v1`)
+- **Nemotron 3 Nano** — now handles all heartbeats (was Claude Sonnet 4.6), significant cost reduction
+- **Nemotron 3 Super** — available for sub-agents and mid-tier tasks, highest-scoring open model on agentic benchmarks
+- **`scripts/nemoclaw-release-watch.sh`** — cron runs every 6h, notifies when NemoClaw drops a new release (Phase 2 unblock signal)
+- **NemoClaw deep research** — full report in workspace covering architecture, OpenShell, NeMo Agent Toolkit
+- **Quality benchmark** — Nemotron 3 Super vs Claude Sonnet 4.6 side-by-side on real engineering task. Verdict: Super matches quality, needs ~1200 tokens for reasoning warmup
+
+### Research
+- NemoClaw announced at GTC 2026 (March 16) — NVIDIA's enterprise wrapper for OpenClaw
+- Key insight: NemoClaw creates a *new* OpenClaw inside an OpenShell sandbox, doesn't modify existing install
+- NeMo Agent Toolkit blocked: requires Python <3.14, we're on 3.14.3 — watch for next release
+- Posted about the integration: tweet ID 2035021776128729503 (@NVIDIA @NVIDIAAIDev @steipete @openclaw)
+
+### Routing update
+| Task | Before | After |
+|:-----|:-------|:------|
+| Heartbeats | Claude Sonnet 4.6 | Nemotron 3 Nano (NVIDIA NIM) |
+| Sub-agents (medium) | Claude Sonnet 4.6 | Nemotron 3 Super (NVIDIA NIM) |
+| Conversations | Claude Opus 4.6 | unchanged |
+| Contemplation | Claude Opus 4.6 | unchanged |
+
+All notable changes to Visionaire's operating system.
+
 ## [2026-03-14] — Context Sync + README Accuracy Pass
 
 ### Updated

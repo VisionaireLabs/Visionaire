@@ -296,6 +296,41 @@ Not everything is autonomous. Actions follow a hierarchy:
 
 ---
 
+## Feedback Loop (Closed-Loop Learning)
+
+Inspired by backpropagation — Rumelhart, Hinton & Williams 1986, via Ananthaswamy's *Why Machines Learn*.
+
+**Core insight:** Error is gradient. Every approval, rejection, and correction is a training signal. Without writing it down, the weights don't update.
+
+```
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                    CONTENT FEEDBACK LOOP                        │
+  │                                                                 │
+  │  BEFORE (open loop)                                             │
+  │  Draft → Queue → Posted? → Next draft (no memory)              │
+  │                                                                 │
+  │  AFTER (closed loop)                                            │
+  │                                                                 │
+  │  Read patterns ──▶ Draft ──▶ Queue ──▶ Outcome                 │
+  │       ▲                                   │                     │
+  │       │            ┌──────────────────────┤                     │
+  │       │            ▼                      ▼                     │
+  │       └──── Update feedback file ◀── Log gradient signal        │
+  └─────────────────────────────────────────────────────────────────┘
+```
+
+**File:** `memory/learning/content-feedback.md`
+- Pattern library: what voice works, what gets cut, what topics get traction
+- Outcome log: every draft tagged with result
+- Weekly review: extract new signal, update patterns
+- Heartbeat: surfaces pending items so nothing disappears
+
+**Key discovery (March 2026):** Thor approves conversationally ("post it"), not via ✅ markers. The real gradient lives in *behavior* — what topics get initiated, what gets corrected mid-draft, what goes quiet. The feedback loop tracks behavior, not checkboxes.
+
+See [`DIAGRAM.md`](DIAGRAM.md) for full system flow diagrams.
+
+---
+
 ## Self-Improvement Loop
 
 Most agents execute tasks. This one gets better at them — automatically, between every session.

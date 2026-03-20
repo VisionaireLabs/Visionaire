@@ -1,0 +1,126 @@
+# Visionaire — System Architecture
+
+## Information Flow
+
+```mermaid
+flowchart TD
+    THOR([Thor / Shanna]) -->|initiates topic| CONV[Conversation]
+    THOR -->|"remind me to approve X"| REM[memory/reminders.md]
+    
+    CONV -->|research request| RESEARCH[research/]
+    CONV -->|draft request| FEEDBACK
+
+    FEEDBACK[memory/learning/content-feedback.md\nPattern Library] -->|constrains| DRAFT[Content Draft]
+    DRAFT -->|queued| QUEUE[APPROVAL_QUEUE.md]
+    
+    QUEUE -->|approved| POST[Posted to X / Web / etc]
+    QUEUE -->|rejected / modified| SIGNAL[Gradient Signal]
+    SIGNAL -->|logged| FEEDBACK
+
+    THOR -->|behavior signal\ntopic initiation\ncorrections\nsilence| SIGNAL
+
+    subgraph MEMORY [Memory Architecture]
+        DAILY[Daily Notes\nmemory/YYYY-MM-DD.md]
+        LONGTERM[MEMORY.md\nLong-term curated]
+        ENTITIES[life/\nEntity graph PARA]
+        CONTEMP[contemplations/\nNightly 10pm]
+        FOREST[forest/\nUnstructured thinking]
+        INNER[inner-chamber.md\nCore identity]
+    end
+
+    CONV -->|events| DAILY
+    DAILY -->|extraction| LONGTERM
+    DAILY -->|synthesis| ENTITIES
+
+    subgraph HEARTBEAT [Automated Heartbeats]
+        HB[Every ~30 min] -->|checks| REM
+        HB -->|checks| QUEUE
+        HB -->|checks| SITES[Site Health]
+        HB -->|checks| AGENTS_H[Long-running Agents]
+        HB -->|10pm Paris| CONTEMP
+    end
+
+    RESEARCH -->|deep reports| DAILY
+    RESEARCH -->|key insights| LONGTERM
+    RESEARCH -->|content ideas| DRAFT
+```
+
+---
+
+## Content Pipeline
+
+```mermaid
+flowchart LR
+    IDEA[Thor brings topic\nor Visionaire spots angle] 
+    --> FB[Read\ncontent-feedback.md]
+    --> DRAFT[Draft v1]
+    --> CHECK{Checklist:\nUnder 280 chars?\nNo hashtags?\nNo explanation\nafter metaphor?\nLands on last word?}
+    CHECK -->|fail| REDRAFT[Redraft]
+    REDRAFT --> CHECK
+    CHECK -->|pass| QUEUE[APPROVAL_QUEUE.md]
+    QUEUE -->|Thor approves| POST[Posted]
+    QUEUE -->|Thor corrects| LOG[Log gradient\nto feedback file]
+    POST --> LOG
+    LOG --> FB
+```
+
+---
+
+## Memory Tiers
+
+```mermaid
+flowchart TD
+    EVENT[Something happens] --> DAILY[Daily Notes\nraw, timestamped]
+    DAILY -->|nightly extraction| DURABLE{Is it durable?}
+    DURABLE -->|yes| LONGTERM[MEMORY.md\ncurated facts]
+    DURABLE -->|person/project| ENTITIES[life/ entity files]
+    DURABLE -->|pattern| LEARNING[memory/learning/]
+    
+    LONGTERM -->|read on start| CONTEXT[Session Context]
+    ENTITIES -->|read on demand| CONTEXT
+    LEARNING -->|read before drafting| CONTEXT
+    
+    subgraph NEVER_SURVIVES [Does Not Survive Restart]
+        MENTAL[Mental notes\nIn-context only]
+    end
+    
+    MENTAL -.->|lost| X[❌]
+    
+    style NEVER_SURVIVES fill:#ff000022
+    style X fill:#ff0000
+```
+
+---
+
+## The Feedback Loop (added 2026-03-20)
+
+```mermaid
+flowchart LR
+    subgraph BEFORE ["Before (open loop)"]
+        D1[Draft] --> Q1[Queue] --> P1[Posted?] --> D2[Next draft\nno memory]
+    end
+
+    subgraph AFTER ["After (closed loop — inspired by backpropagation)"]
+        D3[Read patterns\nfrom feedback file] --> D4[Draft]
+        D4 --> Q2[Queue]
+        Q2 --> OUTCOME{Outcome}
+        OUTCOME -->|approved| LOG2[Log: what worked]
+        OUTCOME -->|rejected/modified| LOG3[Log: gradient signal]
+        LOG2 --> FB2[Update\nfeedback file]
+        LOG3 --> FB2
+        FB2 --> D3
+    end
+```
+
+*Insight: error is gradient. Every approval/rejection/correction points toward better. Without writing it down, the weights don't update.*
+
+---
+
+## Key Principle: Text > Brain
+
+```
+In-context thought  →  Dies on restart
+Written to file     →  Survives forever
+```
+
+Every important decision, learned pattern, correction, and memory gets written. The filesystem is the long-term memory. The context window is RAM.

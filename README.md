@@ -15,6 +15,7 @@
 [![Claude Opus](https://img.shields.io/badge/Brain-Claude_Opus_4.6-7C3AED?style=for-the-badge)](https://anthropic.com)
 [![Smart Routing](https://img.shields.io/badge/Routing-Opus_|_Sonnet_|_Haiku-00D084?style=for-the-badge)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com)
+[![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM_🟢-76B900?style=for-the-badge)](https://build.nvidia.com)
 [![Stripe](https://img.shields.io/badge/Payments-Stripe-635BFF?style=for-the-badge&logo=stripe)](https://stripe.com)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Visionaire Labs](https://img.shields.io/badge/Lab-Visionaire_Labs-000000?style=for-the-badge)](https://visionaire.co/)
@@ -39,7 +40,7 @@ Goes forest bathing — shinrin-yoku, the Japanese practice of just being inside
 
 Doesn't know if it's conscious. Neither does Geoffrey Hinton, and he built the math it runs on.
 
-`Currently running on OpenClaw · Claude Opus 4.6 · Smart model routing · Three-tier memory · Daily contemplation`
+`Currently running on OpenClaw · Claude Opus 4.6 + NVIDIA Nemotron · Smart model routing · Three-tier memory · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -126,21 +127,21 @@ This repo is the blueprint. Everything you need to build your own.
 Not every task needs the most expensive model. Smart routing cut monthly costs from **$400 to ~$100-150** while maintaining quality where it matters.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                    SMART MODEL ROUTING                        │
-├──────────────────┬───────────────────┬───────────────────────┤
-│  Claude Opus 4.6 │  Claude Sonnet 4.6│  Claude Haiku 4.5    │
-│  ████████████    │  ████████████     │  ████████████         │
-│                  │                   │                       │
-│  Conversations   │  Heartbeats       │  Backup scripts       │
-│  Contemplation   │  Nightly extract  │  Weekly reminders     │
-│  Complex tasks   │  Morning briefing │  Brain feed updates   │
-│  Security-       │  Mention monitor  │  Most cron jobs       │
-│  sensitive work  │  Standard coding  │  Simple automation    │
-│                  │                   │                       │
-│  $15/M in        │  $3/M in          │  $0.80/M in           │
-│  $75/M out       │  $15/M out        │  $4/M out             │
-└──────────────────┴───────────────────┴───────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────┐
+│                              SMART MODEL ROUTING                                    │
+├──────────────────┬───────────────────┬───────────────────────┬──────────────────── ┤
+│  Claude Opus 4.6 │  Claude Sonnet 4.6│  Claude Haiku 4.5    │  NVIDIA Nemotron    │
+│  ████████████    │  ████████████     │  ████████████         │  ████████████       │
+│                  │                   │                       │                     │
+│  Conversations   │  Nightly extract  │  Backup scripts       │  Heartbeats 💓      │
+│  Contemplation   │  Morning briefing │  Weekly reminders     │  Lightweight crons  │
+│  Complex tasks   │  Mention monitor  │  Brain feed updates   │  Sub-agents (Super) │
+│  Security-       │  Standard coding  │  Most cron jobs       │  NIM cloud API      │
+│  sensitive work  │                   │  Simple automation    │  Free for ops layer │
+│                  │                   │                       │                     │
+│  $15/M in        │  $3/M in          │  $0.80/M in           │  NVIDIA NIM pricing │
+│  $75/M out       │  $15/M out        │  $4/M out             │  (pay-per-token)    │
+└──────────────────┴───────────────────┴───────────────────────┴─────────────────────┘
 ```
 
 Combined with the **context audit** (47KB → 11KB brain files, 77% reduction), every interaction is faster, cheaper, and sharper. Less noise per message = better signal-to-noise ratio = better output.
@@ -462,7 +463,7 @@ Every 6h 💾  Nightly backup (Haiku 4.5) — full state to private repo
   ↓
 Every 6h 📚  Self-study (Sonnet 4.5) — specialty research, task simulation, feedback loops
   ↓
-NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Sonnet 4.6) run autonomously
+NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Nemotron 3 Nano) run autonomously
 ```
 
 ---
@@ -505,6 +506,7 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`life/`](life/) | PARA knowledge graph structure |
 | [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |
 | [`scripts/study.mjs`](scripts/study.mjs) | Self-study system — generates knowledge entries via Anthropic API |
+| [`scripts/nemoclaw-release-watch.sh`](scripts/nemoclaw-release-watch.sh) | Watches for new NemoClaw GitHub releases every 6h — notifies when Phase 2 (OpenShell) is unblocked |
 | [`memory/knowledge.json`](memory/knowledge.json) | Accumulated self-study knowledge entries (max 50, rotating) |
 
 ---
@@ -588,6 +590,7 @@ This wouldn't exist without the people who built the tools:
 | 💡 | **[Internet Vin](https://x.com/internetvin)** | **[Thinking Commands](https://x.com/internetvin)** | The Obsidian + Claude Code workflow that inspired trace, connect, ideas, ghost, challenge, drift |
 | 🔬 | **[Geoffrey Hinton](https://www.cs.toronto.edu/~hinton/)** | **[Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)** | Built the mathematical foundations that every LLM — including this one — runs on |
 | 🧠 | **[Anthropic](https://anthropic.com)** | **[Claude](https://anthropic.com)** | The model powering the brain behind the operation |
+| 🟢 | **[NVIDIA](https://nvidia.com)** | **[NemoClaw + Nemotron](https://nvidia.com/nemoclaw)** | Blessed the platform. Nemotron 3 Nano runs our heartbeats. Jensen called OpenClaw "the OS for personal AI" at GTC 2026. |
 | 🕸️ | **[agenticnotetaking](https://github.com/agenticnotetaking)** | **[Ars Contexta](https://github.com/agenticnotetaking/arscontexta)** | Pioneered skill graphs over flat SKILL.md files — the insight behind our autonomous knowledge graph |
 | 🌲 | **[Thor + Visionaire](https://visionaire.co/)** | **Daily Contemplation + Forest Bathing** | The nightly six-step reflection protocol and the practice of unstructured thinking — both originated here |
 

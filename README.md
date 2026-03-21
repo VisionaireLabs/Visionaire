@@ -118,22 +118,88 @@ This repo is the blueprint. Everything you need to build your own.
 │  Task simulation    │                  │  retrospective          │
 │  Feedback analysis  │                  │  sent to Thor           │
 └─────────────────────┘                  └─────────────────────────┘
+         │
+         ├─────────────────────────────────────────────────┐
+         │                                                 │
+┌────────▼────────────────────────────────────────────┐   │
+│                  SKILLS LAYER                        │   │
+│                                                      │   │
+│  visionaire-knowledge — BM25+graph inject (custom)  │   │
+│  visionaire-feedback  — rate work, feed loop (custom)│   │
+│  gemini-deep-research — autonomous web research      │   │
+│  twitter-optimizer    — score+rewrite tweets         │   │
+│  youtube-transcript   — captions → knowledge base    │   │
+│  subagent-dev         — parallel agents + checkpoints│   │
+└──────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Installed Skills
+## Community Skills
 
-Third-party skills installed and running alongside the custom Visionaire skills:
+Four skills from the broader Claude/agent ecosystem, adapted and installed alongside the custom Visionaire skills.
 
-| Skill | Source | What It Does | Status |
-|:------|:-------|:-------------|:-------|
-| `gemini-deep-research` | [ClawHub](https://clawhub.com) | Autonomous multi-step research via Gemini Deep Research Agent — multi-source synthesis, competitive analysis, market research | ✅ Live |
-| `twitter-algorithm-optimizer` | [ComposioHQ](https://github.com/ComposioHQ/awesome-claude-skills) | Analyzes and rewrites tweets for max reach using Twitter's open-source algorithm insights | ✅ Live |
-| `youtube-transcript` | [ClawHub](https://clawhub.com) (script rewritten for yt-dlp) | Fetches and summarizes YouTube video transcripts — useful for research and content analysis | ✅ Live |
-| `subagent-driven-development` | [ClawHub](https://clawhub.com) | Dispatches independent subagents for implementation tasks with code review checkpoints between phases | ✅ Live |
+```
+skills/
+├── visionaire-knowledge/      — BM25 + graph knowledge injection (custom)
+├── visionaire-feedback/       — Feedback collection after deliverables (custom)
+├── gemini-deep-research/      — Multi-step autonomous research via Gemini
+├── subagent-driven-development/ — Independent subagents with review checkpoints
+├── twitter-algorithm-optimizer/ — Tweet scoring + rewriting for reach
+└── youtube-transcript/        — Fetch + extract YouTube captions via yt-dlp
+```
 
-> `youtube-transcript` ships with a VPN-based proxy script. We replaced it with `yt-dlp` which works without a VPN — the rewritten script lives in `skills/visionaire-knowledge/` if you want to reuse it.
+### Gemini Deep Research
+Breaks complex research into sub-questions, searches the web systematically, synthesizes into a comprehensive report. Use for market analysis, competitive landscaping, technical investigations.
+
+```bash
+# Requires: GEMINI_API_KEY
+python3 skills/gemini-deep-research/scripts/deep_research.py \
+  --query "Competitive landscape of AI agent frameworks 2026"
+
+# With custom output format
+python3 skills/gemini-deep-research/scripts/deep_research.py \
+  --query "Solana ecosystem growth trends" \
+  --format "1. Executive Summary\n2. Key Players\n3. Risks"
+```
+
+> ⚠️ Long-polling job — can take several minutes. Works best for high-value research where depth matters. Requires a direct Gemini API key (not OAuth).
+
+### Subagent-Driven Development
+Dispatches independent subagents for individual tasks with code review checkpoints between iterations. Formalizes the parallel coding agent pattern.
+
+```
+# Triggered naturally — describe a multi-part implementation task
+# The skill activates and dispatches subagents per task with review gates
+```
+
+> Use when: building features with multiple independent components, running parallel PR reviews, or any coding task that benefits from isolated context per subtask.
+
+### Twitter Algorithm Optimizer
+Analyzes tweets against Twitter's open-source algorithm and rewrites for maximum reach — engagement signals, timing, structure, keyword density.
+
+```
+# Triggered when: drafting or reviewing tweets before posting
+# Say: "optimize this tweet" or "score this for reach before I queue it"
+```
+
+> Wire this into the approval queue flow: draft → optimize → approve → post. Adds one step but meaningfully improves distribution.
+
+### YouTube Transcript
+Fetches captions from any YouTube video via `yt-dlp`. No VPN or proxy required — replaced the original residential-IP script with a local approach.
+
+```bash
+python3 skills/youtube-transcript/scripts/fetch_transcript.py \
+  "https://www.youtube.com/watch?v=VIDEO_ID"
+
+# Or with language preference
+python3 skills/youtube-transcript/scripts/fetch_transcript.py VIDEO_ID "en,fr"
+```
+
+> Use for research: pull transcripts from talks, interviews, or tutorials and route into the study loop or knowledge base.
+
+### Not installed: tapestry
+Referenced in awesome-claude-skills but the skill folder doesn't exist in the source repo. Concept is sound (interlink documents into knowledge networks) — our knowledge graph already covers this.
 
 ---
 
@@ -552,6 +618,10 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`scripts/log-feedback.mjs`](scripts/log-feedback.mjs) | Logs Thor's ratings + comments to `memory/feedback.json` |
 | [`skills/visionaire-knowledge/`](skills/visionaire-knowledge/) | BM25 + temporal decay knowledge search — injects context before tasks |
 | [`skills/visionaire-feedback/`](skills/visionaire-feedback/) | Feedback collection skill — triggers after significant deliverables |
+| [`skills/gemini-deep-research/`](skills/gemini-deep-research/) | Multi-step autonomous research via Gemini API |
+| [`skills/subagent-driven-development/`](skills/subagent-driven-development/) | Independent subagents per task with code review checkpoints |
+| [`skills/twitter-algorithm-optimizer/`](skills/twitter-algorithm-optimizer/) | Scores + rewrites tweets for algorithmic reach |
+| [`skills/youtube-transcript/`](skills/youtube-transcript/) | Fetches YouTube captions via yt-dlp (no VPN needed) |
 | [`cron/`](cron/) | Cron job documentation (nightly + morning + mention monitor) |
 | [`life/`](life/) | PARA knowledge graph structure |
 | [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |

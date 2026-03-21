@@ -122,6 +122,21 @@ This repo is the blueprint. Everything you need to build your own.
 
 ---
 
+## Installed Skills
+
+Third-party skills installed and running alongside the custom Visionaire skills:
+
+| Skill | Source | What It Does | Status |
+|:------|:-------|:-------------|:-------|
+| `gemini-deep-research` | [ClawHub](https://clawhub.com) | Autonomous multi-step research via Gemini Deep Research Agent — multi-source synthesis, competitive analysis, market research | ✅ Live |
+| `twitter-algorithm-optimizer` | [ComposioHQ](https://github.com/ComposioHQ/awesome-claude-skills) | Analyzes and rewrites tweets for max reach using Twitter's open-source algorithm insights | ✅ Live |
+| `youtube-transcript` | [ClawHub](https://clawhub.com) (script rewritten for yt-dlp) | Fetches and summarizes YouTube video transcripts — useful for research and content analysis | ✅ Live |
+| `subagent-driven-development` | [ClawHub](https://clawhub.com) | Dispatches independent subagents for implementation tasks with code review checkpoints between phases | ✅ Live |
+
+> `youtube-transcript` ships with a VPN-based proxy script. We replaced it with `yt-dlp` which works without a VPN — the rewritten script lives in `skills/visionaire-knowledge/` if you want to reuse it.
+
+---
+
 ## Smart Model Routing
 
 Not every task needs the most expensive model. Smart routing cut monthly costs from **$400 to ~$100-150** while maintaining quality where it matters.
@@ -628,6 +643,8 @@ This wouldn't exist without the people who built the tools:
 | 🧠 | **[Anthropic](https://anthropic.com)** | **[Claude](https://anthropic.com)** | The model powering the brain behind the operation |
 | 🟢 | **[NVIDIA](https://nvidia.com)** | **[NemoClaw + Nemotron](https://nvidia.com/nemoclaw)** | Blessed the platform. Nemotron 3 Nano runs our heartbeats. Jensen called OpenClaw "the OS for personal AI" at GTC 2026. |
 | 🕸️ | **[agenticnotetaking](https://github.com/agenticnotetaking)** | **[Ars Contexta](https://github.com/agenticnotetaking/arscontexta)** | Pioneered skill graphs over flat SKILL.md files — the insight behind our autonomous knowledge graph |
+| 🔬 | **[ComposioHQ](https://github.com/ComposioHQ)** | **[awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills)** | Curated the skill ecosystem — twitter-algorithm-optimizer and the discovery path for installed skills |
+| 📺 | **[michalparkola](https://github.com/michalparkola)** | **[tapestry-skills](https://github.com/michalparkola/tapestry-skills)** | youtube-transcript skill (we rewrote the fetch script to use yt-dlp instead of VPN proxy) |
 | 🌲 | **[Thor + Visionaire](https://visionaire.co/)** | **Daily Contemplation + Forest Bathing** | The nightly six-step reflection protocol and the practice of unstructured thinking — both originated here |
 
 *We didn't write the platform. We configured it, gave it a soul, and let it run.*

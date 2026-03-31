@@ -28,6 +28,16 @@ All notable changes to Visionaire's operating system.
 
 All notable changes to Visionaire's operating system.
 
+## [2026-03-31] — README: Deck + Cost Guidance
+
+### Added
+- **OpenClaw Deck** setup instructions in Quick Start — links to `kellyclaudeai/openclaw-deck`, install steps, what it does
+- **Cost section** — "What You Actually Need to Spend" — Haiku as the cheap starting point, NVIDIA NIM free tier, Nexos, our actual routing breakdown. Stops people hitting Anthropic credit limits on day one.
+
+### Fixed
+- Repo had no mention of the deck UI people actually use — that's now fixed
+- README implied Opus 4.6 is required — clarified it's our production choice, not the entry requirement
+
 ## [2026-03-14] — Context Sync + README Accuracy Pass
 
 ### Updated

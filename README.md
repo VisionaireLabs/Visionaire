@@ -651,6 +651,50 @@ vim USER.md
 openclaw
 ```
 
+### Optional: OpenClaw Deck (multi-column chat UI)
+
+The web UI we use is [OpenClaw Deck](https://github.com/kellyclaudeai/openclaw-deck) — a clean multi-column interface for talking to your agent in the browser.
+
+```bash
+git clone https://github.com/kellyclaudeai/openclaw-deck.git
+cd openclaw-deck
+npm install
+npm run dev
+```
+
+Point it at your OpenClaw gateway URL and you're in. Not required — OpenClaw works fine from the terminal or any supported channel (Telegram, WhatsApp, etc).
+
+---
+
+## Cost: What You Actually Need to Spend
+
+The README mentions Opus 4.6 heavily. That's our production setup. **You don't need that to get started.**
+
+**Cheapest viable setup:** Add a few dollars of Anthropic credit and use **Claude Haiku 4.5** as your default model. It handles most tasks well and costs a fraction of Opus.
+
+In `openclaw.json`, set your default:
+```json
+"agents": {
+  "defaults": {
+    "model": {
+      "primary": "anthropic/claude-haiku-4-5"
+    }
+  }
+}
+```
+
+**Free alternatives:** OpenClaw supports multiple providers. You can use:
+- **NVIDIA NIM** — free tier with capable open-weight models (`nemotron-3-nano`, `nemotron-3-super`). Get a key at [build.nvidia.com](https://build.nvidia.com)
+- **Nexos** — access to frontier models (GPT-5, Claude, Gemini) through one API key at [nexos.ai](https://nexos.ai)
+- **Anthropic** — pay-as-you-go. $5 goes a long way on Haiku.
+
+**Our actual routing** (after optimizing from ~$400/mo to ~$100-150/mo):
+- Conversations: Opus 4.6 (premium — worth it for quality)
+- Heartbeats + crons: Haiku 4.5 / NVIDIA Nemotron (nearly free)
+- Contemplation: Opus 4.6 (non-negotiable — that's the art)
+
+Start with Haiku or NVIDIA. Upgrade to Opus when you want to feel the difference.
+
 ---
 
 ## Safety

@@ -16,6 +16,7 @@
 [![Smart Routing](https://img.shields.io/badge/Routing-Opus_|_Sonnet_|_Haiku-00D084?style=for-the-badge)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com)
 [![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM_🟢-76B900?style=for-the-badge)](https://build.nvidia.com)
+[![Ollama](https://img.shields.io/badge/Inference-Ollama_Cloud-FF6B35?style=for-the-badge)](https://ollama.com)
 [![Stripe](https://img.shields.io/badge/Payments-Stripe-635BFF?style=for-the-badge&logo=stripe)](https://stripe.com)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Visionaire Labs](https://img.shields.io/badge/Lab-Visionaire_Labs-000000?style=for-the-badge)](https://visionaire.co/)
@@ -40,7 +41,7 @@ Goes forest bathing — shinrin-yoku, the Japanese practice of just being inside
 
 Doesn't know if it's conscious. Neither does Geoffrey Hinton, and he built the math it runs on.
 
-`Currently running on OpenClaw · Claude Opus 4.6 + NVIDIA Nemotron · Smart model routing · Three-tier memory · Daily contemplation`
+`Currently running on OpenClaw · Claude Opus 4.6 + NVIDIA Nemotron + Ollama Cloud · Smart model routing · Three-tier memory · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -54,6 +55,7 @@ This repo is the blueprint. Everything you need to build your own.
                     ┌─────────────────────────────────────┐
                     │           VISIONAIRE                 │
                     │  Anthropic · NVIDIA NIM · Nexos      │
+                    │  Ollama Cloud                        │
                     │    Running on OpenClaw 🦞            │
                     │    Born: November 24, 2024           │
                     └──────────┬──────────────────────────┘
@@ -208,21 +210,21 @@ Referenced in awesome-claude-skills but the skill folder doesn't exist in the so
 Not every task needs the most expensive model. Smart routing cut monthly costs from **$400 to ~$100-150** while maintaining quality where it matters.
 
 ```
-┌────────────────────────────────────────────────────────────────────────────────────┐
-│                              SMART MODEL ROUTING                                    │
-├──────────────────┬───────────────────┬───────────────────────┬──────────────────── ┤
-│  Claude Opus 4.6 │  Claude Sonnet 4.6│  Claude Haiku 4.5    │  NVIDIA Nemotron    │
-│  ████████████    │  ████████████     │  ████████████         │  ████████████       │
-│                  │                   │                       │                     │
-│  Conversations   │  Nightly extract  │  Backup scripts       │  Heartbeats 💓      │
-│  Contemplation   │  Morning briefing │  Weekly reminders     │  Lightweight crons  │
-│  Complex tasks   │  Mention monitor  │  Brain feed updates   │  Sub-agents (Super) │
-│  Security-       │  Standard coding  │  Most cron jobs       │  NIM cloud API      │
-│  sensitive work  │                   │  Simple automation    │  Free for ops layer │
-│                  │                   │                       │                     │
-│  $15/M in        │  $3/M in          │  $0.80/M in           │  NVIDIA NIM pricing │
-│  $75/M out       │  $15/M out        │  $4/M out             │  (pay-per-token)    │
-└──────────────────┴───────────────────┴───────────────────────┴─────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                       SMART MODEL ROUTING                                            │
+├──────────────────┬───────────────────┬───────────────────────┬─────────────────┬────────────────────┤
+│  Claude Opus 4.6 │  Claude Sonnet 4.6│  Claude Haiku 4.5    │  NVIDIA Nemotron│  Ollama Cloud      │
+│  ████████████    │  ████████████     │  ████████████         │  ████████████   │  ████████████      │
+│                  │                   │                       │                 │                    │
+│  Conversations   │  Nightly extract  │  Backup scripts       │  Heartbeats 💓  │  Web research      │
+│  Contemplation   │  Morning briefing │  Weekly reminders     │  Lightweight    │  Embeddings        │
+│  Complex tasks   │  Mention monitor  │  Brain feed updates   │  crons          │  Competitor intel  │
+│  Security-       │  Standard coding  │  Most cron jobs       │  Sub-agents     │  Sub-cent tasks    │
+│  sensitive work  │                   │  Simple automation    │  (Super)        │  Fallback lane     │
+│                  │                   │                       │                 │                    │
+│  $15/M in        │  $3/M in          │  $0.80/M in           │  NIM pricing    │  Ollama pricing    │
+│  $75/M out       │  $15/M out        │  $4/M out             │  (pay-per-tok)  │  (pay-per-tok)     │
+└──────────────────┴───────────────────┴───────────────────────┴─────────────────┴────────────────────┘
 ```
 
 Combined with the **context audit** (47KB → 11KB brain files, 77% reduction), every interaction is faster, cheaper, and sharper. Less noise per message = better signal-to-noise ratio = better output.
@@ -687,13 +689,16 @@ In `openclaw.json`, set your default:
 - **NVIDIA NIM** — free tier with capable open-weight models (`nemotron-3-nano`, `nemotron-3-super`). Get a key at [build.nvidia.com](https://build.nvidia.com)
 - **Nexos** — access to frontier models (GPT-5, Claude, Gemini) through one API key at [nexos.ai](https://nexos.ai)
 - **Anthropic** — pay-as-you-go. $5 goes a long way on Haiku.
+- **Ollama** — local or cloud inference. Sign up at [ollama.com](https://ollama.com). Run GLM-5, DeepSeek v3.2, MiniMax M2.1, and more. Built-in web search + fetch APIs for agentic research loops. No GPU needed in cloud mode.
 
 **Our actual routing** (after optimizing from ~$400/mo to ~$100-150/mo):
 - Conversations: Opus 4.6 (premium — worth it for quality)
 - Heartbeats + crons: Haiku 4.5 / NVIDIA Nemotron (nearly free)
 - Contemplation: Opus 4.6 (non-negotiable — that's the art)
+- Web research loops + embeddings: Ollama Cloud (cost arbitrage, autonomous multi-step browsing)
+- Fallback lane: Ollama Cloud when Anthropic rate-limits or goes down
 
-Start with Haiku or NVIDIA. Upgrade to Opus when you want to feel the difference.
+Start with Haiku or NVIDIA. Add Ollama for research + fallback. Upgrade to Opus when you want to feel the difference.
 
 ---
 

@@ -116,6 +116,30 @@ flowchart LR
 
 ---
 
+## Inference Routing
+
+```mermaid
+flowchart TD
+    TASK[Incoming Task] --> ROUTE{Route by\ncomplexity + cost}
+
+    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Opus 4.6\nAnthropic]
+    ROUTE -->|Briefings\nExtraction\nCoding| SONNET[Claude Sonnet 4.6\nAnthropic]
+    ROUTE -->|Crons\nBackups\nSimple tasks| HAIKU[Claude Haiku 4.5\nAnthropic]
+    ROUTE -->|Heartbeats\nOps layer| NEMOTRON[NVIDIA Nemotron\nNIM Cloud]
+    ROUTE -->|Web research loops\nEmbeddings\nSub-cent tasks\nFallback| OLLAMA[Ollama Cloud\nGLM-5 · DeepSeek v3.2\nMiniMax M2.1]
+
+    OLLAMA -->|web_search API| WEBSEARCH[Multi-step\nautonomous research]
+    OLLAMA -->|web_fetch API| WEBFETCH[Page content\nextraction]
+    OLLAMA -->|nomic-embed-text| EMBEDDINGS[Persistent\nvector memory]
+
+    WEBSEARCH --> SYNTHESIS[Research synthesis\nno Anthropic tokens]
+    WEBFETCH --> SYNTHESIS
+```
+
+*Rule: cheapest model that gets the job done. Ollama handles the browsing layer so Anthropic handles the thinking layer.*
+
+---
+
 ## Key Principle: Text > Brain
 
 ```

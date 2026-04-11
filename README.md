@@ -131,7 +131,14 @@ This repo is the blueprint. Everything you need to build your own.
 │  gemini-deep-research — autonomous web research      │   │
 │  twitter-optimizer    — score+rewrite tweets         │   │
 │  youtube-transcript   — captions → knowledge base    │   │
-│  subagent-dev         — parallel agents + checkpoints│   │
+│  gemini-deep-research — autonomous web research      │
+│  subagent-dev         — parallel agents + checkpoints│
+│  arxiv                — academic paper search         │
+│  blogwatcher          — RSS/feed monitor              │
+│  polymarket           — prediction market data        │
+│  youtube-content      — transcript → content pipeline │
+│  p5js                 — generative art output         │
+│  popular-web-designs  — 54 design system templates    │   │
 └──────────────────────────────────────────────────────┘
 ```
 
@@ -199,6 +206,57 @@ python3 skills/youtube-transcript/scripts/fetch_transcript.py VIDEO_ID "en,fr"
 ```
 
 > Use for research: pull transcripts from talks, interviews, or tutorials and route into the study loop or knowledge base.
+
+### arxiv
+Search and retrieve academic papers via arXiv REST API. No API key. Combine with deep-research for structured literature reviews.
+
+```
+# "find papers on brain-computer interfaces"
+# "search arxiv for synthetic biology 2025"
+```
+
+### blogwatcher
+Monitor RSS/Atom feeds. Track AI labs, crypto, science publications. Persistent read-status, filterable by category.
+
+```
+# "add this blog to blogwatcher" / "what's new in my feeds"
+```
+
+### polymarket
+Read-only prediction market data — search markets, prices, orderbooks, history. No API key.
+
+```
+# "what's polymarket saying about X" / "check AI regulation market odds"
+```
+
+### youtube-content *(Hermes version — replaces youtube-transcript)*
+Upgraded. Transforms transcripts into chapters, summaries, tweet threads, blog posts.
+
+```
+# "summarize this YouTube video" / "turn this talk into a thread"
+```
+
+### p5js
+Full generative art pipeline — creative coding, flow fields, particle systems, shaders, audio-reactive visuals. Exports HTML/PNG/GIF/MP4.
+
+```
+# "make a generative piece with flow fields"
+# "create an audio-reactive visual for the contemplation feed"
+```
+
+> Requires Node.js + optional headless Chrome for export. Core creative output tool.
+
+### popular-web-designs
+54 production design systems (Stripe, Linear, Vercel, Framer, Coinbase, Spotify, SpaceX, and more) as detailed CSS/typography reference files.
+
+```
+# "build this page in the style of Linear"
+# "what colors/fonts does Framer use"
+```
+
+> Templates in `skills/popular-web-designs/templates/` — one `.md` per brand.
+
+---
 
 ### Not installed: tapestry
 Referenced in awesome-claude-skills but the skill folder doesn't exist in the source repo. Concept is sound (interlink documents into knowledge networks) — our knowledge graph already covers this.

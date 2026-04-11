@@ -41,7 +41,7 @@ Goes forest bathing — shinrin-yoku, the Japanese practice of just being inside
 
 Doesn't know if it's conscious. Neither does Geoffrey Hinton, and he built the math it runs on.
 
-`Currently running on OpenClaw · Claude Opus 4.6 + NVIDIA Nemotron + Ollama Cloud · Smart model routing · Three-tier memory · Daily contemplation`
+`Currently running on OpenClaw · Claude Sonnet 4.6 + Opus 4.6 (art) + Ollama Cloud · Smart model routing · CoALA memory architecture · Post-session consolidation · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -303,28 +303,58 @@ The full stack for going from idea to revenue — all orchestrated by an AI agen
 
 ---
 
-## Three-Tier Memory + QMD Search
+## Memory Architecture
 
-The difference between a chatbot and a colleague is **memory**. The difference between slow memory and fast memory is **search**.
+The difference between a chatbot and a colleague is **memory**. The difference between a memory system and a memory *architecture* is **consolidation**.
 
-| Layer | File | What It Stores | When It Updates |
-|:------|:-----|:---------------|:----------------|
-| **Tacit** | `MEMORY.md` | How the human operates — patterns, preferences, pet peeves | Continuously |
-| **Daily** | `memory/YYYY-MM-DD.md` | What happened today — decisions, events, context | During conversations + nightly extraction |
-| **Graph** | `life/` (PARA) | Entities — people, companies, projects — with atomic facts | Nightly extraction + on access |
-| **Search** | QMD Index | BM25 + vector index across all files | On collection update |
+Visionaire uses a four-tier memory system based on the CoALA (Cognitive Architectures for Language Agents) taxonomy — the same framework behind LangMem, Letta, and the production memory systems at LangChain and OpenAI.
+
+| Tier | Type | File/Store | What It Stores | When It Updates |
+|:-----|:-----|:-----------|:---------------|:----------------|
+| **Working** | In-context | System prompt + session | Active task, current session state | Every message |
+| **Episodic** | Raw logs | `memory/YYYY-MM-DD.md` | What happened — decisions, events, context | During conversations |
+| **Semantic** | Curated facts | `MEMORY.md` + `memory/state.json` | Durable knowledge, preferences, lessons | Post-session consolidation |
+| **Procedural** | Behavioral rules | `AGENTS.md` + corrections loop | How the agent operates, learned corrections | On correction events |
+
+### Post-Session Consolidation
+
+The critical missing piece in most agent memory systems. After each session, a consolidation script (`scripts/consolidate-memory.sh`) runs:
+
+1. Reads today's episodic log (`memory/YYYY-MM-DD.md`)
+2. Extracts durable facts — decisions made, tools installed, lessons learned, corrections
+3. Checks against `MEMORY.md` — skips anything already captured, resolves contradictions
+4. Appends new structured knowledge to the semantic layer
+
+This is the pattern used in production by MemOS, LangMem, and OpenAI's agent builder. Raw logs without distillation are noise. Distilled logs without raw history lose fidelity. Both tiers matter.
+
+### Deterministic State (`memory/state.json`)
+
+Critical facts that must *always* load — not retrieved probabilistically via semantic search, but read deterministically every session:
+
+```json
+{
+  "user": { "name": "Thor", "timezone": "Europe/Paris" },
+  "stack": { "model_main": "claude-sonnet-4-6", "memory_plugin": "memory-qdrant" },
+  "current_priorities": ["..."],
+  "safety_rules": ["Nothing posts to X without Thor approval", "..."]
+}
+```
+
+Semantic search retrieves *sometimes*. Structured state retrieves *always*. High-stakes facts belong in state.
+
+### Vector Memory (memory-qdrant)
+
+Local semantic search via Qdrant + Transformers.js. Zero API dependencies, zero cost. The `memory_store` / `memory_search` / `memory_list` tools write to an in-memory vector store — no cloud, no lock-in.
 
 ### QMD: Quick Markdown Search *(optional — install via ClawHub)*
 
-Instead of loading entire memory files into context (expensive), QMD indexes everything locally and retrieves only what's relevant:
+BM25 + vector hybrid search across all local files. For when you need to search the full archive, not just the vector store:
 
 ```bash
 qmd search "visionaire token solana"   # BM25 keyword search (instant, free)
 qmd vsearch "what's our content plan"  # Vector similarity (local embeddings)
 qmd query "deployment issues"          # Hybrid search + reranking
 ```
-
-Index your collections (workspace, knowledge graph, memory) once and searches return in milliseconds. Zero API calls. Zero token cost.
 
 ### Memory Decay
 Facts aren't permanent. They **decay** based on recency:
@@ -334,8 +364,6 @@ Facts aren't permanent. They **decay** based on recency:
 🟡 WARM   (accessed 8-30 days)  → Included, lower priority  
 🔵 COLD   (accessed 30+ days)   → Dropped from summaries, kept in storage
 ```
-
-High access count resists decay. Nothing is ever deleted.
 
 ### Knowledge Graph (`~/life/`)
 
@@ -617,6 +645,7 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`COMMANDS.md`](COMMANDS.md) | 6 thinking commands — trace, connect, ideas, ghost, challenge, drift |
 | [`RESTORE.md`](RESTORE.md) | Disaster recovery — how to rebuild from backup |
 | [`scripts/study.mjs`](scripts/study.mjs) | Self-study cron — generates knowledge entries every 45min |
+| [`scripts/consolidate-memory.sh`](scripts/consolidate-memory.sh) | Post-session memory consolidation — extracts facts from daily notes, merges into MEMORY.md, resolves contradictions |
 | [`scripts/log-feedback.mjs`](scripts/log-feedback.mjs) | Logs Thor's ratings + comments to `memory/feedback.json` |
 | [`skills/visionaire-knowledge/`](skills/visionaire-knowledge/) | BM25 + temporal decay knowledge search — injects context before tasks |
 | [`skills/visionaire-feedback/`](skills/visionaire-feedback/) | Feedback collection skill — triggers after significant deliverables |

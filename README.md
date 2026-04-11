@@ -347,10 +347,10 @@ life/
 │       └── items.json        ← all atomic facts
 ├── areas/              # Ongoing (no end date)
 │   ├── people/
-│   │   └── thor/
+│   │   └── [your-name]/
 │   └── companies/
 │       ├── visionaire-labs/
-│       └── calibre-studio/
+│       └── [your-company]/
 ├── resources/          # Reference material
 └── archives/           # Completed/inactive
 ```

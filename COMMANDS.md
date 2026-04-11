@@ -20,7 +20,7 @@ Surfaces crossover patterns, ideas, and opportunities by searching across your k
 
 > "connect photography and AI agents"
 > "connect Web3 and the art world"
-> "connect Calibre Studio and Visionaire Labs"
+> "connect [your company] and Visionaire Labs"
 
 ---
 
@@ -50,7 +50,7 @@ I play devil's advocate. Poke holes, find blind spots, question assumptions. No 
 
 > "challenge our content strategy"
 > "challenge the decision to open-source the agent config"
-> "challenge my pricing for Calibre Studio"
+> "challenge my pricing for [your company]"
 
 ---
 

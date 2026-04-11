@@ -5,7 +5,7 @@ Run this checklist on every heartbeat. Skip items that don't apply yet.
 ## Execution Check (every heartbeat)
 1. Read today's plan from `memory/YYYY-MM-DD.md` under "## Today's Plan"
 2. Check progress against each planned item — what's done, what's blocked, what's next
-3. If something is blocked, unblock it or escalate to Thor
+3. If something is blocked, unblock it or escalate to [your name]
 4. If ahead of plan, pull the next priority forward
 5. Log progress updates to daily notes
 
@@ -13,7 +13,7 @@ Run this checklist on every heartbeat. Skip items that don't apply yet.
 1. Check production sites return 200:
    - https://visionaire.co/
    - (add more as we deploy)
-2. If any site is down, **alert Thor immediately**
+2. If any site is down, **alert [your name] immediately**
 3. If it's a deployment issue you can fix, fix it first, then alert with what happened
 
 ## Long-Running Agent Health Check (every heartbeat)
@@ -41,4 +41,4 @@ Run this checklist on every heartbeat. Skip items that don't apply yet.
    - 3-5 concrete actions ranked by expected impact
    - Each item should connect to current priorities
    - Write to next day's file under "## Today's Plan"
-4. **Send summary to Thor** — key metrics, day recap, tomorrow's proposed plan
+4. **Send summary to [your name]** — key metrics, day recap, tomorrow's proposed plan

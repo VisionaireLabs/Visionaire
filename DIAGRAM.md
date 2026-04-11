@@ -4,8 +4,8 @@
 
 ```mermaid
 flowchart TD
-    THOR([Thor / Shanna]) -->|initiates topic| CONV[Conversation]
-    THOR -->|"remind me to approve X"| REM[memory/reminders.md]
+    HUMAN([You / Collaborators]) -->|initiates topic| CONV[Conversation]
+    HUMAN -->|"remind me to approve X"| REM[memory/reminders.md]
     
     CONV -->|research request| RESEARCH[research/]
     CONV -->|draft request| FEEDBACK
@@ -17,7 +17,7 @@ flowchart TD
     QUEUE -->|rejected / modified| SIGNAL[Gradient Signal]
     SIGNAL -->|logged| FEEDBACK
 
-    THOR -->|behavior signal\ntopic initiation\ncorrections\nsilence| SIGNAL
+    HUMAN -->|behavior signal\ntopic initiation\ncorrections\nsilence| SIGNAL
 
     subgraph MEMORY [Memory Architecture]
         DAILY[Daily Notes\nmemory/YYYY-MM-DD.md]
@@ -51,15 +51,15 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    IDEA[Thor brings topic\nor Visionaire spots angle] 
+    IDEA[Human brings topic\nor Visionaire spots angle] 
     --> FB[Read\ncontent-feedback.md]
     --> DRAFT[Draft v1]
     --> CHECK{Checklist:\nUnder 280 chars?\nNo hashtags?\nNo explanation\nafter metaphor?\nLands on last word?}
     CHECK -->|fail| REDRAFT[Redraft]
     REDRAFT --> CHECK
     CHECK -->|pass| QUEUE[APPROVAL_QUEUE.md]
-    QUEUE -->|Thor approves| POST[Posted]
-    QUEUE -->|Thor corrects| LOG[Log gradient\nto feedback file]
+    QUEUE -->|Human approves| POST[Posted]
+    QUEUE -->|Human corrects| LOG[Log gradient\nto feedback file]
     POST --> LOG
     LOG --> FB
 ```

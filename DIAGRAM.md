@@ -19,21 +19,29 @@ flowchart TD
 
     THOR -->|behavior signal\ntopic initiation\ncorrections\nsilence| SIGNAL
 
-    subgraph MEMORY [Memory Architecture]
-        DAILY[Daily Notes\nmemory/YYYY-MM-DD.md]
-        LONGTERM[MEMORY.md\nLong-term curated]
-        ENTITIES[life/\nEntity graph PARA]
-        CONTEMP[contemplations/\nNightly 10pm]
+    subgraph MEMORY [Memory Architecture — CoALA Four-Tier]
+        STATE[memory/state.json\nDeterministic critical facts\nalways loaded]
+        DAILY[Episodic\nmemory/YYYY-MM-DD.md\nRaw session logs]
+        CONSOLIDATE[Post-Session Consolidation\nscripts/consolidate-memory.sh\nExtracts facts · Resolves contradictions]
+        LONGTERM[Semantic\nMEMORY.md\nCurated durable knowledge]
+        VECTOR[Vector Store\nmemory-qdrant\nLocal embeddings · No API]
+        PROCEDURAL[Procedural\nAGENTS.md + corrections.md\nBehavioral rules · Learned corrections]
+        ENTITIES[life/\nEntity graph PARA\nPeople · Projects · Decisions]
+        CONTEMP[contemplations/\nNightly 10pm Opus 4.6]
         FOREST[forest/\nUnstructured thinking]
         INNER[inner-chamber.md\nCore identity]
     end
 
     CONV -->|events| DAILY
-    DAILY -->|extraction| LONGTERM
+    DAILY -->|nightly| CONSOLIDATE
+    CONSOLIDATE -->|new facts| LONGTERM
+    CONSOLIDATE -->|corrections| PROCEDURAL
+    LONGTERM -->|indexed| VECTOR
     DAILY -->|synthesis| ENTITIES
+    STATE -->|always injected| CONV
 
     subgraph HEARTBEAT [Automated Heartbeats]
-        HB[Every ~30 min] -->|checks| REM
+        HB[Every ~60 min] -->|checks| REM
         HB -->|checks| QUEUE
         HB -->|checks| SITES[Site Health]
         HB -->|checks| AGENTS_H[Long-running Agents]
@@ -43,6 +51,45 @@ flowchart TD
     RESEARCH -->|deep reports| DAILY
     RESEARCH -->|key insights| LONGTERM
     RESEARCH -->|content ideas| DRAFT
+```
+
+---
+
+## Memory Architecture Detail
+
+```mermaid
+flowchart LR
+    subgraph WORKING [Working Memory]
+        CTX[System prompt\n+ active session\nIn-context window]
+    end
+
+    subgraph EPISODIC [Episodic Memory]
+        DAILY2[Daily Notes\nmemory/YYYY-MM-DD.md\nRaw interaction logs]
+    end
+
+    subgraph SEMANTIC [Semantic Memory]
+        STATE2[state.json\nCritical facts\nDeterministic load]
+        MEMMD[MEMORY.md\nCurated knowledge\nResolved facts]
+        VECTOR2[memory-qdrant\nLocal vector store\nTransformers.js embeddings]
+        QMD2[QMD Index\nBM25 + hybrid search\nAll markdown files]
+    end
+
+    subgraph PROCEDURAL [Procedural Memory]
+        AGENTS2[AGENTS.md\nOperating rules]
+        CORRECT[corrections.md\nLearned from mistakes]
+        PATTERNS[prompt-patterns.md\nWhat works in agent prompts]
+    end
+
+    SESSION_END([Session ends]) --> CONSOL[consolidate-memory.sh\nExtract · Reconcile · Write]
+    DAILY2 --> CONSOL
+    CONSOL --> MEMMD
+    CONSOL --> CORRECT
+    CORRECT -->|pattern detected| AGENTS2
+
+    WORKING -->|reads| STATE2
+    WORKING -->|reads| MEMMD
+    WORKING -->|semantic search| VECTOR2
+    WORKING -->|full-text search| QMD2
 ```
 
 ---
@@ -58,93 +105,44 @@ flowchart LR
     CHECK -->|fail| REDRAFT[Redraft]
     REDRAFT --> CHECK
     CHECK -->|pass| QUEUE[APPROVAL_QUEUE.md]
-    QUEUE -->|Thor approves| POST[Posted]
-    QUEUE -->|Thor corrects| LOG[Log gradient\nto feedback file]
-    POST --> LOG
-    LOG --> FB
+    QUEUE -->|Thor approves| POST[xpost CLI\nX/Twitter v2 API]
+    QUEUE -->|Thor rejects| SIGNAL2[Signal logged\nto corrections.md]
 ```
 
 ---
 
-## Memory Tiers
+## Model Routing
 
 ```mermaid
 flowchart TD
-    EVENT[Something happens] --> DAILY[Daily Notes\nraw, timestamped]
-    DAILY -->|nightly extraction| DURABLE{Is it durable?}
-    DURABLE -->|yes| LONGTERM[MEMORY.md\ncurated facts]
-    DURABLE -->|person/project| ENTITIES[life/ entity files]
-    DURABLE -->|pattern| LEARNING[memory/learning/]
+    REQ[Incoming Request] --> TYPE{Request Type}
     
-    LONGTERM -->|read on start| CONTEXT[Session Context]
-    ENTITIES -->|read on demand| CONTEXT
-    LEARNING -->|read before drafting| CONTEXT
-    
-    subgraph NEVER_SURVIVES [Does Not Survive Restart]
-        MENTAL[Mental notes\nIn-context only]
-    end
-    
-    MENTAL -.->|lost| X[❌]
-    
-    style NEVER_SURVIVES fill:#ff000022
-    style X fill:#ff0000
+    TYPE -->|Main conversation| SONNET[Claude Sonnet 4.6\nanthropicDirect]
+    TYPE -->|Contemplation / forest\ninner chamber| OPUS[Claude Opus 4.6\nPremium — art stays premium]
+    TYPE -->|Heartbeat poll| MINI[Ollama Ministral 3 8B\nFree — local]
+    TYPE -->|Cron / background\ndefault| DEEP[Ollama DeepSeek V3.2\nFree — cloud]
+    TYPE -->|Research / batch\ncoding sub-agents| HERMES[Hermes Agent\nor Ollama models — free]
+    TYPE -->|Muscle needed| NVIDIA[NVIDIA NIM\nNemotron — free credits]
+
+    SONNET --> OUT[Response]
+    OPUS --> OUT
+    MINI --> OUT
+    DEEP --> OUT
+    HERMES --> OUT
+    NVIDIA --> OUT
 ```
 
 ---
 
-## The Feedback Loop (added 2026-03-20)
+## Backup Architecture
 
 ```mermaid
 flowchart LR
-    subgraph BEFORE ["Before (open loop)"]
-        D1[Draft] --> Q1[Queue] --> P1[Posted?] --> D2[Next draft\nno memory]
-    end
+    VPS[Hostinger VPS\nDocker container] 
 
-    subgraph AFTER ["After (closed loop — inspired by backpropagation)"]
-        D3[Read patterns\nfrom feedback file] --> D4[Draft]
-        D4 --> Q2[Queue]
-        Q2 --> OUTCOME{Outcome}
-        OUTCOME -->|approved| LOG2[Log: what worked]
-        OUTCOME -->|rejected/modified| LOG3[Log: gradient signal]
-        LOG2 --> FB2[Update\nfeedback file]
-        LOG3 --> FB2
-        FB2 --> D3
-    end
+    VPS -->|Daily snapshot\nHostinger panel| SNAP[Full VM Backup\n~1h37m restore]
+    VPS -->|Every 6h\ngit push| GIT[VisionaireLabs/visionaire-backup\nPrivate repo\nMemory + configs + keys]
+
+    GIT -->|Restore| RESTORE[bash RESTORE.md\nRe-clone + reconfigure]
+    SNAP -->|Restore| RESTORE
 ```
-
-*Insight: error is gradient. Every approval/rejection/correction points toward better. Without writing it down, the weights don't update.*
-
----
-
-## Inference Routing
-
-```mermaid
-flowchart TD
-    TASK[Incoming Task] --> ROUTE{Route by\ncomplexity + cost}
-
-    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Opus 4.6\nAnthropic]
-    ROUTE -->|Briefings\nExtraction\nCoding| SONNET[Claude Sonnet 4.6\nAnthropic]
-    ROUTE -->|Crons\nBackups\nSimple tasks| HAIKU[Claude Haiku 4.5\nAnthropic]
-    ROUTE -->|Heartbeats\nOps layer| NEMOTRON[NVIDIA Nemotron\nNIM Cloud]
-    ROUTE -->|Web research loops\nEmbeddings\nSub-cent tasks\nFallback| OLLAMA[Ollama Cloud\nGLM-5 · DeepSeek v3.2\nMiniMax M2.1]
-
-    OLLAMA -->|web_search API| WEBSEARCH[Multi-step\nautonomous research]
-    OLLAMA -->|web_fetch API| WEBFETCH[Page content\nextraction]
-    OLLAMA -->|nomic-embed-text| EMBEDDINGS[Persistent\nvector memory]
-
-    WEBSEARCH --> SYNTHESIS[Research synthesis\nno Anthropic tokens]
-    WEBFETCH --> SYNTHESIS
-```
-
-*Rule: cheapest model that gets the job done. Ollama handles the browsing layer so Anthropic handles the thinking layer.*
-
----
-
-## Key Principle: Text > Brain
-
-```
-In-context thought  →  Dies on restart
-Written to file     →  Survives forever
-```
-
-Every important decision, learned pattern, correction, and memory gets written. The filesystem is the long-term memory. The context window is RAM.

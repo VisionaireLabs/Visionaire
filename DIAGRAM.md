@@ -146,3 +146,71 @@ flowchart LR
     GIT -->|Restore| RESTORE[bash RESTORE.md\nRe-clone + reconfigure]
     SNAP -->|Restore| RESTORE
 ```
+
+---
+
+## GEPA Skill Self-Evolution
+
+```mermaid
+flowchart TD
+    CRON["Sunday 2am cron
+skill-evolution"] --> PICK["Pick 2 skills
+from rotation list"]
+    PICK --> LOAD["Load SKILL.md
+(resolve symlinks)"]
+    LOAD --> GEN["Generate synthetic
+eval dataset (20 cases)
+Sonnet 4.6"]
+    GEN --> SPLIT["Split: 10 train / 5 val / 5 holdout"]
+    SPLIT --> BASELINE["Evaluate baseline
+Haiku 4.5"]
+    BASELINE --> PROPOSE["Propose 3 instruction variants
++ 6 few-shot sets"]
+    PROPOSE --> OPTIM["Bayesian Optimization
+10 trials
+MIPROv2 / GEPA"]
+    OPTIM --> BEST{best score
+> baseline?}
+    BEST -->|yes| DEPLOY["Deploy evolved SKILL.md"]
+    BEST -->|no| KEEP["Keep original"]
+    DEPLOY --> REPORT["Log to
+memory/learning/evolution-reports/"]
+    KEEP --> REPORT
+    REPORT --> NEXT["Next skill in rotation"]
+
+    subgraph SCOPE ["Scope: 40 skills"]
+        H["24 Hermes Agent skills"]
+        O["16 OpenClaw skills
+(linked via symlinks)"]
+    end
+
+    PICK --> SCOPE
+```
+
+---
+
+## Self-Evolution Compounding
+
+```mermaid
+flowchart LR
+    W1["Week 1
+youtube-transcript
+60.0% → 64.4%"] 
+    --> W2["Week 2
+self-improving-agent
+? → ?"]
+    --> W3["Week 3
+qmd
+? → ?"]
+    --> W20["Week 20
+full rotation complete
+all 40 skills evolved"]
+    --> W21["Week 21
+round 2 starts
+from evolved baselines"]
+
+    W20 -->|compound| W21
+```
+
+*Each cycle starts from the previous cycle's winners. Baseline rises. Evolution compounding.*
+

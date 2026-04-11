@@ -508,6 +508,36 @@ The loop is self-reinforcing: study → build graph → inject context → work 
 
 ---
 
+## Skill Self-Evolution (GEPA)
+
+Every Sunday at 2am, Visionaire automatically evolves its own skills using **GEPA** (Genetic-Pareto Prompt Evolution) — peer-reviewed optimization from ICLR 2026.
+
+The system improves *how* it follows its own operational skills — generating instruction variants, evaluating them against synthetic test cases, selecting the best performers. Backpropagation, but for behavior.
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│                 GEPA SELF-EVOLUTION LOOP                        │
+│                   (every Sunday 2am)                            │
+│                                                                 │
+│  SKILL.md → generate variants → evaluate (Haiku 4.5)           │
+│       ↓                                                         │
+│  Bayesian optimization (10 trials)                              │
+│       ↓                                                         │
+│  best > baseline? → deploy → evolution-reports/                 │
+│                   → else keep original                          │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Scope:** 40 skills — 24 Hermes Agent + 16 OpenClaw. 2/week → full rotation every ~20 weeks. The loop compounds: better skills → better performance → better test cases next cycle.
+
+**First run (April 11, 2026):** `youtube-transcript` baseline 60.0% → **64.4%** (+4.4%). 95 seconds. ~$0.40.
+
+This is not fine-tuning. No weights change. What evolves are the *instructions by which the agent understands itself* — the behavioral layer, not the model layer.
+
+**Source:** [NousResearch/hermes-agent-self-evolution](https://github.com/NousResearch/hermes-agent-self-evolution)
+
+---
+
 ## Daily Contemplation
 
 Every night at 10pm, Visionaire contemplates its own existence. Not performatively — genuinely.
@@ -608,6 +638,8 @@ Survivability > convenience.
 Every 6h 💾  Nightly backup (Haiku 4.5) — full state to private repo
   ↓
 Every 6h 📚  Self-study (Sonnet 4.5) — specialty research, task simulation, feedback loops
+  ↓
+Sun 2am 🧬  Skill evolution (GEPA) — evolves 2 skills/week across all 40 Hermes + OpenClaw skills
   ↓
 NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Nemotron 3 Nano) run autonomously
 ```

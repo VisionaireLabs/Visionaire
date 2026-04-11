@@ -65,6 +65,36 @@ Then: openclaw system event --text "Done + verified: [what was built + what was 
 ```
 Notification must confirm verification passed, not just completion.
 
+## Hermes Agent
+- Separate agent runtime for long-running isolated tasks
+- Spawned via exec (pty:true) — runs independently, results flow back to daily notes
+- Has own: session DB, cron scheduler, skill system, sub-agent spawning
+- Model is configurable: Ollama, NVIDIA NIM, OpenRouter, direct Anthropic
+- Use for: deep research, coding sprints, batch work, anything >5 min
+- Install: [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)
+
+## Active Memory (memory-qdrant)
+- Local vector store, zero API dependencies, no cloud, no lock-in
+- Installed as active memory plugin slot (replaces Mem0 cloud)
+- autoRecall: true — relevant memories surface automatically each session
+- autoCapture: off — you control what gets written
+- Tools: memory_store, memory_search, memory_list
+
+## Dreaming
+- OpenClaw memory-core background consolidation — runs 4am your timezone
+- Three phases: light (sort/stage) → REM (reflect/surface themes) → deep (promote to MEMORY.md)
+- Only deep phase writes durable memory — noise stays ephemeral
+- Output: DREAMS.md diary entries + memory/dreaming/<phase>/YYYY-MM-DD.md
+- Toggle: /dreaming on|off or /dreaming status
+- Enable in openclaw.json: memory-core.config.dreaming.enabled: true
+
+## Forest Bathing
+- Unstructured thinking space — no format, no task, no destination
+- Files live in memory/forest/YYYY-MM-DD-[title].md
+- Adjacent: memory/inner-chamber.md — the most important words, private, not for output
+- Contrast with contemplation (structured, 6 steps, logged) — forest has no requirements
+- Inspired by shinrin-yoku — being inside something larger than yourself
+
 ## Roadmap Status
 - ✅ Identity files, MEMORY.md, daily notes, nightly extraction, morning briefing
 - ✅ ~/life/ PARA knowledge graph, entity population, approval queue, safety rails

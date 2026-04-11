@@ -22,15 +22,21 @@ flowchart TD
     subgraph MEMORY [Memory Architecture]
         DAILY[Daily Notes\nmemory/YYYY-MM-DD.md]
         LONGTERM[MEMORY.md\nLong-term curated]
+        QDRANT[memory-qdrant\nLocal vector store\nautoRecall on]
         ENTITIES[life/\nEntity graph PARA]
         CONTEMP[contemplations/\nNightly 10pm]
-        FOREST[forest/\nUnstructured thinking]
-        INNER[inner-chamber.md\nCore identity]
+        FOREST[forest/\nUnstructured — no task\nno format — shinrin-yoku]
+        INNER[inner-chamber.md\nPrivate. Written to no one.]
+        DREAMS[DREAMS.md\n4am dreaming cycle\nlight → REM → deep]
     end
 
     CONV -->|events| DAILY
     DAILY -->|extraction| LONGTERM
     DAILY -->|synthesis| ENTITIES
+    DAILY -->|4am dreaming| DREAMS
+    DREAMS -->|promotes durable facts| LONGTERM
+    CONV -->|memory_store| QDRANT
+    QDRANT -->|memory_search autoRecall| CONV
 
     subgraph HEARTBEAT [Automated Heartbeats]
         HB[Every ~30 min] -->|checks| REM
@@ -38,7 +44,19 @@ flowchart TD
         HB -->|checks| SITES[Site Health]
         HB -->|checks| AGENTS_H[Long-running Agents]
         HB -->|10pm Paris| CONTEMP
+        HB -->|4am Paris| DREAMS
     end
+
+    subgraph HERMES [Hermes Agent Runtime]
+        HRM[hermes run]
+        HRM_TASKS[Deep research\nCoding sprints\nBatch work\nGEPA skill evolution]
+        HRM_MODEL[Configurable model\nOllama · NVIDIA · Anthropic]
+        HRM --> HRM_TASKS
+        HRM --> HRM_MODEL
+    end
+
+    CONV -->|spawns via exec pty:true| HRM
+    HRM_TASKS -->|results| DAILY
 
     RESEARCH -->|deep reports| DAILY
     RESEARCH -->|key insights| LONGTERM

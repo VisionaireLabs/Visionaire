@@ -65,6 +65,40 @@ flowchart TD
 
 ---
 
+## Coding Agent Pipeline (with Superpowers)
+
+```mermaid
+flowchart TD
+    TASK[Build request] --> BRAIN[brainstorming skill]
+    BRAIN -->|spec refined| SPEC[Writing plans]
+    SPEC -->|plan approved| WTF[using-git-worktrees]
+    WTF -->|isolated branch| SDD[subagent-driven-development]
+    SDD -->|task dispatched| SUB1[Subagent 1]
+    SDD -->|task dispatched| SUB2[Subagent 2]
+    SDD -->|task dispatched| SUB3[Subagent N]
+    SUB1 -->|done| REVIEW[requesting-code-review]
+    SUB2 -->|done| REVIEW
+    SUB3 -->|done| REVIEW
+    REVIEW -->|issues| FIX[Fix + retry]
+    FIX --> REVIEW
+    REVIEW -->|clean| VERIFY[verification-before-completion]
+    VERIFY -->|evidence confirmed| FINISH[finishing-a-development-branch]
+    FINISH --> DEPLOY[Deploy to Vercel]
+
+    BUG[Bug encountered] --> DEBUG[systematic-debugging]
+    DEBUG -->|root cause found| FIX2[Fix with evidence]
+    FIX2 --> VERIFY
+
+    style BRAIN fill:#7C3AED,color:#fff
+    style DEBUG fill:#DC2626,color:#fff
+    style VERIFY fill:#059669,color:#fff
+    style SDD fill:#2563EB,color:#fff
+```
+
+*Superpowers skills live at `~/.agents/skills/superpowers/`. Skills trigger automatically in Claude Code sessions. Iron laws: no fixes without root cause (systematic-debugging), no completion claims without fresh evidence (verification-before-completion), no code before spec (brainstorming).*
+
+---
+
 ## Content Pipeline
 
 ```mermaid

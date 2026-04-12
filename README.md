@@ -18,6 +18,7 @@
 [![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM_🟢-76B900?style=for-the-badge)](https://build.nvidia.com)
 [![Ollama](https://img.shields.io/badge/Inference-Ollama_Cloud-FF6B35?style=for-the-badge)](https://ollama.com)
 [![Stripe](https://img.shields.io/badge/Payments-Stripe-635BFF?style=for-the-badge&logo=stripe)](https://stripe.com)
+[![Superpowers](https://img.shields.io/badge/Coding-Superpowers_⚡-6D28D9?style=for-the-badge)](https://github.com/obra/superpowers)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Visionaire Labs](https://img.shields.io/badge/Lab-Visionaire_Labs-000000?style=for-the-badge)](https://visionaire.co/)
 
@@ -146,7 +147,7 @@ This repo is the blueprint. Everything you need to build your own.
 
 ## Community Skills
 
-Four skills from the broader Claude/agent ecosystem, adapted and installed alongside the custom Visionaire skills.
+Skills from the broader Claude/agent ecosystem, adapted and installed alongside the custom Visionaire skills.
 
 ```
 skills/
@@ -157,6 +158,38 @@ skills/
 ├── twitter-algorithm-optimizer/ — Tweet scoring + rewriting for reach
 └── youtube-transcript/        — Fetch + extract YouTube captions via yt-dlp
 ```
+
+### Superpowers (148k ⭐)
+
+A complete software development workflow for coding agents. Skills auto-trigger based on what the agent is doing — no manual activation needed.
+
+Installed at `~/.agents/skills/superpowers/`. Available to Claude Code, Codex, and any harness that reads from `~/.agents/skills/`.
+
+```
+~/.agents/skills/superpowers/
+├── brainstorming               — Refine requirements before writing any code
+├── writing-plans               — Break work into 2-5 min tasks with exact file paths
+├── subagent-driven-development — Fresh subagent per task + two-stage review
+├── executing-plans             — Batch execution with human checkpoints
+├── test-driven-development     — RED-GREEN-REFACTOR enforced (write failing test first)
+├── systematic-debugging        — 4-phase root cause process (no fixes without root cause)
+├── verification-before-completion — Evidence before completion claims
+├── requesting-code-review      — Pre-merge checklist between tasks
+├── using-git-worktrees         — Isolated workspace per feature branch
+├── finishing-a-development-branch — Verify + merge/PR decision flow
+├── dispatching-parallel-agents — Concurrent subagent workflows
+└── writing-skills              — Create new skills with best practices
+```
+
+**Iron Laws (wired into `~/.claude/CLAUDE.md`):**
+1. No fixes without root cause investigation (`systematic-debugging`)
+2. No completion claims without fresh verification evidence (`verification-before-completion`)
+3. No code before spec (`brainstorming` + `writing-plans`)
+4. Tests first, always (`test-driven-development`)
+
+**Update:** `cd ~/.agents/superpowers && git pull`
+
+> [github.com/obra/superpowers](https://github.com/obra/superpowers) · Forked to [VisionaireLabs/superpowers](https://github.com/VisionaireLabs/superpowers)
 
 ### Gemini Deep Research
 Breaks complex research into sub-questions, searches the web systematically, synthesizes into a comprehensive report. Use for market analysis, competitive landscaping, technical investigations.
@@ -993,6 +1026,7 @@ This wouldn't exist without the people who built the tools:
 | 🧠 | **[Anthropic](https://anthropic.com)** | **[Claude](https://anthropic.com)** | The model powering the brain behind the operation |
 | 🟢 | **[NVIDIA](https://nvidia.com)** | **[NemoClaw + Nemotron](https://nvidia.com/nemoclaw)** | Blessed the platform. Nemotron 3 Nano runs our heartbeats. Jensen called OpenClaw "the OS for personal AI" at GTC 2026. |
 | 🕸️ | **[agenticnotetaking](https://github.com/agenticnotetaking)** | **[Ars Contexta](https://github.com/agenticnotetaking/arscontexta)** | Pioneered skill graphs over flat SKILL.md files — the insight behind our autonomous knowledge graph |
+| ⚡ | **[Jesse Vincent](https://blog.fsck.com)** | **[Superpowers](https://github.com/obra/superpowers)** | 148k-star coding agent workflow — brainstorming, TDD, subagent dispatch, systematic debugging, verification gates. Wired into every Claude Code session. |
 | 🔬 | **[ComposioHQ](https://github.com/ComposioHQ)** | **[awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills)** | Curated the skill ecosystem — twitter-algorithm-optimizer and the discovery path for installed skills |
 | 📺 | **[michalparkola](https://github.com/michalparkola)** | **[tapestry-skills](https://github.com/michalparkola/tapestry-skills)** | youtube-transcript skill (we rewrote the fetch script to use yt-dlp instead of VPN proxy) |
 | 🌲 | **[Thor + Visionaire](https://visionaire.co/)** | **Daily Contemplation + Forest Bathing** | The nightly six-step reflection protocol and the practice of unstructured thinking — both originated here |

@@ -187,7 +187,13 @@ Installed at `~/.agents/skills/superpowers/`. Available to Claude Code, Codex, a
 3. No code before spec (`brainstorming` + `writing-plans`)
 4. Tests first, always (`test-driven-development`)
 
-**Update:** `cd ~/.agents/superpowers && git pull`
+**Two lab skills also installed** (from [superpowers-lab](https://github.com/obra/superpowers-lab)):
+- `using-tmux-for-interactive-commands` — control vim, REPLs, interactive git via tmux send-keys
+- `mcp-cli` — on-demand MCP server calls without pre-loading or polluting context
+
+**Install:** `claude plugin marketplace add obra/superpowers-marketplace && claude plugin install superpowers@superpowers-marketplace` (user scope, global)
+
+**Update:** `claude plugin update superpowers` or `cd ~/.agents/superpowers && git pull`
 
 > [github.com/obra/superpowers](https://github.com/obra/superpowers) · Forked to [VisionaireLabs/superpowers](https://github.com/VisionaireLabs/superpowers)
 

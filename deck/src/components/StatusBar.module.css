@@ -1,0 +1,28 @@
+.bar {
+  height: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  flex-shrink: 0;
+  background: transparent;
+  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  color: var(--theme-textMuted);
+  gap: 16px;
+}
+
+.connectedReady,
+.connectedIdle,
+.disconnected,
+.error {
+  color: inherit;
+}
+
+.sep {
+  opacity: 0.3;
+}
+
+.spacer {
+  flex: 1;
+}

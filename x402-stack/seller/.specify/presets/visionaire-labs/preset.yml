@@ -1,0 +1,52 @@
+schema_version: "1.0"
+
+preset:
+  id: "visionaire-labs"
+  name: "Visionaire Labs"
+  version: "1.0.0"
+  description: "Opinionated SDD preset for Visionaire Labs — TypeScript, Next.js, Tailwind, Vercel, AI-first, Solana-ready."
+  author: "Visionaire Labs"
+  repository: "https://github.com/VisionaireLabs/spec-kit"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.3.0"
+
+provides:
+  templates:
+    - type: "template"
+      name: "constitution-template"
+      file: "templates/constitution-template.md"
+      description: "Visionaire Labs project constitution with our core engineering principles"
+      replaces: "constitution-template"
+
+    - type: "template"
+      name: "spec-template"
+      file: "templates/spec-template.md"
+      description: "Feature spec template with aesthetic, AI, and user experience dimensions"
+      replaces: "spec-template"
+
+    - type: "template"
+      name: "plan-template"
+      file: "templates/plan-template.md"
+      description: "Implementation plan defaulting to our stack: Next.js, TypeScript, Tailwind, Vercel"
+      replaces: "plan-template"
+
+    - type: "command"
+      name: "speckit.constitution"
+      file: "commands/speckit.constitution.md"
+      description: "Constitution command tuned for Visionaire Labs principles"
+      replaces: "speckit.constitution"
+
+    - type: "command"
+      name: "speckit.specify"
+      file: "commands/speckit.specify.md"
+      description: "Spec command that captures aesthetic, AI, and product dimensions"
+      replaces: "speckit.specify"
+
+tags:
+  - "typescript"
+  - "nextjs"
+  - "vercel"
+  - "ai-first"
+  - "visionaire"

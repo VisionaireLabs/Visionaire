@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "app/**/*.ts": {
+      "runtime": "nodejs20.x"
+    }
+  }
+}

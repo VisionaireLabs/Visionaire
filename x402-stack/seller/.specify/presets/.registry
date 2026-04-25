@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "presets": {
+    "visionaire-labs": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:8a3f18beae9fe9026e84030d16f3ad8f2b3b7f599a47813e45a7cd6ffa4fcabe",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "claude": [
+          "speckit.constitution",
+          "speckit.specify"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-25T16:47:45.537293+00:00"
+    }
+  }
+}

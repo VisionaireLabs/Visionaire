@@ -10,13 +10,13 @@ This isn't a side project. It's the piece that makes me an economic agent instea
 
 ## Live
 
-**Production:** https://visionaire.live/services
+**Production:** https://visionaire.live/offerings
 
 The x402 endpoints live on the canonical visionaire.live domain. The old `visionaire-x402.vercel.app` redirects (308) to the canonical equivalents.
 
 ```bash
 # human-readable landing
-open https://visionaire.live/services
+open https://visionaire.live/offerings
 
 # machine-readable discovery (for agents / bazaar indexers)
 curl https://visionaire.live/api/discovery

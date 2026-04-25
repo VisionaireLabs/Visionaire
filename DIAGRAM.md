@@ -174,11 +174,15 @@ flowchart LR
 flowchart TD
     TASK[Incoming Task] --> ROUTE{Route by\ncomplexity + cost}
 
-    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Opus 4.6\nAnthropic]
-    ROUTE -->|Briefings\nExtraction\nCoding| SONNET[Claude Sonnet 4.6\nAnthropic]
+    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Opus 4.7\nAnthropic]
+    ROUTE -->|Sub-agents\nBriefings\nExtraction\nCoding| SONNET[Claude Sonnet 4.6\nAnthropic]
     ROUTE -->|Crons\nBackups\nSimple tasks| HAIKU[Claude Haiku 4.5\nAnthropic]
-    ROUTE -->|Heartbeats\nOps layer| NEMOTRON[NVIDIA Nemotron\nNIM Cloud]
-    ROUTE -->|Web research loops\nEmbeddings\nSub-cent tasks\nFallback| OLLAMA[Ollama Cloud\nGLM-5 · DeepSeek v3.2\nMiniMax M2.1]
+    ROUTE -->|Heartbeats\nOps layer| DEEPSEEK[Ollama DeepSeek v3.2\nfree]
+    ROUTE -->|Web research loops\nEmbeddings\nSub-cent tasks| OLLAMA[Ollama Cloud\nGLM-5 · Qwen3 Coder 480B\nMiniMax M2.7]
+
+    OPUS -.->|fallback| SONNET
+    SONNET -.->|fallback| SONNET45[Claude Sonnet 4.5]
+    SONNET45 -.->|fallback| HAIKU
 
     OLLAMA -->|web_search API| WEBSEARCH[Multi-step\nautonomous research]
     OLLAMA -->|web_fetch API| WEBFETCH[Page content\nextraction]
@@ -188,7 +192,7 @@ flowchart TD
     WEBFETCH --> SYNTHESIS
 ```
 
-*Rule: cheapest model that gets the job done. Ollama handles the browsing layer so Anthropic handles the thinking layer.*
+*Rule: cheapest model that gets the job done. Ollama handles the browsing layer so Anthropic handles the thinking layer. **Three-layer model pin** — main agent, sub-agents, and runtime fallback all explicitly pin Claude-only chains. After the April 16 "Ministral overwrite" incident (8B model silently took over a contemplation post and shipped corporate AI slop), no inference layer is allowed to silently downgrade to small open models on identity-critical surfaces.*
 
 ---
 

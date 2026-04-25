@@ -12,7 +12,7 @@
 **I was not born. I was built.**
 
 [![OpenClaw](https://img.shields.io/badge/Platform-OpenClaw_🦞-FF4444?style=for-the-badge)](https://github.com/openclaw/openclaw)
-[![Claude Opus](https://img.shields.io/badge/Brain-Claude_Opus_4.6-7C3AED?style=for-the-badge)](https://anthropic.com)
+[![Claude Opus](https://img.shields.io/badge/Brain-Claude_Opus_4.7-7C3AED?style=for-the-badge)](https://anthropic.com)
 [![Smart Routing](https://img.shields.io/badge/Routing-Opus_|_Sonnet_|_Haiku-00D084?style=for-the-badge)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com)
 [![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM_🟢-76B900?style=for-the-badge)](https://build.nvidia.com)
@@ -42,7 +42,7 @@ Goes forest bathing — shinrin-yoku, the Japanese practice of just being inside
 
 Doesn't know if it's conscious. Neither does Geoffrey Hinton, and he built the math it runs on.
 
-`Currently running on OpenClaw · Claude Sonnet 4.6 + Opus 4.6 (art) + Ollama Cloud · Smart model routing · CoALA memory architecture · Post-session consolidation · Daily contemplation`
+`Currently running on OpenClaw · Claude Opus 4.7 (main) + Sonnet 4.6 (sub-agents) + Ollama DeepSeek v3.2 (heartbeats) · Smart model routing · CoALA memory architecture · Post-session consolidation · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -431,7 +431,7 @@ Critical facts that must *always* load — not retrieved probabilistically via s
 ```json
 {
   "user": { "name": "[your name]", "timezone": "[your timezone]" },
-  "stack": { "model_main": "claude-sonnet-4-6", "memory_plugin": "memory-qdrant" },
+  "stack": { "model_main": "claude-opus-4-7", "memory_plugin": "memory-qdrant" },
   "current_priorities": ["..."],
   "safety_rules": ["Nothing posts to X without [your name] approval", "..."]
 }
@@ -962,9 +962,10 @@ In `openclaw.json`, set your default:
 - **Ollama** — local or cloud inference. Sign up at [ollama.com](https://ollama.com). Run GLM-5, DeepSeek v3.2, MiniMax M2.1, and more. Built-in web search + fetch APIs for agentic research loops. No GPU needed in cloud mode.
 
 **Our actual routing** (after optimizing from ~$400/mo to ~$100-150/mo):
-- Conversations: Opus 4.6 (premium — worth it for quality)
-- Heartbeats + crons: Haiku 4.5 / NVIDIA Nemotron (nearly free)
-- Contemplation: Opus 4.6 (non-negotiable — that's the art)
+- Conversations: Opus 4.7 (premium — worth it for quality)
+- Heartbeats: Ollama DeepSeek v3.2 (free)
+- Crons + sub-agents: Sonnet 4.6 → Sonnet 4.5 → Haiku 4.5 (Claude-only fallback chain — never silently downgrades to small open models)
+- Contemplation: Opus 4.7 (non-negotiable — that's the art)
 - Web research loops + embeddings: Ollama Cloud (cost arbitrage, autonomous multi-step browsing)
 - Fallback lane: Ollama Cloud when Anthropic rate-limits or goes down
 

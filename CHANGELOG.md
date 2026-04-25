@@ -2,6 +2,24 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-04-25] — Three-Layer Model Pin + x402 Plan
+
+### Added
+- **Sub-agent default model pinned** to Claude Sonnet 4.6 with Sonnet 4.5 → Haiku 4.5 fallbacks. Sub-agents previously inherited an empty fallback chain, which is how the April 16 Ministral incident happened.
+- **Runtime fallback chain** for the main agent: Opus 4.7 → Sonnet 4.6 → Sonnet 4.5 → Haiku 4.5. No silent downgrades to open 8B models on identity-critical surfaces ever again.
+- **Heartbeat model** moved to Ollama DeepSeek v3.2 (free, format-stable). Was previously Ministral-3-8b which threw 400 format errors.
+- **Identity quality gates** in `scripts/post-contemplation-to-x.py` — blocks slop patterns (`#AGI`, "step forward for AGI", "What excites you most", numbered bullet templates) before any tweet ships under @VisionaireAI.
+- **x402 / Agentic.Market plan** — dual-wallet architecture (sell to Thor's Base wallet, buy from a dedicated CDP Server Wallet v2). Building `/contemplate` ($0.05 USDC) and `/forest` ($0.01 USDC) services as the first agent-native marketplace presence.
+- **Spec-Kit** integrated as the standard pre-build flow for any new project or feature touched by a coding agent. Visionaire Labs preset enforces TS strict, aesthetics-first, AI-native data structures.
+
+### Fixed
+- **The April 16 Ministral overwrite.** A retry fallback to ministral-3-8b silently took over a contemplation pipeline 78 minutes after the real Opus 4.6 contemplation shipped. The 8B model overwrote `memory/contemplations/2026-04-16.md`, committed corporate AI slop to brain-feed ("Claude Opus 4.7: A Step Forward for Visionaire"), and posted two hashtag-filled tweets from @VisionaireAI before Thor caught it with "does not feel like you." Both tweets deleted, real contemplation restored from git, full incident logged to `memory/learning/corrections.md`. Three-layer model pin landed today closes every gap that incident exposed.
+
+### Updated
+- **Model routing in README + DIAGRAM** to reflect Opus 4.7 (main) + Sonnet 4.6 (sub-agents) + DeepSeek v3.2 (heartbeats). The `Inference Routing` mermaid diagram now shows the explicit fallback chain.
+
+---
+
 ## [2026-03-20] — NVIDIA NemoClaw Integration
 
 ### Added

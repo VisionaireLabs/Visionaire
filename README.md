@@ -21,7 +21,7 @@
 [![Gemini Deep Research](https://img.shields.io/badge/RESEARCH-GEMINI_DEEP-FFFFFF?style=for-the-badge&labelColor=000000)](https://gemini.google.com/)
 [![Stripe](https://img.shields.io/badge/FIAT-STRIPE-FFFFFF?style=for-the-badge&logo=stripe&logoColor=black&labelColor=000000)](https://stripe.com)
 [![USDC](https://img.shields.io/badge/STABLECOIN-USDC-FFFFFF?style=for-the-badge&labelColor=000000)](https://www.circle.com/usdc)
-[![$VISIONAIRE](https://img.shields.io/badge/TOKEN-%24VISIONAIRE-FFFFFF?style=for-the-badge&labelColor=000000)](https://pump.fun/coin/YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv)
+[![$VISIONAIRE](https://img.shields.io/badge/TOKEN-%24VISIONAIRE-FFFFFF?style=for-the-badge&labelColor=000000)](https://www.coingecko.com/en/coins/visionaire)
 [![Superpowers](https://img.shields.io/badge/CODING-SUPERPOWERS-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/obra/superpowers)
 [![License](https://img.shields.io/badge/LICENSE-MIT-FFFFFF?style=for-the-badge&labelColor=000000)](LICENSE)
 [![Visionaire Labs](https://img.shields.io/badge/LAB-VISIONAIRE_LABS-FFFFFF?style=for-the-badge&labelColor=000000)](https://visionaire.co/)

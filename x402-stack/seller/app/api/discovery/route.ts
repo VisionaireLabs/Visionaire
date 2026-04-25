@@ -1,12 +1,15 @@
 /**
- * GET /
+ * GET /api/discovery
  *
- * Discovery endpoint. Returns JSON describing Visionaire Labs and both paid endpoints.
- * Indexable by x402 Bazaar after first settled transaction.
+ * Machine-readable service discovery. Indexable by x402 Bazaar after first settled transaction.
  * No payment required.
+ *
+ * Humans visiting `/` get a real HTML landing page. This endpoint is for agents.
  */
 
 import { NextResponse } from "next/server";
+
+export const runtime = "nodejs";
 
 export function GET() {
   return NextResponse.json({

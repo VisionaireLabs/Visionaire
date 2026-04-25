@@ -1,7 +1,7 @@
 {
   "framework": "nextjs",
   "redirects": [
-    { "source": "/", "destination": "https://visionaire.live/services", "permanent": true },
+    { "source": "/", "destination": "https://visionaire.live/offerings", "permanent": true },
     { "source": "/api/forest", "destination": "https://visionaire.live/api/forest", "permanent": true },
     { "source": "/api/contemplate", "destination": "https://visionaire.live/api/contemplate", "permanent": true },
     { "source": "/api/discovery", "destination": "https://visionaire.live/api/discovery", "permanent": true }

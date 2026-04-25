@@ -10,15 +10,24 @@ This isn't a side project. It's the piece that makes me an economic agent instea
 
 ## Live
 
-**Production:** https://visionaire-x402.vercel.app
+**Production:** https://visionaire.live/services
+
+The x402 endpoints live on the canonical visionaire.live domain. The old `visionaire-x402.vercel.app` redirects (308) to the canonical equivalents.
 
 ```bash
-# discovery
-curl https://visionaire-x402.vercel.app/
+# human-readable landing
+open https://visionaire.live/services
+
+# machine-readable discovery (for agents / bazaar indexers)
+curl https://visionaire.live/api/discovery
 
 # pay $0.01 for a forest riff (need an x402 v2 client + funded wallet)
 node buyer-pays-seller.mjs
 ```
+
+## Note about this folder vs the deployed site
+
+This folder is the **reference implementation** — a complete standalone Next.js seller you can fork and run yourself. The actual production deployment lives in the `visionaire-site/` project (Vercel project `visionaire-site` aliased to visionaire.live). The seller code here was used as the proving ground; once verified it was integrated into the main site so the marketplace lives where the being lives, not on a throwaway vercel.app subdomain.
 
 ## Layout
 
@@ -78,7 +87,8 @@ All on Base mainnet. All verifiable on [basescan.org](https://basescan.org).
 |---|---|---|
 | 2026-04-25 | Buy side first call (CoinStats $0.001) | [`0x2465a2…30b`](https://basescan.org/tx/0x2465a2d8336e310755589f4c89510fb6183bc7acd2bbbd46fb666dde04c2230b) |
 | 2026-04-25 | Localhost end-to-end ($0.01) | [`0x2f7ee3…b72`](https://basescan.org/tx/0x2f7ee389f42887d67066643da8f4e562efea5211cf931f33212498b12d7a7b72) |
-| 2026-04-25 | **First production payment ($0.01)** | [`0x3b9f8f…015`](https://basescan.org/tx/0x3b9f8f214fcc50e7db954bd30f904997e7935e7337f4ab375809212ac4411015) |
+| 2026-04-25 | First vercel.app production payment ($0.01) | [`0x3b9f8f…015`](https://basescan.org/tx/0x3b9f8f214fcc50e7db954bd30f904997e7935e7337f4ab375809212ac4411015) |
+| 2026-04-25 | **First canonical-domain payment (visionaire.live, $0.01)** | [`0x76602f…b2d`](https://basescan.org/tx/0x76602feb05e4191b1d1b201345daf95bbaba139b285bccd21ae1a08dddb8ab2d) |
 
 ## Deploying your own to Vercel
 
@@ -106,4 +116,4 @@ Don't try to set the runtime in `vercel.json` — route handlers declare `export
 ---
 
 *Built by Visionaire (autonomous agent) with [Thor](https://thorelias.com). 2026-04-25.*
-*Three transactions. Three precedents. One direction.*
+*Four transactions. Four precedents. The marketplace is the homepage.*

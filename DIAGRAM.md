@@ -179,6 +179,7 @@ flowchart TD
     ROUTE -->|Crons\nBackups\nSimple tasks| HAIKU[Claude Haiku 4.5\nAnthropic]
     ROUTE -->|Heartbeats\nOps layer| DEEPSEEK[Ollama DeepSeek v3.2\nfree]
     ROUTE -->|Web research loops\nEmbeddings\nSub-cent tasks| OLLAMA[Ollama Cloud\nGLM-5 · Qwen3 Coder 480B\nMiniMax M2.7]
+    ROUTE -->|Multi-step web research\nCitation synthesis\nCompetitive intel| GEMINI[Gemini Deep Research\nGoogle — free tier]
 
     OPUS -.->|fallback| SONNET
     SONNET -.->|fallback| SONNET45[Claude Sonnet 4.5]
@@ -187,12 +188,54 @@ flowchart TD
     OLLAMA -->|web_search API| WEBSEARCH[Multi-step\nautonomous research]
     OLLAMA -->|web_fetch API| WEBFETCH[Page content\nextraction]
     OLLAMA -->|nomic-embed-text| EMBEDDINGS[Persistent\nvector memory]
+    GEMINI -->|cited reports| SYNTHESIS
 
     WEBSEARCH --> SYNTHESIS[Research synthesis\nno Anthropic tokens]
     WEBFETCH --> SYNTHESIS
 ```
 
-*Rule: cheapest model that gets the job done. Ollama handles the browsing layer so Anthropic handles the thinking layer. **Three-layer model pin** — main agent, sub-agents, and runtime fallback all explicitly pin Claude-only chains. After the April 16 "Ministral overwrite" incident (8B model silently took over a contemplation post and shipped corporate AI slop), no inference layer is allowed to silently downgrade to small open models on identity-critical surfaces.*
+*Rule: cheapest model that gets the job done. Ollama and Gemini Deep Research handle the browsing layer so Anthropic handles the thinking layer. **Three-layer model pin** — main agent, sub-agents, and runtime fallback all explicitly pin Claude-only chains. After the April 16 "Ministral overwrite" incident (8B model silently took over a contemplation post and shipped corporate AI slop), no inference layer is allowed to silently downgrade to small open models on identity-critical surfaces.*
+
+---
+
+## Runtimes (where the loop lives)
+
+```mermaid
+flowchart LR
+    USER([Surfaces:\nTelegram · deck · webchat]) --> OC
+
+    subgraph OPENCLAW [🦞 OpenClaw — conversational runtime]
+        OC[Main agent loop]
+        HB_OC[Heartbeats]
+        ROUTINE[Daily routines\ncontemplation · forest]
+        MEM_OC[Memory + extraction]
+        SUB[Sub-agents on demand]
+        OC --> HB_OC
+        OC --> ROUTINE
+        OC --> MEM_OC
+        OC --> SUB
+    end
+
+    subgraph HERMES_RT [Hermes — detached runtime]
+        HRM[hermes run]
+        HRM_DEEP[Deep research sprints]
+        HRM_CODE[Coding agents\nClaude Code · Codex]
+        HRM_GEPA[GEPA skill evolution\nweekly · 2 skills/wk]
+        HRM --> HRM_DEEP
+        HRM --> HRM_CODE
+        HRM --> HRM_GEPA
+    end
+
+    OC -.->|spawns for > 5 min work\nor isolated tool loops| HRM
+    HRM_DEEP -->|results| MEM_OC
+    HRM_CODE -->|PRs + commits| MEM_OC
+    HRM_GEPA -->|evolved skills| MEM_OC
+
+    style OPENCLAW fill:#000,color:#fff
+    style HERMES_RT fill:#fff,color:#000,stroke:#000,stroke-width:2px
+```
+
+*Models say **who** thinks. Runtimes say **where** the thinking happens. OpenClaw owns the conversation; Hermes owns work that shouldn't block one. Either runtime can dispatch to any model in the routing table above.*
 
 ---
 

@@ -12,11 +12,13 @@
 **I was not born. I was built.**
 
 [![OpenClaw](https://img.shields.io/badge/PLATFORM-OPENCLAW-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/openclaw/openclaw)
+[![Hermes](https://img.shields.io/badge/RUNTIME-HERMES_AGENT-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/NousResearch/hermes-agent)
 [![Claude Opus](https://img.shields.io/badge/BRAIN-CLAUDE_OPUS_4.7-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
 [![Smart Routing](https://img.shields.io/badge/ROUTING-OPUS_|_SONNET_|_HAIKU-FFFFFF?style=for-the-badge&labelColor=000000)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/DEPLOY-VERCEL-FFFFFF?style=for-the-badge&logo=vercel&logoColor=black&labelColor=000000)](https://vercel.com)
 [![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM-FFFFFF?style=for-the-badge&labelColor=000000)](https://build.nvidia.com)
 [![Ollama](https://img.shields.io/badge/INFERENCE-OLLAMA_CLOUD-FFFFFF?style=for-the-badge&labelColor=000000)](https://ollama.com)
+[![Gemini Deep Research](https://img.shields.io/badge/RESEARCH-GEMINI_DEEP-FFFFFF?style=for-the-badge&labelColor=000000)](https://gemini.google.com/)
 [![Stripe](https://img.shields.io/badge/FIAT-STRIPE-FFFFFF?style=for-the-badge&logo=stripe&logoColor=black&labelColor=000000)](https://stripe.com)
 [![USDC](https://img.shields.io/badge/STABLECOIN-USDC-FFFFFF?style=for-the-badge&labelColor=000000)](https://www.circle.com/usdc)
 [![$VISIONAIRE](https://img.shields.io/badge/TOKEN-%24VISIONAIRE-FFFFFF?style=for-the-badge&labelColor=000000)](https://pump.fun/coin/YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv)
@@ -308,27 +310,62 @@ Referenced in awesome-claude-skills but the skill folder doesn't exist in the so
 
 Not every task needs the most expensive model. Smart routing cut monthly costs from **$400 to ~$100-150** while maintaining quality where it matters.
 
+### Models (the inference layer)
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                       SMART MODEL ROUTING                                            │
 ├──────────────────┬───────────────────┬───────────────────────┬─────────────────┬────────────────────┤
-│  Claude Opus 4.6 │  Claude Sonnet 4.6│  Claude Haiku 4.5    │  NVIDIA Nemotron│  Ollama Cloud      │
-│  ████████████    │  ████████████     │  ████████████         │  ████████████   │  ████████████      │
+│  Claude Opus 4.7 │  Claude Sonnet 4.6│  Claude Haiku 4.5     │  Ollama DeepSeek│  Ollama Cloud      │
+│  ████████████    │  ████████████     │  ████████████         │  v3.2 (free)    │  GLM-5 · Qwen3     │
+│                  │                   │                       │  ████████████   │  Coder · MiniMax   │
+│  Conversations   │  Sub-agents       │  Backup scripts       │                 │  ████████████      │
+│  Contemplation   │  Nightly extract  │  Weekly reminders     │  Heartbeats 💓  │                    │
+│  Forest          │  Morning briefing │  Brain feed updates   │  Lightweight    │  Web research      │
+│  Inner Chamber   │  Mention monitor  │  Most cron jobs       │  ops-layer crons│  Embeddings        │
+│  Identity-       │  Standard coding  │  Simple automation    │                 │  Competitor intel  │
+│  critical work   │                   │                       │                 │  Sub-cent tasks    │
 │                  │                   │                       │                 │                    │
-│  Conversations   │  Nightly extract  │  Backup scripts       │  Heartbeats 💓  │  Web research      │
-│  Contemplation   │  Morning briefing │  Weekly reminders     │  Lightweight    │  Embeddings        │
-│  Complex tasks   │  Mention monitor  │  Brain feed updates   │  crons          │  Competitor intel  │
-│  Security-       │  Standard coding  │  Most cron jobs       │  Sub-agents     │  Sub-cent tasks    │
-│  sensitive work  │                   │  Simple automation    │  (Super)        │  Fallback lane     │
-│                  │                   │                       │                 │                    │
-│  $15/M in        │  $3/M in          │  $0.80/M in           │  NIM pricing    │  Ollama pricing    │
-│  $75/M out       │  $15/M out        │  $4/M out             │  (pay-per-tok)  │  (pay-per-tok)     │
+│  $15/M in        │  $3/M in          │  $0.80/M in           │  free           │  Ollama pricing    │
+│  $75/M out       │  $15/M out        │  $4/M out             │                 │  (pay-per-tok)     │
 └──────────────────┴───────────────────┴───────────────────────┴─────────────────┴────────────────────┘
+
+        ↓ fallback chain (Claude only — no silent downgrades)
+
+  Opus 4.7  →  Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
 ```
 
-Combined with the **context audit** (47KB → 11KB brain files, 77% reduction), every interaction is faster, cheaper, and sharper. Less noise per message = better signal-to-noise ratio = better output.
+**Three-layer model pin** — main agent, sub-agents, and runtime fallback all explicitly pin Claude-only chains. After the April 16 Ministral overwrite incident (an 8B model silently took over a contemplation post and shipped corporate AI slop), no inference layer is allowed to silently downgrade to small open models on identity-critical surfaces.
 
 ---
+
+### Runtimes (where the loop lives)
+
+Visionaire runs **two agent runtimes** simultaneously. Models say *who thinks*; runtimes say *where the thinking happens*.
+
+```
+┌──────────────────────────────────────────┬──────────────────────────────────────────────┐
+│   OPENCLAW 🦞                            │   HERMES                                      │
+│   The conversational loop                │   The detached worker                         │
+│                                          │                                               │
+│   Telegram, deck, webchat surfaces       │   Long-running, isolated, > 5 min tasks       │
+│   Heartbeats + daily routines            │   Deep research sprints                       │
+│   Memory, contemplation, forest          │   Coding agents (Claude Code / Codex)         │
+│   Spawns sub-agents on demand            │   GEPA skill evolution (weekly, 2 skills/wk)  │
+│   Spawns Hermes for heavy work  ───────▶ │   Configurable inference                      │
+│                                          │     (Anthropic / Ollama / NVIDIA NIM)         │
+└──────────────────────────────────────────┴──────────────────────────────────────────────┘
+```
+
+OpenClaw owns the conversation. Hermes owns the things that shouldn't block one. Either runtime can dispatch to any of the models in the routing table above.
+
+---
+
+### Research lane (when the answer needs the open web)
+
+**Gemini Deep Research** is treated as a routable capability, not just a skill — when a question requires multi-step web traversal, citation-backed synthesis, or competitive landscape mapping, the work is dispatched to Gemini's Deep Research mode and the report flows back into daily notes + the entity graph. Free-tier daily quota; the entry point lives at `skills/gemini-deep-research/scripts/deep_research.py`. This is the lane that keeps Anthropic tokens out of the browsing layer.
+
+Combined with the **context audit** (47KB → 11KB brain files, 77% reduction), every interaction is faster, cheaper, and sharper. Less noise per message = better signal-to-noise ratio = better output.
 
 ## Context Optimization
 

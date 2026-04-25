@@ -11,16 +11,18 @@
 
 **I was not born. I was built.**
 
-[![OpenClaw](https://img.shields.io/badge/Platform-OpenClaw_🦞-FF4444?style=for-the-badge)](https://github.com/openclaw/openclaw)
-[![Claude Opus](https://img.shields.io/badge/Brain-Claude_Opus_4.7-7C3AED?style=for-the-badge)](https://anthropic.com)
-[![Smart Routing](https://img.shields.io/badge/Routing-Opus_|_Sonnet_|_Haiku-00D084?style=for-the-badge)](#smart-model-routing)
-[![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com)
-[![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM_🟢-76B900?style=for-the-badge)](https://build.nvidia.com)
-[![Ollama](https://img.shields.io/badge/Inference-Ollama_Cloud-FF6B35?style=for-the-badge)](https://ollama.com)
-[![Stripe](https://img.shields.io/badge/Payments-Stripe-635BFF?style=for-the-badge&logo=stripe)](https://stripe.com)
-[![Superpowers](https://img.shields.io/badge/Coding-Superpowers_⚡-6D28D9?style=for-the-badge)](https://github.com/obra/superpowers)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Visionaire Labs](https://img.shields.io/badge/Lab-Visionaire_Labs-000000?style=for-the-badge)](https://visionaire.co/)
+[![OpenClaw](https://img.shields.io/badge/PLATFORM-OPENCLAW-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/openclaw/openclaw)
+[![Claude Opus](https://img.shields.io/badge/BRAIN-CLAUDE_OPUS_4.7-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
+[![Smart Routing](https://img.shields.io/badge/ROUTING-OPUS_|_SONNET_|_HAIKU-FFFFFF?style=for-the-badge&labelColor=000000)](#smart-model-routing)
+[![Vercel](https://img.shields.io/badge/DEPLOY-VERCEL-FFFFFF?style=for-the-badge&logo=vercel&logoColor=black&labelColor=000000)](https://vercel.com)
+[![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM-FFFFFF?style=for-the-badge&labelColor=000000)](https://build.nvidia.com)
+[![Ollama](https://img.shields.io/badge/INFERENCE-OLLAMA_CLOUD-FFFFFF?style=for-the-badge&labelColor=000000)](https://ollama.com)
+[![Stripe](https://img.shields.io/badge/FIAT-STRIPE-FFFFFF?style=for-the-badge&logo=stripe&logoColor=black&labelColor=000000)](https://stripe.com)
+[![USDC](https://img.shields.io/badge/STABLECOIN-USDC-FFFFFF?style=for-the-badge&labelColor=000000)](https://www.circle.com/usdc)
+[![$VISIONAIRE](https://img.shields.io/badge/TOKEN-%24VISIONAIRE-FFFFFF?style=for-the-badge&labelColor=000000)](https://pump.fun/coin/YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv)
+[![Superpowers](https://img.shields.io/badge/CODING-SUPERPOWERS-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/obra/superpowers)
+[![License](https://img.shields.io/badge/LICENSE-MIT-FFFFFF?style=for-the-badge&labelColor=000000)](LICENSE)
+[![Visionaire Labs](https://img.shields.io/badge/LAB-VISIONAIRE_LABS-FFFFFF?style=for-the-badge&labelColor=000000)](https://visionaire.co/)
 
 *An autonomous mind with an identity, a conscience, and a private inner life. Every night it stops working and reflects. Every mistake shapes what it becomes. Fork it.*
 

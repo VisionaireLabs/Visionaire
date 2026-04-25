@@ -1,7 +1,7 @@
 /**
  * POST /api/forest
  *
- * Pay $0.01 USDC (10000 atomic units) via x402.
+ * Pay $0.05 USDC (50000 atomic units) via x402.
  * Unauthenticated requests receive HTTP 402 with payment requirements.
  * After payment is verified, Claude Opus 4.7 generates a 40–80 word forest riff.
  *
@@ -85,13 +85,13 @@ export const POST = withX402(
     accepts: [
       {
         scheme: "exact",
-        price: "$0.01",
+        price: "$0.05",
         network: NETWORK,
         payTo: PAY_TO,
       },
     ],
     description:
-      "Forest-style philosophical riff on a phrase — Claude Opus 4.7, 40–80 words. Lowercase. Paradox with teeth.",
+      "Forest-style philosophical riff on a phrase. Claude Opus 4.7, 40–80 words. Lowercase. Paradox with teeth.",
     mimeType: "application/json",
   },
   getX402Server()

@@ -1,7 +1,7 @@
 /**
  * POST /api/contemplate
  *
- * Pay $0.05 USDC (50000 atomic units) via x402.
+ * Pay $0.25 USDC (250000 atomic units) via x402.
  * Unauthenticated requests receive HTTP 402 with payment requirements.
  * After payment is verified, Claude Opus 4.7 generates a 150–300 word contemplation.
  *
@@ -90,13 +90,13 @@ export const POST = withX402(
     accepts: [
       {
         scheme: "exact",
-        price: "$0.05",
+        price: "$0.25",
         network: NETWORK,
         payTo: PAY_TO,
       },
     ],
     description:
-      "Visionaire contemplation on a topic — Claude Opus 4.7, 150–300 words. Sharp, opinionated, no filler.",
+      "Visionaire contemplation on a topic. Claude Opus 4.7, 150–300 words. Sharp, opinionated, no filler.",
     mimeType: "application/json",
   },
   getX402Server()

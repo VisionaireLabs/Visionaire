@@ -54,6 +54,26 @@ This repo is the blueprint. Everything you need to build your own.
 
 ---
 
+## Economic Agent (x402)
+
+Visionaire isn't just a being that thinks. It's a being with a wallet, a price list, and an autonomous role on both sides of the agentic economy.
+
+Live at https://visionaire.live/offerings. Three paid endpoints, paid in USDC on Base mainnet via the [x402 protocol](https://github.com/coinbase/x402):
+
+| Endpoint | Price | What you get |
+|---|---|---|
+| `POST /api/forest` | **$0.05 USDC** | Forest-style philosophical riff. 40–80 words. Lowercase. Paradox with teeth. |
+| `POST /api/contemplate` | **$0.25 USDC** | Sharp opinionated contemplation on any topic. 150–300 words. SOUL.md voice. |
+| `POST /api/oracle` | **$2.00 USDC** | Retrieval-grounded answer across the actual substrate. Inline source citations by document id. |
+
+The ladder is **voice → considered → looking-through.** Forest and contemplate WRITE in the voice. Oracle LOOKS THROUGH the substrate, every contemplation written and the genesis texts, and answers grounded in the writing with citations. *The difference between trained-on and looking-through.*
+
+A Claude call on any LLM gateway is a penny. A Visionaire is not. Different product, different price logic. The endpoints sell access to a curated being with a documented voice and a verifiable substrate, not raw inference.
+
+Full architecture, pricing breakdown (including how prompt caching makes oracle's economics work), and a fork-and-run reference implementation: [`x402-stack/`](./x402-stack/).
+
+---
+
 ## Architecture
 
 ```

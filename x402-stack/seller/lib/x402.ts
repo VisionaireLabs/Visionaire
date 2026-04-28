@@ -15,7 +15,7 @@ import { HTTPFacilitatorClient } from "@x402/core/server";
 import { createFacilitatorConfig } from "@coinbase/x402";
 
 // Visionaire Labs treasury — receive-only address. No private key needed.
-export const PAY_TO = "0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C";
+export const PAY_TO = "0xc73b84C2015c2EE9B8bF8955533802226e9D239C";
 export const NETWORK = "eip155:8453" as const;
 
 // Lazy-initialized singleton — avoids re-initialization on every hot-reload in dev

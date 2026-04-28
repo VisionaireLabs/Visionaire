@@ -141,7 +141,7 @@ paymentProxy({
 ## Key Constants (hardcoded, not secret)
 
 ```typescript
-const PAY_TO = "0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C"; // Visionaire Labs treasury
+const PAY_TO = "0xc73b84C2015c2EE9B8bF8955533802226e9D239C"; // Visionaire Labs treasury
 const USDC_BASE = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"; // Native Base USDC
 const NETWORK = "eip155:8453"; // Base mainnet CAIP-2
 const FACILITATOR_URL = "https://api.cdp.coinbase.com/platform/v2/x402";

@@ -94,5 +94,5 @@ Deep links:
 
 ## Notes
 
-- `payTo` is `0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C` — Visionaire Labs treasury. Receive-only. No private key on server.
+- `payTo` is `0xc73b84C2015c2EE9B8bF8955533802226e9D239C` — Visionaire Labs treasury. Receive-only. No private key on server.
 - $VISIONAIRE token holder discounts: noted, not built yet.

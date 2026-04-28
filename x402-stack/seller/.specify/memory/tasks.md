@@ -41,7 +41,7 @@ import { HTTPFacilitatorClient } from "@x402/core/server";
 
 Configure:
 - CDP facilitator with env vars `CDP_API_KEY_ID` + `CDP_API_KEY_SECRET`
-- `payTo = "0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C"`
+- `payTo = "0xc73b84C2015c2EE9B8bF8955533802226e9D239C"`
 - `/api/contemplate`: price `"$0.05"`, network `"eip155:8453"`
 - `/api/forest`: price `"$0.01"`, network `"eip155:8453"`
 - Matcher: `["/api/contemplate/:path*", "/api/forest/:path*"]`
@@ -134,7 +134,7 @@ Return static JSON:
 2. `npm run lint` — zero errors (fix anything)
 3. `npm run dev` in background
 4. `curl -X POST http://localhost:3000/api/contemplate -H "Content-Type: application/json" -d '{"topic":"test"}'` → HTTP 402
-5. Decode `payment-required` header: confirm amount=50000, asset=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, payTo=0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C, network=eip155:8453
+5. Decode `payment-required` header: confirm amount=50000, asset=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, payTo=0xc73b84C2015c2EE9B8bF8955533802226e9D239C, network=eip155:8453
 6. `curl -X POST http://localhost:3000/api/forest -d '{"phrase":"test"}'` → HTTP 402, amount=10000
 7. `git diff --stat` — only expected files, no secrets
 8. Fix any failures before marking done

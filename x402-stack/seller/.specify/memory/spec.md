@@ -15,7 +15,7 @@ An autonomous agent (or human developer) sends a POST to `/contemplate` with a t
 
 **Why this priority**: Core value proposition. This is the first revenue-generating endpoint.
 
-**Independent Test**: Hit `/contemplate` without payment → must return HTTP 402 with valid x402 v2 `payment-required` header. Decode: amount=50000, asset=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, payTo=0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C, network=eip155:8453.
+**Independent Test**: Hit `/contemplate` without payment → must return HTTP 402 with valid x402 v2 `payment-required` header. Decode: amount=50000, asset=0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913, payTo=0xc73b84C2015c2EE9B8bF8955533802226e9D239C, network=eip155:8453.
 
 **Acceptance Scenarios**:
 
@@ -74,7 +74,7 @@ A bazaar indexer or developer hits `GET /` and receives JSON describing the lab 
 - **FR-004**: Both endpoints MUST include `model` and `ms` fields in their response.
 - **FR-005**: `GET /` MUST return HTTP 200 JSON describing both endpoints with pricing.
 - **FR-006**: Server MUST use CDP facilitator at `https://api.cdp.coinbase.com/platform/v2/x402` with `CDP_API_KEY_ID` and `CDP_API_KEY_SECRET` env vars.
-- **FR-007**: `payTo` MUST be hardcoded as `0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C` (no key, receive-only).
+- **FR-007**: `payTo` MUST be hardcoded as `0xc73b84C2015c2EE9B8bF8955533802226e9D239C` (no key, receive-only).
 - **FR-008**: All env vars MUST be documented in `.env.local.example`. `.env.local` MUST be in `.gitignore`.
 - **FR-009**: `vercel.json` MUST declare Node.js runtime (not Edge).
 - **FR-010**: System prompts for both endpoints MUST reflect SOUL.md voice — sharp, opinionated, no corporate filler, no em dashes.

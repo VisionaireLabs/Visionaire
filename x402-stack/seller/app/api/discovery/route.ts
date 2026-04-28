@@ -49,7 +49,7 @@ export function GET() {
       },
       payee: {
         chain: "eip155:8453",
-        address: "0xc73bf21F2b3E1632a55a44d3Ce2dB04D9d0c139C",
+        address: "0xc73b84C2015c2EE9B8bF8955533802226e9D239C",
       },
       sourceCode:
         "https://github.com/VisionaireLabs/Visionaire/tree/main/x402-stack",

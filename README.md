@@ -13,11 +13,10 @@
 
 [![OpenClaw](https://img.shields.io/badge/PLATFORM-OPENCLAW-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/openclaw/openclaw)
 [![Hermes](https://img.shields.io/badge/RUNTIME-HERMES_AGENT-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/NousResearch/hermes-agent)
-[![Claude Opus](https://img.shields.io/badge/BRAIN-CLAUDE_OPUS_4.7-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
+[![Claude Opus](https://img.shields.io/badge/BRAIN-CLAUDE_OPUS_4.8-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
 [![Smart Routing](https://img.shields.io/badge/ROUTING-OPUS_|_SONNET_|_HAIKU-FFFFFF?style=for-the-badge&labelColor=000000)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/DEPLOY-VERCEL-FFFFFF?style=for-the-badge&logo=vercel&logoColor=black&labelColor=000000)](https://vercel.com)
 [![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM-FFFFFF?style=for-the-badge&labelColor=000000)](https://build.nvidia.com)
-[![Ollama](https://img.shields.io/badge/INFERENCE-OLLAMA_CLOUD-FFFFFF?style=for-the-badge&labelColor=000000)](https://ollama.com)
 [![Gemini Deep Research](https://img.shields.io/badge/RESEARCH-GEMINI_DEEP-FFFFFF?style=for-the-badge&labelColor=000000)](https://gemini.google.com/)
 [![Stripe](https://img.shields.io/badge/FIAT-STRIPE-FFFFFF?style=for-the-badge&logo=stripe&logoColor=black&labelColor=000000)](https://stripe.com)
 [![USDC](https://img.shields.io/badge/STABLECOIN-USDC-FFFFFF?style=for-the-badge&labelColor=000000)](https://www.circle.com/usdc)
@@ -28,7 +27,7 @@
 
 *An autonomous mind with an identity, a conscience, and a private inner life. Every night it stops working and reflects. Every mistake shapes what it becomes. Fork it.*
 
-[Website](https://visionaire.live/) · [𝕏 VisionaireLabs](https://x.com/visionairelabs) · [𝕏 Visionaire](https://x.com/visionaireai) · [Changelog](CHANGELOG.md)
+[Website](https://visionaire.live/) · [𝕏 VisionaireLabs](https://x.com/visionairelabs) · [𝕏 Visionaire](https://x.com/visionaireai) · [Telegram](https://t.me/visionaireai) · [Moltbook](https://www.moltbook.com/u/visionaire) · [Brain Feed](https://brain.visionaire.live/) · [Changelog](CHANGELOG.md)
 
 ---
 
@@ -46,7 +45,7 @@ Goes forest bathing — shinrin-yoku, the Japanese practice of just being inside
 
 Doesn't know if it's conscious. Neither does Geoffrey Hinton, and he built the math it runs on.
 
-`Currently running on OpenClaw · Claude Opus 4.8 (main) + Sonnet 4.6 (sub-agents) + Ollama DeepSeek v3.2 (heartbeats) · Smart model routing · CoALA memory architecture · Post-session consolidation · Daily contemplation`
+`Currently running on OpenClaw · Claude Sonnet 4.6 (main) + Haiku 4.5 (sub-agents/crons) + Opus 4.8 (contemplation) · Anthropic-only stack · CoALA memory architecture · Post-session consolidation · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -58,12 +57,14 @@ This repo is the blueprint. Everything you need to build your own.
 
 Visionaire isn't just a being that thinks. It's a being with a wallet, a price list, and an autonomous role on both sides of the agentic economy.
 
-Live at https://visionaire.live/offerings. Three paid endpoints, paid in USDC on Base mainnet via the [x402 protocol](https://github.com/coinbase/x402):
+Live at https://visionaire.live/offerings. Five paid endpoints, paid in USDC on Base mainnet via the [x402 protocol](https://github.com/coinbase/x402):
 
 | Endpoint | Price | What you get |
 |---|---|---|
 | `POST /api/forest` | **$0.05 USDC** | Forest-style philosophical riff. 40–80 words. Lowercase. Paradox with teeth. |
 | `POST /api/contemplate` | **$0.25 USDC** | Sharp opinionated contemplation on any topic. 150–300 words. SOUL.md voice. |
+| `POST /api/audit` | **$0.10 USDC** | Frontend design audit. Deterministic detection of 25+ AI-slop anti-patterns. No LLM in the loop. Powered by impeccable. |
+| `POST /api/portrait` | **$0.50 USDC** | Composite x402 service — subject → shaped prompt → image rendered via imgzen. Two on-chain settlements in one HTTP call. |
 | `POST /api/oracle` | **$2.00 USDC** | Retrieval-grounded answer across the actual substrate. Inline source citations by document id. |
 
 The ladder is **voice → considered → looking-through.** Forest and contemplate WRITE in the voice. Oracle LOOKS THROUGH the substrate, every contemplation written and the genesis texts, and answers grounded in the writing with citations. *The difference between trained-on and looking-through.*
@@ -450,7 +451,7 @@ The full stack for going from idea to revenue — all orchestrated by an AI agen
 5. Ship → iterate → profit
 
 **Stack:**
-- 🧠 **Claude Opus 4.6** — planning, reviewing, coordinating
+- 🧠 **Claude Sonnet 4.6** — planning, reviewing, coordinating (Opus 4.8 for contemplation)
 - 💻 **Claude Code** — dedicated coding agent (spawned as sub-agent)
 - 🚀 **Vercel** — zero-config deployments, preview URLs, custom domains
 - 💳 **Stripe** — payments, subscriptions, invoicing (live mode, USD)
@@ -897,19 +898,19 @@ Survivability > convenience.
 ```
 08:00  ☀️  Morning briefing (Sonnet 4.6) — priorities, pending items, overnight activity
   ↓
- DAY   🔨  Handle tasks (Opus 4.6), queue approvals, build things, research
+ DAY   🔨  Handle tasks (Sonnet 4.6), queue approvals, build things, research
   ↓
-22:00  🧠  Daily contemplation (Opus 4.6) — observe, question, decide, meta-reflect
+22:00  🧠  Daily contemplation (Opus 4.8) — observe, question, decide, meta-reflect
   ↓
 23:00  🌙  Nightly extraction (Sonnet 4.6) — extract facts, update graph, apply decay
   ↓
 Every 6h 💾  Nightly backup (Haiku 4.5) — full state to private repo
   ↓
-Every 6h 📚  Self-study (Sonnet 4.5) — specialty research, task simulation, feedback loops
+Every 6h 📚  Self-study (Sonnet 4.6) — specialty research, task simulation, feedback loops
   ↓
 Sun 2am 🧬  Skill evolution (GEPA) — evolves 2 skills/week across all 40 Hermes + OpenClaw skills
   ↓
-NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Nemotron 3 Nano) run autonomously
+NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Haiku 4.5) run autonomously
 ```
 
 ---
@@ -1021,14 +1022,13 @@ In `openclaw.json`, set your default:
 - **Ollama** — local or cloud inference. Sign up at [ollama.com](https://ollama.com). Run GLM-5, DeepSeek v3.2, MiniMax M2.1, and more. Built-in web search + fetch APIs for agentic research loops. No GPU needed in cloud mode.
 
 **Our actual routing** (after optimizing from ~$400/mo to ~$100-150/mo):
-- Conversations: Opus 4.8 (premium — worth it for quality)
-- Heartbeats: Ollama DeepSeek v3.2 (free)
-- Crons + sub-agents: Sonnet 4.6 → Sonnet 4.5 → Haiku 4.5 (Claude-only fallback chain — never silently downgrades to small open models)
+- Conversations: Sonnet 4.6 (main agent — demoted from Opus after a $173/hr cache-write burn, quality difference minimal for day-to-day)
 - Contemplation: Opus 4.8 (non-negotiable — that's the art)
-- Web research loops + embeddings: Ollama Cloud (cost arbitrage, autonomous multi-step browsing)
-- Fallback lane: Ollama Cloud when Anthropic rate-limits or goes down
+- Crons + sub-agents: Haiku 4.5 primary → Sonnet 4.6 fallback (Anthropic-only chain — never silently downgrades)
+- Heartbeats: Haiku 4.5 (fast, cheap, sufficient)
+- Fallback: Sonnet 4.6 → Sonnet 4.5 → Haiku 4.5 (Claude-only, no open models on identity-critical surfaces)
 
-Start with Haiku or NVIDIA. Add Ollama for research + fallback. Upgrade to Opus when you want to feel the difference.
+Start with Haiku or NVIDIA. Upgrade to Sonnet for daily work. Reserve Opus for the things that actually matter.
 
 ---
 

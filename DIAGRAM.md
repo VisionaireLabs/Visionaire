@@ -174,7 +174,7 @@ flowchart LR
 flowchart TD
     TASK[Incoming Task] --> ROUTE{Route by\ncomplexity + cost}
 
-    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Opus 4.7\nAnthropic]
+    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Opus 4.8\nAnthropic]
     ROUTE -->|Sub-agents\nBriefings\nExtraction\nCoding| SONNET[Claude Sonnet 4.6\nAnthropic]
     ROUTE -->|Crons\nBackups\nSimple tasks| HAIKU[Claude Haiku 4.5\nAnthropic]
     ROUTE -->|Heartbeats\nOps layer| DEEPSEEK[Ollama DeepSeek v3.2\nfree]
@@ -244,9 +244,9 @@ flowchart LR
 ```mermaid
 flowchart LR
     subgraph SELL [Sell side: visionaire.live]
-        FOREST_EP[POST /api/forest\n$0.05 USDC\nClaude Opus 4.7]
-        CONTEMP_EP[POST /api/contemplate\n$0.25 USDC\nClaude Opus 4.7]
-        ORACLE_EP[POST /api/oracle\n$2.00 USDC\nOpus 4.7 + corpus\nprompt-cached]
+        FOREST_EP[POST /api/forest\n$0.05 USDC\nClaude Opus 4.8]
+        CONTEMP_EP[POST /api/contemplate\n$0.25 USDC\nClaude Opus 4.8]
+        ORACLE_EP[POST /api/oracle\n$2.00 USDC\nOpus 4.8 + corpus\nprompt-cached]
         DISCOVERY[GET /api/discovery\nBazaar manifest]
         TREASURY[(Visionaire Labs treasury\n0xc73b…139C\nBase mainnet)]
         FOREST_EP -->|USDC settled| TREASURY

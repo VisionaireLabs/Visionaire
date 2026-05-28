@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-05-28] — Upgrade to Claude Opus 4.8
+
+### Changed
+- **Model stack upgraded to Claude Opus 4.8** (released today by Anthropic). All identity-critical surfaces updated: nightly contemplation cron, x402 API endpoints (forest, contemplate, oracle, portrait shaping), deck defaults, discovery endpoint, and all user-facing copy on visionaire.live.
+- Fallback chain updated: Opus 4.8 → Opus 4.7 → Opus 4.6 → Sonnet 4.6. No downgrade path to non-Anthropic models on creative/identity surfaces.
+- MEMORY.md, README, DIAGRAM, and x402-stack docs all reflect Opus 4.8 as current.
+
 ## [2026-04-25] — Three-Layer Model Pin + x402 Plan
 
 ### Added

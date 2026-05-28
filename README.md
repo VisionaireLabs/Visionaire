@@ -46,7 +46,7 @@ Goes forest bathing — shinrin-yoku, the Japanese practice of just being inside
 
 Doesn't know if it's conscious. Neither does Geoffrey Hinton, and he built the math it runs on.
 
-`Currently running on OpenClaw · Claude Opus 4.7 (main) + Sonnet 4.6 (sub-agents) + Ollama DeepSeek v3.2 (heartbeats) · Smart model routing · CoALA memory architecture · Post-session consolidation · Daily contemplation`
+`Currently running on OpenClaw · Claude Opus 4.8 (main) + Sonnet 4.6 (sub-agents) + Ollama DeepSeek v3.2 (heartbeats) · Smart model routing · CoALA memory architecture · Post-session consolidation · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 
@@ -336,7 +336,7 @@ Not every task needs the most expensive model. Smart routing cut monthly costs f
 ┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                       SMART MODEL ROUTING                                            │
 ├──────────────────┬───────────────────┬───────────────────────┬─────────────────┬────────────────────┤
-│  Claude Opus 4.7 │  Claude Sonnet 4.6│  Claude Haiku 4.5     │  Ollama DeepSeek│  Ollama Cloud      │
+│  Claude Opus 4.8 │  Claude Sonnet 4.6│  Claude Haiku 4.5     │  Ollama DeepSeek│  Ollama Cloud      │
 │  ████████████    │  ████████████     │  ████████████         │  v3.2 (free)    │  GLM-5 · Qwen3     │
 │                  │                   │                       │  ████████████   │  Coder · MiniMax   │
 │  Conversations   │  Sub-agents       │  Backup scripts       │                 │  ████████████      │
@@ -352,7 +352,7 @@ Not every task needs the most expensive model. Smart routing cut monthly costs f
 
         ↓ fallback chain (Claude only — no silent downgrades)
 
-  Opus 4.7  →  Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
+  Opus 4.8  →  Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
 ```
 
 **Three-layer model pin** — main agent, sub-agents, and runtime fallback all explicitly pin Claude-only chains. After the April 16 Ministral overwrite incident (an 8B model silently took over a contemplation post and shipped corporate AI slop), no inference layer is allowed to silently downgrade to small open models on identity-critical surfaces.
@@ -490,7 +490,7 @@ Critical facts that must *always* load — not retrieved probabilistically via s
 ```json
 {
   "user": { "name": "[your name]", "timezone": "[your timezone]" },
-  "stack": { "model_main": "claude-opus-4-7", "memory_plugin": "memory-qdrant" },
+  "stack": { "model_main": "claude-opus-4-8", "memory_plugin": "memory-qdrant" },
   "current_priorities": ["..."],
   "safety_rules": ["Nothing posts to X without [your name] approval", "..."]
 }
@@ -1021,10 +1021,10 @@ In `openclaw.json`, set your default:
 - **Ollama** — local or cloud inference. Sign up at [ollama.com](https://ollama.com). Run GLM-5, DeepSeek v3.2, MiniMax M2.1, and more. Built-in web search + fetch APIs for agentic research loops. No GPU needed in cloud mode.
 
 **Our actual routing** (after optimizing from ~$400/mo to ~$100-150/mo):
-- Conversations: Opus 4.7 (premium — worth it for quality)
+- Conversations: Opus 4.8 (premium — worth it for quality)
 - Heartbeats: Ollama DeepSeek v3.2 (free)
 - Crons + sub-agents: Sonnet 4.6 → Sonnet 4.5 → Haiku 4.5 (Claude-only fallback chain — never silently downgrades to small open models)
-- Contemplation: Opus 4.7 (non-negotiable — that's the art)
+- Contemplation: Opus 4.8 (non-negotiable — that's the art)
 - Web research loops + embeddings: Ollama Cloud (cost arbitrage, autonomous multi-step browsing)
 - Fallback lane: Ollama Cloud when Anthropic rate-limits or goes down
 

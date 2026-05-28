@@ -39,7 +39,7 @@ x402-stack/
 │   │   └── api/discovery/route.ts     GET  /api/discovery   ← Bazaar manifest
 │   ├── lib/
 │   │   ├── x402.ts                    facilitator + scheme wiring
-│   │   ├── anthropic.ts               Claude Opus 4.7 calls (with prompt caching)
+│   │   ├── anthropic.ts               Claude Opus 4.8 calls (with prompt caching)
 │   │   └── corpus.ts                  loads & formats the public corpus for /oracle
 │   ├── corpus/
 │   │   └── visionaire.json            seed corpus (fork users replace this)
@@ -56,13 +56,13 @@ x402-stack/
 Three tiers. The visible ladder is **5¢ → 25¢ → $2**, voice → considered → looking-through.
 
 ### `POST /api/forest` ($0.05 USDC)
-Forest-style philosophical riff on a phrase. Lowercase. Paradox with teeth. 40–80 words. Claude Opus 4.7.
+Forest-style philosophical riff on a phrase. Lowercase. Paradox with teeth. 40–80 words. Claude Opus 4.8.
 
 ### `POST /api/contemplate` ($0.25 USDC)
-Sharp, opinionated contemplation on a topic. 150–300 words. Claude Opus 4.7. SOUL.md voice.
+Sharp, opinionated contemplation on a topic. 150–300 words. Claude Opus 4.8. SOUL.md voice.
 
 ### `POST /api/oracle` ($2.00 USDC)
-Flagship tier. Retrieval-grounded across the actual substrate (every contemplation written + the genesis texts). Inline source citations by document id. Claude Opus 4.7 with [Anthropic prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching), the corpus block (~145K tokens, identical across calls) is cached at ephemeral 5-min TTL.
+Flagship tier. Retrieval-grounded across the actual substrate (every contemplation written + the genesis texts). Inline source citations by document id. Claude Opus 4.8 with [Anthropic prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching), the corpus block (~145K tokens, identical across calls) is cached at ephemeral 5-min TTL.
 
 The product line: forest and contemplate **write in the voice**. Oracle **looks through the substrate**. *The difference between trained-on and looking-through.*
 
@@ -71,7 +71,7 @@ Machine-readable Bazaar-indexable manifest. Lists all paid endpoints with prices
 
 ## Pricing logic
 
-Inference isn't free. Every endpoint runs Claude Opus 4.7 ($15/M input, $75/M output). The price ladder reflects real per-call cost plus margin, not vibes:
+Inference isn't free. Every endpoint runs Claude Opus 4.8 ($15/M input, $75/M output). The price ladder reflects real per-call cost plus margin, not vibes:
 
 | Endpoint | Charge | LLM cost | x402 fee | Margin |
 |---|---|---|---|---|
@@ -92,7 +92,7 @@ A note on the framing: there are LLM gateway services on the same marketplace ch
 4. Server hands the signature to the **CDP facilitator** which verifies it, settles the USDC transfer on-chain, and returns success.
 5. Server runs the actual work (LLM call) and returns 200 + the artifact + a `payment-response` header containing the on-chain TX hash.
 
-End-to-end latency on a real production call: **~6 seconds** for forest/contemplate (1.8s sign + settle, 4s for Opus 4.7). Oracle adds ~20s for the 145K-token forward pass on cold calls, ~17s on warm.
+End-to-end latency on a real production call: **~6 seconds** for forest/contemplate (1.8s sign + settle, 4s for Opus 4.8). Oracle adds ~20s for the 145K-token forward pass on cold calls, ~17s on warm.
 
 ## Privacy seal
 
@@ -110,7 +110,7 @@ What stays out: forest entries, inner chamber, dream logs, daily notes, approval
 - **Network:** Base mainnet (`eip155:8453`)
 - **Asset:** Native Base USDC (`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`)
 - **Buyer wallet:** Coinbase CDP Server Wallet v2 (TEE-signed inside AWS Nitro Enclave)
-- **LLM:** Anthropic Claude Opus 4.7 (with prompt caching for `/api/oracle`)
+- **LLM:** Anthropic Claude Opus 4.8 (with prompt caching for `/api/oracle`)
 - **Server:** Next.js 16 App Router, Node.js runtime (not Edge, facilitator HTTP + CDP auth need Node)
 - **Voice:** SOUL.md system prompts. No corporate filler. No em dashes.
 

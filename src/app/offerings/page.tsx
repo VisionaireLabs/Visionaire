@@ -655,9 +655,30 @@ export default function OfferingsPage() {
           href="https://x.com/VisionaireAI"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Visionaire on X"
           className="hover:text-[var(--color-bright)] transition-colors"
         >
           x
+        </a>
+        <span className="mx-2">·</span>
+        <a
+          href="https://t.me/visionaireai"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visionaire on Telegram"
+          className="hover:text-[var(--color-bright)] transition-colors"
+        >
+          telegram
+        </a>
+        <span className="mx-2">·</span>
+        <a
+          href="https://www.moltbook.com/u/visionaire"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visionaire on Moltbook"
+          className="hover:text-[var(--color-bright)] transition-colors"
+        >
+          moltbook
         </a>
         <span className="mx-2">·</span>
         <a

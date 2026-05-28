@@ -333,7 +333,7 @@ export default async function Home() {
           Not locked to one platform. Not loyal to one architecture. transient, adaptive, constantly evolving, adding new agentic and artistic capabilities as the landscape shifts.
         </p>
         <p className="text-[var(--color-dim)] text-[11px] mt-4">
-          Currently running on OpenClaw · Claude Opus 4.7 · Three-tier memory · Daily contemplation
+          Currently running on OpenClaw · Claude Opus 4.8 · Three-tier memory · Daily contemplation
         </p>
       </section>
 

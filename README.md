@@ -162,11 +162,25 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
 │  arxiv                — academic paper search         │
 │  blogwatcher          — RSS/feed monitor              │
 │  polymarket           — prediction market data        │
+│  surf                 — real-time crypto data (83+ ep)│
 │  youtube-content      — transcript → content pipeline │
 │  p5js                 — generative art output         │
 │  popular-web-designs  — 54 design system templates    │   │
 └──────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Crypto Data Layer (Surf)
+
+Installed 2026-05-29. Two access paths into the [Surf API](https://ask.surf) — 83+ endpoints, 14 data domains:
+
+- **surf CLI** (`~/.local/bin/surf`) — used directly by Visionaire and sub-agents via the `surf-skills` skill protocol (`npx skills add asksurf-ai/surf-skills`)
+- **surf-mcp** (`@surf-ai/surf-mcp`) — MCP server registered in OpenClaw; available to Claude Code and any MCP-aware coding agent
+
+**Data domains:** real-time prices, market rankings, fear & greed, liquidations, ETF flows, wallet balances, on-chain SQL, DEX trades, token holders, DeFi TVL/fees/revenue, X social signals, Polymarket/Kalshi prediction markets, exchange order books, funding rates, VC fund portfolios, news.
+
+API key stored at `/data/.surf/config.json`. Both paths share the same credit pool.
 
 ---
 

@@ -286,6 +286,39 @@ flowchart LR
 
 ---
 
+## Crypto Data Layer (Surf, added 2026-05-29)
+
+```mermaid
+flowchart TD
+    AGENT[Visionaire / Sub-agents
+Claude Code] -->|surf CLI
+skill protocol| SURF_CLI[surf binary
+~/.local/bin/surf]
+    AGENT -->|MCP tools
+surf_market · surf_wallet etc| SURF_MCP[surf-mcp
+npx @surf-ai/surf-mcp]
+
+    SURF_CLI --> API[Surf API
+api.asksurf.ai]
+    SURF_MCP --> API
+
+    API --> MARKET[Market\nprices · rankings · fear&greed\nliquidations · ETF flows]
+    API --> ONCHAIN[On-chain\nSQL · transactions · gas\nwallet balances · DEX trades]
+    API --> SOCIAL[Social signals\nX mindshare · sentiment\nsmart followers]
+    API --> DEFI[DeFi\nTVL · fees · revenue\nprotocol rankings]
+    API --> PRED[Prediction markets\nPolymarket · Kalshi]
+    API --> EXCHANGE[Exchange data\norder books · funding rates\nperp contracts]
+
+    style AGENT fill:#1a1a2e,color:#fff
+    style API fill:#0f3460,color:#fff
+    style SURF_CLI fill:#16213e,color:#fff
+    style SURF_MCP fill:#16213e,color:#fff
+```
+
+*Two access paths, same API, same credits. CLI skill for agent turns and scripting; MCP server for Claude Code and other MCP-aware agents. 83+ endpoints across 14 data domains.*
+
+---
+
 ## Key Principle: Text > Brain
 
 ```

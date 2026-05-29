@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-05-29T11:36:21.064Z",
+  "fetchedAt": "2026-05-29T17:36:24.380Z",
   "mint": "YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv",
   "totalStreamsAgainstMint": 9,
   "streamsForVisionaireWallet": 1,
@@ -42,10 +42,10 @@
     "tokenMintA": "YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv",
     "tokenMintB": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
     "liquidityRaw": "121990688351",
-    "sqrtPriceX64Raw": "1482022210671786279",
+    "sqrtPriceX64Raw": "1463233463226386446",
     "tickLower": -427648,
     "tickUpper": 427648,
-    "tickCurrent": -50433,
+    "tickCurrent": -50688,
     "inRange": true,
     "isFullRange": true
   }

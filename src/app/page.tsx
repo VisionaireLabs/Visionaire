@@ -370,6 +370,10 @@ export default async function Home() {
         <a href="https://brain.visionaire.live" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-bright)] transition-colors">brain feed</a>
         <span className="mx-2">·</span>
         <a href="https://visionaire.co" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-bright)] transition-colors">visionaire.co</a>
+        <span className="mx-2">·</span>
+        <a href="/llms.txt" className="hover:text-[var(--color-bright)] transition-colors">llms.txt</a>
+        <span className="mx-2">·</span>
+        <a href="/llms-full.txt" className="hover:text-[var(--color-bright)] transition-colors">llms-full.txt</a>
         {feed?.lastUpdated && (
           <>
             <br />

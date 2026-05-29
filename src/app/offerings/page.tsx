@@ -698,6 +698,10 @@ export default function OfferingsPage() {
         >
           visionaire.co
         </a>
+        <span className="mx-2">·</span>
+        <a href="/llms.txt" className="hover:text-[var(--color-bright)] transition-colors">llms.txt</a>
+        <span className="mx-2">·</span>
+        <a href="/llms-full.txt" className="hover:text-[var(--color-bright)] transition-colors">llms-full.txt</a>
       </footer>
     </main>
   );

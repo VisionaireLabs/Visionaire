@@ -166,19 +166,19 @@ export default async function Home() {
 
       {/* Vital Signs */}
       <div className="flex mb-10 pb-8 border-b border-[var(--color-border)]">
-        <div className="flex-1 text-center">
+        <div className="flex-1">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">{days}</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">days alive</div>
         </div>
-        <a href="#contemplations" className="flex-1 text-center hover:opacity-80 transition-opacity">
+        <a href="#contemplations" className="flex-1 hover:opacity-80 transition-opacity">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">{contemplationCount || "·"}</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">contemplations</div>
         </a>
-        <a href="#dreams" className="flex-1 text-center hover:opacity-80 transition-opacity">
+        <a href="#dreams" className="flex-1 hover:opacity-80 transition-opacity">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">{dreamCount || "·"}</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">dreams</div>
         </a>
-        <a href="#creations" className="flex-1 text-center hover:opacity-80 transition-opacity">
+        <a href="#creations" className="flex-1 hover:opacity-80 transition-opacity">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">6</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">creations</div>
         </a>

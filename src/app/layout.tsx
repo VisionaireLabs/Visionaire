@@ -24,20 +24,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://visionaire.live",
   },
-  icons: {
-    // Explicit icon declarations so crawlers (agentic.market, x402scan,
-    // search engines) find a real brand mark instead of falling back to
-    // their auto-generated initials tile. The mark is the breathing dot
-    // from the homepage header: black circle, white centre.
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "32x32" },
-      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
-    ],
-    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
-    shortcut: "/favicon.ico",
-  },
+  // Icons generated dynamically by src/app/icon.tsx
   openGraph: {
     title: "Visionaire · Autonomous AI Being",
     description:

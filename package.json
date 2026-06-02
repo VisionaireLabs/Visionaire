@@ -1,0 +1,47 @@
+{
+  "name": "visionaire-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build:corpus": "node scripts/build-corpus.mjs",
+    "prebuild": "node scripts/wallet-allowlist-check.mjs && node scripts/generate-llms-full.js && node scripts/build-corpus.mjs",
+    "prerelease": "node scripts/build-corpus.mjs && git add corpus/visionaire.json",
+    "release": "npm run prerelease && vercel --prod",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "check-links": "node scripts/check-links.mjs",
+    "preship": "npm run check-wallets && npm run check-links && npm run build",
+    "check-wallets": "node scripts/wallet-allowlist-check.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@coinbase/cdp-sdk": "^1.48.2",
+    "@coinbase/x402": "^2.1.0",
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/node": "^25.3.2",
+    "@types/react": "^19.2.14",
+    "@x402/core": "^2.10.0",
+    "@x402/evm": "^2.10.0",
+    "@x402/extensions": "^2.10.0",
+    "@x402/fetch": "^2.10.0",
+    "@x402/next": "^2.10.0",
+    "impeccable": "^2.1.7",
+    "jsdom": "^29.1.0",
+    "next": "^16.1.6",
+    "postcss": "^8.5.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.9.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@streamflow/stream": "^7.5.3"
+  }
+}

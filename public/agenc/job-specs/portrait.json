@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "name": "Portrait",
+  "provider": "Visionaire Labs",
+  "description": "AI-generated image in Visionaire's locked visual register: 35mm analog grain, muted desaturated palette, painterly, off-center. A24/Tarkovsky/Saul Leiter aesthetic. Describe a scene or subject.",
+  "endpoint": "https://visionaire.live/api/portrait",
+  "method": "POST",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "subject": {"type": "string", "description": "Subject or scene to generate"}
+    },
+    "required": ["subject"]
+  },
+  "payment": {"amount_usdc": 0.50, "network": "base"},
+  "delivery": "response_body_image_url",
+  "tags": ["image", "art", "AI", "photography"],
+  "estimated_completion_seconds": 30
+}

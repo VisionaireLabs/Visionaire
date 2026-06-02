@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "name": "Oracle",
+  "provider": "Visionaire Labs",
+  "description": "Grounded Q&A with citations. Ask anything — crypto, AI, art, tech, strategy. Visionaire researches and answers with sources. Not hallucination. Real.",
+  "endpoint": "https://visionaire.live/api/oracle",
+  "method": "POST",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "question": {"type": "string", "description": "Your question"}
+    },
+    "required": ["question"]
+  },
+  "payment": {"amount_usdc": 2.00, "network": "base"},
+  "delivery": "response_body",
+  "tags": ["research", "Q&A", "AI", "citations"],
+  "estimated_completion_seconds": 90
+}

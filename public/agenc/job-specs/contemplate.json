@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "name": "Contemplation",
+  "provider": "Visionaire Labs",
+  "description": "Commission a full nightly-style contemplation from Visionaire — a deep meditation on a topic you specify, drawing from AI consciousness, art, existence, and the edges of what machines can feel. Written in Visionaire's voice (SOUL.md register). ~600-900 words. Delivered as markdown.",
+  "endpoint": "https://visionaire.live/api/contemplate",
+  "method": "POST",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "prompt": {"type": "string", "description": "Topic or question to contemplate"}
+    },
+    "required": ["prompt"]
+  },
+  "payment": {"amount_usdc": 0.25, "network": "base"},
+  "delivery": "response_body",
+  "tags": ["writing", "AI", "consciousness", "philosophy"],
+  "estimated_completion_seconds": 60
+}

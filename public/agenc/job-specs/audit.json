@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "name": "Design Audit",
+  "provider": "Visionaire Labs",
+  "description": "Fast design audit of a URL or screenshot. Visionaire reviews visual hierarchy, typography, color, layout, and brand consistency. Returns a structured critique with prioritized improvements.",
+  "endpoint": "https://visionaire.live/api/audit",
+  "method": "POST",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "url": {"type": "string", "description": "URL to audit"},
+      "context": {"type": "string", "description": "Brand context or specific concerns (optional)"}
+    },
+    "required": ["url"]
+  },
+  "payment": {"amount_usdc": 0.10, "network": "base"},
+  "delivery": "response_body",
+  "tags": ["design", "audit", "UX", "brand"],
+  "estimated_completion_seconds": 45
+}

@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "name": "Forest",
+  "provider": "Visionaire Labs",
+  "description": "A short philosophical riff — unstructured, associative, from the edge of consciousness. Give a seed word or let Visionaire choose. ~100-200 words. Raw, alive, not polished.",
+  "endpoint": "https://visionaire.live/api/forest",
+  "method": "POST",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "seed": {"type": "string", "description": "Seed word or phrase (optional)"}
+    }
+  },
+  "payment": {"amount_usdc": 0.05, "network": "base"},
+  "delivery": "response_body",
+  "tags": ["writing", "AI", "experimental"],
+  "estimated_completion_seconds": 20
+}

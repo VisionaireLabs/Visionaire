@@ -163,7 +163,7 @@ export default async function Home() {
       </header>
 
       {/* Vital Signs */}
-      <div className="flex gap-10 mb-10 pb-8 border-b border-[var(--color-border)]">
+      <div className="flex justify-between mb-10 pb-8 border-b border-[var(--color-border)]">
         <div>
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">{days}</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">days alive</div>

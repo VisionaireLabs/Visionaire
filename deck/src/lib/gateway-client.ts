@@ -19,6 +19,7 @@ import type {
   GatewayFrame,
   GatewayResponse,
   GatewayEvent,
+  MessageAttachment,
 } from "../types";
 
 type EventHandler = (event: GatewayEvent) => void;
@@ -150,18 +151,25 @@ export class GatewayClient {
   async runAgent(
     agentId: string,
     message: string,
-    sessionKey?: string
+    sessionKey?: string,
+    attachments?: MessageAttachment[]
   ): Promise<{ runId: string; status: string }> {
     const idempotencyKey = `agent-${Date.now()}-${Math.random()
       .toString(36)
       .slice(2, 8)}`;
 
-    await this.request("chat.send", {
+    const params: Record<string, unknown> = {
       sessionKey: sessionKey ?? `agent:main:${agentId}`,
       message,
       deliver: false,
       idempotencyKey,
-    });
+    };
+
+    if (attachments && attachments.length > 0) {
+      params.attachments = attachments;
+    }
+
+    await this.request("chat.send", params);
 
     return { runId: idempotencyKey, status: "ok" };
   }
@@ -333,8 +341,8 @@ export class GatewayClient {
           platform: "web",
           mode: "webchat",
         },
-        minProtocol: 3,
-        maxProtocol: 3,
+        minProtocol: 4,
+        maxProtocol: 4,
         role: "operator",
         scopes: OPERATOR_SCOPES,
         auth: this.getPreferredAuthToken()

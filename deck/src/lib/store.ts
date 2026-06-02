@@ -7,6 +7,8 @@ import type {
   ChatMessage,
   DeckConfig,
   GatewayEvent,
+  MessageAttachment,
+  PendingAttachment,
   SessionUsage,
 } from "../types";
 import { GatewayClient } from "./gateway-client";
@@ -35,7 +37,7 @@ interface DeckStore {
   addAgent: (agent: AgentConfig) => void;
   removeAgent: (agentId: string) => void;
   reorderColumns: (order: string[]) => void;
-  sendMessage: (agentId: string, text: string) => Promise<void>;
+  sendMessage: (agentId: string, text: string, attachments?: PendingAttachment[]) => Promise<void>;
   setAgentStatus: (agentId: string, status: AgentStatus) => void;
   appendMessageChunk: (agentId: string, runId: string, chunk: string) => void;
   finalizeMessage: (agentId: string, runId: string) => void;
@@ -140,19 +142,40 @@ export const useDeckStore = create<DeckStore>()(
 
   reorderColumns: (order) => set({ columnOrder: order }),
 
-  sendMessage: async (agentId, text) => {
+  sendMessage: async (agentId, text, pendingAttachments?) => {
     const { client, sessions } = get();
     if (!client?.connected) {
       console.error("Gateway not connected");
       return;
     }
 
+    // Build gateway attachment objects from pending attachments
+    const attachments: MessageAttachment[] | undefined =
+      pendingAttachments && pendingAttachments.length > 0
+        ? pendingAttachments.map((a) => ({
+            type: "image" as const,
+            media: a.dataUrl,
+            name: a.file.name,
+            mimeType: a.mimeType,
+          }))
+        : undefined;
+
+    // Build display text — append image filenames for the user bubble
+    const displayText =
+      attachments && attachments.length > 0
+        ? `${text}${text ? "\n" : ""}${attachments.map((a) => `[image: ${a.name ?? "attachment"}]`).join(" ")}`.trim()
+        : text;
+
     // Add user message immediately
     const userMsg: ChatMessage = {
       id: makeId(),
       role: "user",
-      text,
+      text: displayText,
       timestamp: Date.now(),
+      attachments: pendingAttachments?.map((a) => ({
+        previewUrl: a.previewUrl,
+        name: a.file.name,
+      })),
     };
 
     const session = sessions[agentId];
@@ -173,7 +196,7 @@ export const useDeckStore = create<DeckStore>()(
       // All columns route through the default "main" agent on the gateway,
       // using distinct session keys to keep conversations separate.
       const sessionKey = `agent:main:${agentId}`;
-      const { runId } = await client.runAgent("main", text, sessionKey);
+      const { runId } = await client.runAgent("main", text || "[image]", sessionKey, attachments);
 
       // Create placeholder assistant message for streaming
       const assistantMsg: ChatMessage = {

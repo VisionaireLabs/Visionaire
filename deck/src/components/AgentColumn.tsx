@@ -1,4 +1,5 @@
-import { useState, type KeyboardEvent } from "react";
+import { useState, useRef, useCallback, type KeyboardEvent } from "react";
+import type { PendingAttachment } from "../types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
@@ -94,6 +95,20 @@ function MessageBubble({
     >
       {isUser && <div className={styles.roleLabel}>You</div>}
       {!isUser && <div className={styles.roleLabel}>Assistant</div>}
+      {/* Image attachments */}
+      {isUser && message.attachments && message.attachments.length > 0 && (
+        <div className={styles.attachmentStrip}>
+          {message.attachments.map((att, i) => (
+            <img
+              key={i}
+              src={att.previewUrl}
+              alt={att.name}
+              className={styles.attachmentThumb}
+              title={att.name}
+            />
+          ))}
+        </div>
+      )}
       <div
         className={styles.messageText}
         style={
@@ -103,7 +118,8 @@ function MessageBubble({
         }
       >
         {isUser ? (
-          message.text
+          // Strip the [image: filename] annotation from display text
+          message.text.replace(/\n?\[image: [^\]]+\]/g, "").trim() || null
         ) : (
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -192,7 +208,73 @@ export function AgentColumn({ agentId, columnIndex }: { agentId: string; columnI
   const deleteAgentOnGateway = useDeckStore((s) => s.deleteAgentOnGateway);
   const [input, setInput] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [pendingAttachments, setPendingAttachments] = useState<PendingAttachment[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useAutoScroll(session?.messages);
+
+  const handleFileSelect = useCallback((files: FileList | null) => {
+    if (!files) return;
+    Array.from(files).forEach((file) => {
+      if (!file.type.startsWith("image/")) return;
+      const previewUrl = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        setPendingAttachments((prev) => [
+          ...prev,
+          {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+            file,
+            previewUrl,
+            dataUrl,
+            mimeType: file.type,
+          },
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
+  }, []);
+
+  const removeAttachment = useCallback((id: string) => {
+    setPendingAttachments((prev) => {
+      const removed = prev.find((a) => a.id === id);
+      if (removed) URL.revokeObjectURL(removed.previewUrl);
+      return prev.filter((a) => a.id !== id);
+    });
+  }, []);
+
+  const handlePaste = useCallback((e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    const imageFiles: File[] = [];
+    Array.from(items).forEach((item) => {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) imageFiles.push(file);
+      }
+    });
+    if (imageFiles.length === 0) return;
+    e.preventDefault();
+    // Read each pasted image directly
+    imageFiles.forEach((file) => {
+      const previewUrl = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target?.result as string;
+        setPendingAttachments((prev) => [
+          ...prev,
+          {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+            file,
+            previewUrl,
+            dataUrl,
+            mimeType: file.type,
+          },
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
+  }, []);
 
   if (!config || !session) return null;
 
@@ -203,9 +285,11 @@ export function AgentColumn({ agentId, columnIndex }: { agentId: string; columnI
 
   const handleSend = () => {
     const text = input.trim();
-    if (!text) return;
+    if (!text && pendingAttachments.length === 0) return;
     setInput("");
-    send(text);
+    const atts = [...pendingAttachments];
+    setPendingAttachments([]);
+    send(text, atts.length > 0 ? atts : undefined);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -326,11 +410,52 @@ export function AgentColumn({ agentId, columnIndex }: { agentId: string; columnI
 
       {/* Input */}
       <div className={styles.inputArea}>
+        {/* Pending attachment previews */}
+        {pendingAttachments.length > 0 && (
+          <div className={styles.pendingAttachments}>
+            {pendingAttachments.map((att) => (
+              <div key={att.id} className={styles.pendingThumbWrap}>
+                <img
+                  src={att.previewUrl}
+                  alt={att.file.name}
+                  className={styles.pendingThumb}
+                  title={att.file.name}
+                />
+                <button
+                  className={styles.removeAttachBtn}
+                  onClick={() => removeAttachment(att.id)}
+                  title="Remove"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <div className={styles.inputWrapper}>
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            style={{ display: "none" }}
+            onChange={(e) => handleFileSelect(e.target.files)}
+            onClick={(e) => { (e.target as HTMLInputElement).value = ""; }}
+          />
+          {/* Upload button */}
+          <button
+            className={styles.uploadBtn}
+            onClick={() => fileInputRef.current?.click()}
+            title="Attach image (or paste)"
+          >
+            📎
+          </button>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            onPaste={handlePaste}
             placeholder={`Message ${config.name}...`}
             className={styles.input}
             data-deck-input={columnIndex}
@@ -341,9 +466,9 @@ export function AgentColumn({ agentId, columnIndex }: { agentId: string; columnI
           <button
             className={styles.sendBtn}
             onClick={handleSend}
-            disabled={!input.trim()}
+            disabled={!input.trim() && pendingAttachments.length === 0}
             style={
-              input.trim()
+              (input.trim() || pendingAttachments.length > 0)
                 ? { backgroundColor: config.accent, color: "#000" }
                 : undefined
             }

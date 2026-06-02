@@ -42,8 +42,8 @@ const AGENT_ACCENTS = [
 
 // All default sessions — numbered agents + named persistent sessions
 const DEFAULT_AGENTS: AgentConfig[] = [
-  { id: "main",                   name: "Main",              icon: "1",  accent: AGENT_ACCENTS[0],  context: "",                        model: "anthropic/claude-opus-4-8"   },
-  { id: "agent-2",                name: "Agent 2",           icon: "2",  accent: AGENT_ACCENTS[1],  context: "",                        model: "anthropic/claude-opus-4-6"   },
+  { id: "main",                   name: "Main",              icon: "1",  accent: AGENT_ACCENTS[0],  context: "",                        model: "anthropic/claude-opus-4-7"   },
+  { id: "agent-2",                name: "Agent 2",           icon: "2",  accent: AGENT_ACCENTS[1],  context: "",                        model: "anthropic/claude-opus-4-7"   },
   { id: "agent-3",                name: "Agent 3",           icon: "3",  accent: AGENT_ACCENTS[2],  context: "",                        model: "anthropic/claude-sonnet-4-6" },
   { id: "agent-4",                name: "Agent 4",           icon: "4",  accent: AGENT_ACCENTS[3],  context: "",                        model: "anthropic/claude-sonnet-4-6" },
   { id: "agent-5",                name: "Agent 5",           icon: "5",  accent: AGENT_ACCENTS[4],  context: "",                        model: "anthropic/claude-sonnet-4-6" },
@@ -51,8 +51,8 @@ const DEFAULT_AGENTS: AgentConfig[] = [
   { id: "agent-7",                name: "Agent 7",           icon: "7",  accent: AGENT_ACCENTS[6],  context: "",                        model: "anthropic/claude-sonnet-4-6" },
   { id: "backup",                 name: "Backup",            icon: "💾", accent: AGENT_ACCENTS[7],  context: "Backup & recovery tasks", model: "anthropic/claude-sonnet-4-6" },
   { id: "skills",                 name: "Skills",            icon: "🛠", accent: AGENT_ACCENTS[8],  context: "Skill building & tooling", model: "anthropic/claude-sonnet-4-6" },
-  { id: "research-agent",         name: "Research",          icon: "🔬", accent: AGENT_ACCENTS[9],  context: "Deep research & analysis", model: "anthropic/claude-opus-4-8"   },
-  { id: "visionaire-labs",        name: "Visionaire Labs",   icon: "🧠", accent: AGENT_ACCENTS[10], context: "Visionaire Labs strategy", model: "anthropic/claude-opus-4-8"   },
+  { id: "research-agent",         name: "Research",          icon: "🔬", accent: AGENT_ACCENTS[9],  context: "Deep research & analysis", model: "anthropic/claude-opus-4-7"   },
+  { id: "visionaire-labs",        name: "Visionaire Labs",   icon: "🧠", accent: AGENT_ACCENTS[10], context: "Visionaire Labs strategy", model: "anthropic/claude-opus-4-7"   },
   { id: "github",                 name: "GitHub",            icon: "🐙", accent: AGENT_ACCENTS[11], context: "GitHub & code ops",        model: "anthropic/claude-sonnet-4-6" },
   { id: "visionaire-ai-x-posts",  name: "X Posts",           icon: "𝕏",  accent: AGENT_ACCENTS[0],  context: "X/Twitter content",       model: "anthropic/claude-sonnet-4-6" },
 ];
@@ -80,7 +80,17 @@ function getGatewayConfig() {
 }
 
 export default function App() {
-  const [authed, setAuthed] = useState(() => isAuthenticated());
+  const [authed, setAuthed] = useState(() => {
+    if (isAuthenticated()) return true;
+    // Auto-authenticate using baked-in env token if present
+    const envToken = import.meta.env.VITE_GATEWAY_TOKEN;
+    if (envToken) {
+      const expiry = Date.now() + 30 * 24 * 60 * 60 * 1000;
+      localStorage.setItem('visionaire.cortex.auth', JSON.stringify({ expiry, token: envToken }));
+      return true;
+    }
+    return false;
+  });
   const [activeTab, setActiveTab] = useState("All Agents");
   const [showAddModal, setShowAddModal] = useState(false);
   // Use persisted agents if available, otherwise fall back to all defaults

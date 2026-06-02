@@ -1,3 +1,25 @@
+// ─── Attachment Types ───
+
+export interface MessageAttachment {
+  type: "image" | "file";
+  /** Base64 data URL (e.g. data:image/png;base64,...) */
+  media?: string;
+  /** Remote URL */
+  mediaUrl?: string;
+  /** Optional filename hint */
+  name?: string;
+  mimeType?: string;
+}
+
+/** Pending attachment staged in the input area before send */
+export interface PendingAttachment {
+  id: string;
+  file: File;
+  previewUrl: string; // object URL for thumbnail
+  dataUrl: string;    // base64 data URL to send
+  mimeType: string;
+}
+
 // ─── OpenClaw Gateway WebSocket Protocol Types ───
 
 /** Outbound request frame */
@@ -69,6 +91,8 @@ export interface ChatMessage {
   };
   /** Run ID from gateway for tracking streaming responses */
   runId?: string;
+  /** Inline image previews attached to this user message */
+  attachments?: Array<{ previewUrl: string; name: string }>;
   /** Compaction metadata (present when role === "compaction") */
   compaction?: {
     beforeTokens: number;

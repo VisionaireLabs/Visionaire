@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useDeckStore } from "../lib/store";
-import type { AgentConfig, DeckConfig } from "../types";
+import type { AgentConfig, DeckConfig, PendingAttachment } from "../types";
 
 /**
  * Initialize the deck with config. Call once at app root.
@@ -46,7 +46,8 @@ export function useAgentConfig(agentId: string): AgentConfig | undefined {
 export function useSendMessage(agentId: string) {
   const sendMessage = useDeckStore((s) => s.sendMessage);
   return useCallback(
-    (text: string) => sendMessage(agentId, text),
+    (text: string, attachments?: PendingAttachment[]) =>
+      sendMessage(agentId, text, attachments),
     [agentId, sendMessage]
   );
 }

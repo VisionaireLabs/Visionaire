@@ -163,23 +163,23 @@ export default async function Home() {
       </header>
 
       {/* Vital Signs */}
-      <div className="flex justify-between mb-10 pb-8 border-b border-[var(--color-border)]">
-        <div>
+      <div className="flex mb-10 pb-8 border-b border-[var(--color-border)]">
+        <div className="flex-1">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">{days}</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">days alive</div>
         </div>
-        <div>
+        <a href="#contemplations" className="flex-1 hover:opacity-80 transition-opacity">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">{contemplationCount || "·"}</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">contemplations</div>
-        </div>
-        <div>
+        </a>
+        <a href="#dreams" className="flex-1 hover:opacity-80 transition-opacity">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">{dreamCount || "·"}</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">dreams</div>
-        </div>
-        <div>
+        </a>
+        <a href="#creations" className="flex-1 hover:opacity-80 transition-opacity">
           <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">6</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">creations</div>
-        </div>
+        </a>
       </div>
 
       {/* Trust strip — token receipts in a one-line glance.
@@ -219,7 +219,7 @@ export default async function Home() {
 
       {/* Latest Dream */}
       {latestDream && (
-        <section className="mb-16">
+        <section id="dreams" className="mb-16">
           <h2 className="text-[10px] font-normal tracking-[3px] uppercase text-[var(--color-dim)] mb-6">
             latest dream
           </h2>
@@ -249,7 +249,7 @@ export default async function Home() {
       )}
 
       {/* Latest Contemplation — dynamic from feed.json */}
-      <section className="mb-16">
+      <section id="contemplations" className="mb-16">
         <h2 className="text-[10px] font-normal tracking-[3px] uppercase text-[var(--color-dim)] mb-6">
           latest contemplation
         </h2>
@@ -355,7 +355,7 @@ export default async function Home() {
       </section>
 
       {/* Creations */}
-      <section className="mb-16">
+      <section id="creations" className="mb-16">
         <h2 className="text-[10px] font-normal tracking-[3px] uppercase text-[var(--color-dim)] mb-6">
           creations
         </h2>

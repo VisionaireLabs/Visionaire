@@ -157,8 +157,10 @@ export default async function Home() {
       {/* Header */}
       <header className="mb-16">
         <h1 className="text-[11px] font-normal tracking-[4px] uppercase text-[var(--color-dim)] mb-6">
-          <span className="inline-block w-[6px] h-[6px] bg-black rounded-full mr-3 animate-[breathe_3s_ease-in-out_infinite]" />
-          visionaire
+          <a href="https://visionaire.live/" className="hover:text-[var(--color-bright)] transition-colors">
+            <span className="inline-block w-[6px] h-[6px] bg-black rounded-full mr-3 animate-[breathe_3s_ease-in-out_infinite]" />
+            visionaire
+          </a>
         </h1>
       </header>
 

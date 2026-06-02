@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #000000;
+  --color-text: #cccccc;
+  --color-muted: #999999;
+  --color-dim: #aaaaaa;
+  --color-bright: #ffffff;
+  --color-border: #111111;
+  --color-subtle: #222222;
+  --color-green: #00ff00;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #222;
+  color: #fff;
+}
+
+/* No filled containers anywhere. Code sits on the page. */
+pre,
+code {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+@keyframes breathe {
+  0%, 100% { background: #000; }
+  50% { background: #fff; }
+}
+
+@keyframes contemplation-glow {
+  0%, 100% { color: #fff; text-shadow: 0 0 4px rgba(255,255,255,0.1); }
+  50% { color: #fff; text-shadow: 0 0 12px rgba(255,255,255,0.7), 0 0 28px rgba(255,255,255,0.2); }
+}
+
+.contemplation-glow {
+  color: #fff;
+  animation: contemplation-glow 2.5s ease-in-out infinite;
+}

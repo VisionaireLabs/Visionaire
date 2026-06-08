@@ -90,13 +90,25 @@ export default function MindPreview({ data }: { data: Graph }) {
 
   const ct = (data.meta.counts || {}) as any;
   return (
-    <div className="relative mb-16 overflow-hidden border border-[var(--color-border)]" style={{ height: 400 }}>
+    <div
+      className="relative mb-16 overflow-hidden"
+      style={{
+        height: 600,
+        width: "100vw",
+        left: "50%",
+        right: "50%",
+        marginLeft: "-50vw",
+        marginRight: "-50vw",
+        WebkitMaskImage: "radial-gradient(125% 105% at 50% 50%, #000 55%, transparent 100%)",
+        maskImage: "radial-gradient(125% 105% at 50% 50%, #000 55%, transparent 100%)",
+      }}
+    >
       <div ref={elRef} className="absolute inset-0" />
-      <div className="pointer-events-none absolute left-4 top-4 text-[10px] uppercase tracking-[3px] text-[var(--color-dim)]">
+      <div className="pointer-events-none absolute left-6 top-6 md:left-10 text-[10px] uppercase tracking-[3px] text-[var(--color-dim)]">
         neural map
         <div className="mt-1 text-[9px] tracking-[1.5px] text-[var(--color-muted)] normal-case">{ct.dreams ?? 0} dreams · {ct.contemplations ?? 0} contemplations · {ct.themes ?? 0} themes</div>
       </div>
-      <a href="/mind" className="group absolute bottom-4 right-4 text-[10px] uppercase tracking-[2px] text-[var(--color-muted)] transition-colors hover:text-[var(--color-bright)]">
+      <a href="/mind" className="group absolute bottom-6 right-6 md:right-10 text-[10px] uppercase tracking-[2px] text-[var(--color-muted)] transition-colors hover:text-[var(--color-bright)]">
         explore the full mind <span className="inline-block transition-transform group-hover:translate-x-[2px]">&#8599;</span>
       </a>
     </div>

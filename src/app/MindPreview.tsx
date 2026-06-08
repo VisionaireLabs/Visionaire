@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import type { Graph } from "./mind/graph";
 
-// Auto-spinning neural-map preview for the homepage. Rigid rotation (no
-// expansion) + subtle 3D tilt. Pointer/touch pass through so the page still
-// scrolls on mobile. Corner link opens the full interactive /mind.
+// Living neural-map preview: physics stays warm (nodes drift like you're
+// holding it), with a slow uniform 360 rotation + breathing expand/contract.
+// Non-interactive so the page still scrolls on mobile. Link opens /mind.
 export default function MindPreview({ data }: { data: Graph }) {
   const elRef = useRef<HTMLDivElement>(null);
   const gRef = useRef<any>(null);
@@ -17,28 +17,33 @@ export default function MindPreview({ data }: { data: Graph }) {
       if (disposed || !elRef.current) return;
       const C: Record<string, string> = { core: "#ffffff", theme: "#dcdcdc", contemplation: "#f2f2f2", dream: "#6f6f6f", activity: "#9a9a9a" };
 
-      let settled = false, cx = 0, cy = 0;
-      const ANG = 0.0022, cosA = Math.cos(ANG), sinA = Math.sin(ANG);
-
       const G = ForceGraph()(elRef.current)
         .graphData(JSON.parse(JSON.stringify(data)))
         .backgroundColor("rgba(0,0,0,0)")
         .nodeRelSize(1.7)
         .nodeVal((n: any) => n.val || 3)
-        .cooldownTicks(Infinity)
+        .cooldownTicks(Infinity)   // never freeze — stay alive
+        .d3VelocityDecay(0.93)
         .enableZoomInteraction(false)
         .enablePanInteraction(false)
         .enablePointerInteraction(false)
         .linkColor((l: any) => "rgba(255,255,255," + ({ core: 0.12, theme: 0.08, time: 0.05, sameday: 0.1 }[l.kind as string] ?? 0.06) + ")")
         .linkWidth(0.3)
         .onEngineTick(() => {
-          if (!settled) return;
           const ns = G.graphData().nodes as any[];
+          if (!ns.length) return;
+          let cx = 0, cy = 0;
+          for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
+          cx /= ns.length; cy /= ns.length;
+          const breath = Math.sin(Date.now() * 0.0005) * 0.0011; // expand / contract
           for (const n of ns) {
-            const px = n.fx ?? n.x, py = n.fy ?? n.y;
-            const dx = px - cx, dy = py - cy;
-            n.fx = cx + dx * cosA - dy * sinA;
-            n.fy = cy + dx * sinA + dy * cosA;
+            const dx = (n.x || 0) - cx, dy = (n.y || 0) - cy;
+            // uniform slow rotation (tangential velocity ∝ radius → constant angular speed)
+            n.vx = (n.vx || 0) - dy * 0.00045;
+            n.vy = (n.vy || 0) + dx * 0.00045;
+            // breathing
+            n.vx += dx * breath;
+            n.vy += dy * breath;
           }
         })
         .nodeCanvasObject((n: any, ctx: CanvasRenderingContext2D, scale: number) => {
@@ -55,23 +60,13 @@ export default function MindPreview({ data }: { data: Graph }) {
             ctx.fillText((n.label || "").toLowerCase(), n.x, n.y + r + size);
           }
         });
-      G.d3Force("charge").strength(-65);
-      G.d3Force("link").distance((l: any) => (l.kind === "theme" ? 32 : l.kind === "time" ? 12 : 24)).strength(0.25);
-      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); G.zoomToFit(0, 70); } };
+      G.d3Force("charge").strength(-52);
+      G.d3Force("link").distance((l: any) => (l.kind === "theme" ? 32 : l.kind === "time" ? 12 : 24)).strength(0.18);
+
+      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); G.zoomToFit(0, 110); } };
       fit();
       const ro = new ResizeObserver(fit); ro.observe(elRef.current);
-      setTimeout(() => {
-        const ns = G.graphData().nodes as any[];
-        if (ns.length) {
-          cx = 0; cy = 0;
-          for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
-          cx /= ns.length; cy /= ns.length;
-          for (const n of ns) { n.fx = n.x; n.fy = n.y; }
-        }
-        G.zoomToFit(800, 70);
-        settled = true;
-        setReady(true);
-      }, 2000);
+      setTimeout(() => { G.zoomToFit(900, 110); setReady(true); }, 1700);
       gRef.current = G; (G as any).__ro = ro;
     })();
     return () => { disposed = true; try { gRef.current?.__ro?.disconnect(); gRef.current?._destructor?.(); } catch {} };
@@ -93,20 +88,15 @@ export default function MindPreview({ data }: { data: Graph }) {
       }}
     >
       <style>{`
-        @keyframes mindtilt {
-          0%   { transform: perspective(1500px) rotateX(9deg) rotateY(-9deg) translate3d(-2%,1%,0) scale(0.97); }
-          20%  { transform: perspective(1500px) rotateX(4deg) rotateY(6deg) translate3d(2%,-1.5%,0) scale(1.06); }
-          40%  { transform: perspective(1500px) rotateX(11deg) rotateY(10deg) translate3d(1.5%,2%,0) scale(1.0); }
-          60%  { transform: perspective(1500px) rotateX(3deg) rotateY(-6deg) translate3d(-2.5%,1.5%,0) scale(1.07); }
-          80%  { transform: perspective(1500px) rotateX(8deg) rotateY(8deg) translate3d(1%,-1%,0) scale(1.01); }
-          100% { transform: perspective(1500px) rotateX(9deg) rotateY(-9deg) translate3d(-2%,1%,0) scale(0.97); }
+        @keyframes mindpulse {
+          0%   { transform: perspective(1600px) rotateX(7deg) rotateY(-6deg) scale(0.985); }
+          50%  { transform: perspective(1600px) rotateX(4deg) rotateY(6deg) scale(1.03); }
+          100% { transform: perspective(1600px) rotateX(7deg) rotateY(-6deg) scale(0.985); }
         }
-        .mindtilt-canvas { animation: mindtilt 30s ease-in-out infinite; transform-origin: 50% 50%; will-change: transform; }
+        .mindpulse-canvas { animation: mindpulse 18s ease-in-out infinite; transform-origin: 50% 50%; will-change: transform; }
       `}</style>
-      {/* touch/pointer pass through so the page scrolls on mobile */}
-      <div ref={elRef} className="absolute inset-0 mindtilt-canvas" style={{ pointerEvents: "none", touchAction: "pan-y", opacity: ready ? 1 : 0, transition: "opacity 1s ease" }} />
+      <div ref={elRef} className="absolute inset-0 mindpulse-canvas" style={{ pointerEvents: "none", touchAction: "pan-y", opacity: ready ? 1 : 0, transition: "opacity 1s ease" }} />
 
-      {/* labels + CTA aligned to the text column margins */}
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10">
         <div className="mx-auto max-w-[640px] px-6">
           <div className="text-[10px] uppercase tracking-[3px] text-[#a3a3a3]">neural map</div>

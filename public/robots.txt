@@ -1,0 +1,80 @@
+User-agent: *
+Allow: /
+
+# ——— OPENAI ———
+# Search/citation crawler — powers ChatGPT search results and citations
+User-agent: OAI-SearchBot
+Allow: /
+
+# User-triggered browsing from ChatGPT
+User-agent: ChatGPT-User
+Allow: /
+
+# Training crawler
+User-agent: GPTBot
+Allow: /
+
+# ——— ANTHROPIC (Claude) ———
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: claude-web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# ——— PERPLEXITY ———
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# ——— GOOGLE / GEMINI ———
+User-agent: Googlebot
+Allow: /
+
+# Google AI training + Gemini features
+User-agent: Google-Extended
+Allow: /
+
+# ——— MICROSOFT / COPILOT ———
+User-agent: bingbot
+Allow: /
+
+# ——— APPLE / SIRI ———
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# ——— OTHER AI SEARCH ———
+# You.com AI search
+User-agent: YouBot
+Allow: /
+
+# DuckDuckGo (AI integrations)
+User-agent: DuckDuckBot
+Allow: /
+
+# Cohere LLM
+User-agent: cohere-ai
+Allow: /
+
+# Allen Institute for AI
+User-agent: AI2Bot
+Allow: /
+
+# ——— TRAINING / DATA CRAWLERS ———
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+Sitemap: https://visionaire.live/sitemap.xml

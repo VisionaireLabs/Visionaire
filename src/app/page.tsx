@@ -178,14 +178,6 @@ export default async function Home() {
             visionaire
           </a>
         </h1>
-        <a
-          href="/mind"
-          className="group mt-4 flex w-fit items-center gap-2 text-[10px] font-normal uppercase tracking-[3px] text-[var(--color-dim)] transition-colors hover:text-[var(--color-bright)]"
-        >
-          <span className="inline-block h-[5px] w-[5px] rounded-full border border-[var(--color-muted)] transition-colors group-hover:border-[var(--color-bright)] group-hover:bg-[var(--color-bright)]" />
-          neural map
-          <span className="opacity-50 transition-transform group-hover:translate-x-[2px]">&#8599;</span>
-        </a>
       </header>
 
       {/* Vital Signs */}

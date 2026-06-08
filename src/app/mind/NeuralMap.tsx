@@ -149,7 +149,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "34px 30px", overflowY: "auto", zIndex: 6 }}>
-        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top: 24, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
+        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top:56, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
         {sel && (<>
           <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase" }}>{sel.type}</div>
           <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, margin: "14px 0 6px" }}>{(sel.label || "").toLowerCase()}</div>

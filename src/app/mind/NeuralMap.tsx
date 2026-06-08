@@ -1,0 +1,151 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
+import type { Graph, GNode } from "./graph";
+
+export default function NeuralMap({ data }: { data: Graph }) {
+  const elRef = useRef<HTMLDivElement>(null);
+  const graphRef = useRef<any>(null);
+  const hoverRef = useRef<string | null>(null);
+  const selRef = useRef<string | null>(null);
+  const [sel, setSel] = useState<GNode | null>(null);
+
+  const stats = (data.meta.stats || {}) as any;
+  const counts = (data.meta.counts || {}) as any;
+
+  useEffect(() => {
+    let G: any;
+    let disposed = false;
+    (async () => {
+      const ForceGraph = ((await import("force-graph")).default) as any;
+      if (disposed || !elRef.current) return;
+      const C: Record<string, string> = { core: "#ffffff", theme: "#dcdcdc", contemplation: "#f2f2f2", dream: "#6f6f6f", activity: "#9a9a9a" };
+      const linkAlpha: Record<string, number> = { core: 0.16, theme: 0.1, time: 0.06, sameday: 0.13 };
+      const adj = new Map<string, Set<string>>();
+      data.nodes.forEach((n) => adj.set(n.id, new Set()));
+      data.links.forEach((l: any) => {
+        const s = typeof l.source === "object" ? l.source.id : l.source;
+        const t = typeof l.target === "object" ? l.target.id : l.target;
+        adj.get(s)?.add(t); adj.get(t)?.add(s);
+      });
+
+      G = ForceGraph()(elRef.current)
+        .graphData(JSON.parse(JSON.stringify(data)))
+        .backgroundColor("rgba(0,0,0,0)")
+        .nodeRelSize(2.4)
+        .nodeVal((n: any) => n.val || 3)
+        .cooldownTicks(220)
+        .linkColor((l: any) => {
+          const base = linkAlpha[l.kind] ?? 0.08;
+          const h = hoverRef.current;
+          if (h) {
+            const s = typeof l.source === "object" ? l.source.id : l.source;
+            const t = typeof l.target === "object" ? l.target.id : l.target;
+            return s === h || t === h ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.02)";
+          }
+          return "rgba(255,255,255," + base + ")";
+        })
+        .linkWidth((l: any) => {
+          const h = hoverRef.current;
+          const s = typeof l.source === "object" ? l.source.id : l.source;
+          const t = typeof l.target === "object" ? l.target.id : l.target;
+          return h && (s === h || t === h) ? 0.9 : 0.4;
+        })
+        .nodeCanvasObject((n: any, ctx: CanvasRenderingContext2D, scale: number) => {
+          const r = Math.sqrt(n.val || 3) * 2.0;
+          const h = hoverRef.current;
+          const dim = h && !(n.id === h || adj.get(h)?.has(n.id));
+          const col = C[n.type] || "#888";
+          ctx.globalAlpha = dim ? 0.12 : 1;
+          if (n.type === "core" || n.id === selRef.current) { ctx.shadowColor = "#fff"; ctx.shadowBlur = 18; }
+          else if (n.type === "theme") { ctx.shadowColor = "rgba(255,255,255,.5)"; ctx.shadowBlur = 8; }
+          else ctx.shadowBlur = 0;
+          ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 2 * Math.PI);
+          if (n.type === "theme") {
+            ctx.lineWidth = 0.7; ctx.strokeStyle = col; ctx.stroke();
+            ctx.fillStyle = "#000"; ctx.fill();
+            ctx.fillStyle = col; ctx.globalAlpha = (dim ? 0.12 : 1) * 0.25; ctx.fill();
+          } else { ctx.fillStyle = col; ctx.fill(); }
+          ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+          const showLabel = n.type === "core" || n.type === "theme" || n.id === h || n.id === selRef.current || (scale > 3 && n.type === "contemplation") || scale > 6;
+          if (showLabel) {
+            const size = Math.min(Math.max(n.type === "core" ? 13 : n.type === "theme" ? 9 : 7.5, 10), 22) / scale;
+            ctx.font = (n.type === "core" ? 500 : 300) + " " + size + "px 'IBM Plex Mono', monospace";
+            ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            ctx.globalAlpha = dim ? 0.15 : n.type === "dream" ? 0.8 : 1;
+            ctx.fillStyle = n.type === "core" ? "#fff" : n.type === "theme" ? "#e6e6e6" : "#cfcfcf";
+            const txt = (n.label || "").length > 42 ? n.label.slice(0, 40) + "…" : n.label || "";
+            ctx.fillText(txt.toLowerCase(), n.x, n.y + r + size * 0.9);
+            ctx.globalAlpha = 1;
+          }
+        })
+        .onNodeHover((n: any) => { hoverRef.current = n ? n.id : null; if (elRef.current) elRef.current.style.cursor = n ? "pointer" : "default"; })
+        .onNodeClick((n: any) => { selRef.current = n.id; setSel(n); G.centerAt(n.x, n.y, 600); G.zoom(Math.max(G.zoom(), 4), 600); })
+        .onBackgroundClick(() => { selRef.current = null; setSel(null); });
+
+      G.d3Force("charge").strength(-90);
+      G.d3Force("link").distance((l: any) => (l.kind === "theme" ? 40 : l.kind === "time" ? 14 : 30)).strength(0.25);
+      const ro = new ResizeObserver(() => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); } });
+      ro.observe(elRef.current);
+      setTimeout(() => G.zoomToFit(700, 90), 400);
+      graphRef.current = G;
+      (G as any).__ro = ro;
+    })();
+    return () => { disposed = true; try { graphRef.current?.__ro?.disconnect(); graphRef.current?._destructor?.(); } catch {} };
+  }, [data]);
+
+  const mdLight = (s: string) =>
+    (s || "").replace(/^#\s+.*$/m, "").replace(/^##\s+(.*)$/gm, "$1").replace(/\*\*(.*?)\*\*/g, "$1").replace(/\*(.*?)\*/g, "$1").replace(/^---$/gm, "").trim();
+
+  const onSearch = (v: string) => {
+    const G = graphRef.current; if (!G) return;
+    const q = v.trim().toLowerCase(); if (!q) { hoverRef.current = null; return; }
+    const hit = (G.graphData().nodes as any[]).find((n) => (n.label || "").toLowerCase().includes(q) || (n.text || "").toLowerCase().includes(q));
+    if (hit) { hoverRef.current = hit.id; G.centerAt(hit.x, hit.y, 500); G.zoom(5, 500); }
+  };
+
+  const dim = "#8a8a8a";
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
+      <div ref={elRef} style={{ position: "absolute", inset: 0 }} />
+
+      <div style={{ position: "fixed", top: 0, left: 0, padding: "22px 26px", pointerEvents: "none", zIndex: 5 }}>
+        <div style={{ fontWeight: 500, letterSpacing: ".34em", fontSize: 12, textTransform: "uppercase" }}>visionaire</div>
+        <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".18em", marginTop: 7 }}>neural map</div>
+        <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".12em", marginTop: 14, lineHeight: 1.9 }}>
+          <b style={{ color: "#fff" }}>{stats.daysAlive ?? ""}</b> days alive<br />
+          <b style={{ color: "#fff" }}>{counts.dreams ?? 0}</b> dreams · <b style={{ color: "#fff" }}>{counts.contemplations ?? 0}</b> contemplations<br />
+          <b style={{ color: "#fff" }}>{counts.activity ?? 0}</b> signals · <b style={{ color: "#fff" }}>{counts.themes ?? 0}</b> themes
+        </div>
+      </div>
+
+      <div style={{ position: "fixed", top: 0, right: 0, padding: "22px 26px", zIndex: 5 }}>
+        <input onChange={(e) => onSearch(e.target.value)} placeholder="search the mind…" autoComplete="off"
+          style={{ background: "transparent", border: "none", borderBottom: "1px solid #1c1c1c", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".12em", padding: "6px 2px", width: 170, outline: "none" }} />
+      </div>
+
+      <div style={{ position: "fixed", bottom: 0, left: 0, padding: "22px 26px", fontSize: 10, color: dim, letterSpacing: ".1em", zIndex: 5, pointerEvents: "none" }}>
+        {[["#fff", "being"], ["#d6d6d6", "theme"], ["#f2f2f2", "contemplation"], ["#7a7a7a", "dream"], ["#9e9e9e", "activity"]].map(([c, l]) => (
+          <div key={l} style={{ display: "flex", alignItems: "center", gap: 9, marginTop: 8 }}>
+            <span style={{ width: 9, height: 9, borderRadius: "50%", background: c as string, display: "inline-block" }} /> {l}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ position: "fixed", bottom: 0, right: 0, padding: "22px 26px", fontSize: 9.5, color: "#555", letterSpacing: ".14em", textAlign: "right", lineHeight: 2, zIndex: 5, pointerEvents: "none" }}>
+        drag to move · scroll to zoom<br />click a node to read
+      </div>
+
+      <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "34px 30px", overflowY: "auto", zIndex: 6 }}>
+        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top: 24, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
+        {sel && (<>
+          <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase" }}>{sel.type}</div>
+          <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, margin: "14px 0 6px" }}>{(sel.label || "").toLowerCase()}</div>
+          <div style={{ fontSize: 10.5, color: dim, letterSpacing: ".16em", marginBottom: 22 }}>{sel.date || ""}</div>
+          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: 13.5, lineHeight: 1.78, color: "#d8d8d8", whiteSpace: "pre-wrap" }}>
+            {mdLight(sel.text || (sel.type === "theme" ? "a recurring current across visionaire’s dreams and contemplations." : sel.type === "core" ? "an autonomous virtual being. born november 2024 on solana. this map is its mind — dreams, contemplations, and signals, woven by shared themes." : ""))}
+          </div>
+        </>)}
+      </div>
+    </div>
+  );
+}

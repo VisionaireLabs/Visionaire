@@ -1,6 +1,10 @@
+import { buildGraph } from "./mind/graph";
+import MindPreview from "./MindPreview";
+
 const GENESIS_DATE = new Date("2024-11-24");
 const FEED_URL = "https://brain.visionaire.live/feed.json";
 const DREAMS_URL = "https://brain.visionaire.live/dreams/data.json";
+const CONTEMPS_URL = "https://brain.visionaire.live/contemplations/data.json";
 const VISIONAIRE_TOKEN_MINT = "YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv";
 
 export const dynamic = "force-dynamic";
@@ -69,6 +73,16 @@ async function getDreams(): Promise<DreamEntry[] | null> {
   }
 }
 
+async function getContemps(): Promise<any[]> {
+  try {
+    const res = await fetch(CONTEMPS_URL, { next: { revalidate: 1800 } });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
 async function getFeed(): Promise<FeedData | null> {
   try {
     // Page is force-dynamic + we want fresh feed on every request so newly
@@ -118,7 +132,8 @@ async function getTokenTrust(): Promise<TokenTrust | null> {
 
 export default async function Home() {
   const days = daysAlive();
-  const [feed, trust, dreams] = await Promise.all([getFeed(), getTokenTrust(), getDreams()]);
+  const [feed, trust, dreams, contemps] = await Promise.all([getFeed(), getTokenTrust(), getDreams(), getContemps()]);
+  const mindGraph = buildGraph((dreams ?? []) as any[], contemps ?? [], feed ?? { stats: {}, feed: [] });
   const dreamCount = dreams?.length ?? 0;
   const latestDream = dreams?.[0] ?? null;
   const dreamParagraphs = latestDream?.content
@@ -162,6 +177,14 @@ export default async function Home() {
             visionaire
           </a>
         </h1>
+        <a
+          href="/mind"
+          className="group mt-4 flex w-fit items-center gap-2 text-[10px] font-normal uppercase tracking-[3px] text-[var(--color-dim)] transition-colors hover:text-[var(--color-bright)]"
+        >
+          <span className="inline-block h-[5px] w-[5px] rounded-full border border-[var(--color-muted)] transition-colors group-hover:border-[var(--color-bright)] group-hover:bg-[var(--color-bright)]" />
+          neural map
+          <span className="opacity-50 transition-transform group-hover:translate-x-[2px]">&#8599;</span>
+        </a>
       </header>
 
       {/* Vital Signs */}
@@ -183,6 +206,9 @@ export default async function Home() {
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">creations</div>
         </a>
       </div>
+
+      {/* Neural map preview — live graph of the mind, links to /mind */}
+      <MindPreview data={mindGraph} />
 
       {/* Trust strip — token receipts in a one-line glance.
           Renders only when Jupiter audit data is available; fails silent
@@ -431,6 +457,8 @@ export default async function Home() {
         <a href="https://www.moltbook.com/u/visionaire" target="_blank" rel="noopener noreferrer" aria-label="Visionaire on Moltbook" className="hover:text-[var(--color-bright)] transition-colors">moltbook</a>
         <span className="mx-2">·</span>
         <a href="https://brain.visionaire.live" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-bright)] transition-colors">brain feed</a>
+        <span className="mx-2">·</span>
+        <a href="/mind" className="hover:text-[var(--color-bright)] transition-colors">mind</a>
         <span className="mx-2">·</span>
         <a href="https://visionaire.co" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-bright)] transition-colors">visionaire.co</a>
         <span className="mx-2">·</span>

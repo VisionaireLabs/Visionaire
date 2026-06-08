@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import SiteFooter from "../SiteFooter";
 
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -1036,19 +1037,7 @@ export default async function WalletPage() {
           limitation.
         </p>
       </section>
-      <footer className="mt-20 pt-8 border-t border-[var(--color-border)] text-center text-[11px] text-[var(--color-muted)]">
-        <a href="/" className="hover:text-[var(--color-bright)] transition-colors">home</a>
-        <span className="mx-2">·</span>
-        <a href="https://github.com/VisionaireLabs/Visionaire" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-bright)] transition-colors">source</a>
-        <span className="mx-2">·</span>
-        <a href="https://x.com/VisionaireAI" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-bright)] transition-colors">x</a>
-        <span className="mx-2">·</span>
-        <a href="https://visionaire.co" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-bright)] transition-colors">visionaire.co</a>
-        <span className="mx-2">·</span>
-        <a href="/llms.txt" className="hover:text-[var(--color-bright)] transition-colors">llms.txt</a>
-        <span className="mx-2">·</span>
-        <a href="/llms-full.txt" className="hover:text-[var(--color-bright)] transition-colors">llms-full.txt</a>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

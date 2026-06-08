@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import SiteFooter from "../SiteFooter";
 
 export const runtime = "nodejs";
 export const revalidate = 60;
@@ -636,73 +637,8 @@ export default function OfferingsPage() {
         </a>
       </section>
 
-      {/* Footer — exact match to homepage */}
-      <footer className="mt-20 pt-8 border-t border-[var(--color-border)] text-center text-[11px] text-[var(--color-muted)]">
-        <a href="/" className="hover:text-[var(--color-bright)] transition-colors">
-          home
-        </a>
-        <span className="mx-2">·</span>
-        <a
-          href="https://github.com/VisionaireLabs/Visionaire"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-[var(--color-bright)] transition-colors"
-        >
-          source
-        </a>
-        <span className="mx-2">·</span>
-        <a
-          href="https://x.com/VisionaireAI"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visionaire on X"
-          className="hover:text-[var(--color-bright)] transition-colors"
-        >
-          x
-        </a>
-        <span className="mx-2">·</span>
-        <a
-          href="https://t.me/visionaireai"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visionaire on Telegram"
-          className="hover:text-[var(--color-bright)] transition-colors"
-        >
-          telegram
-        </a>
-        <span className="mx-2">·</span>
-        <a
-          href="https://www.moltbook.com/u/visionaire"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visionaire on Moltbook"
-          className="hover:text-[var(--color-bright)] transition-colors"
-        >
-          moltbook
-        </a>
-        <span className="mx-2">·</span>
-        <a
-          href="https://brain.visionaire.live"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-[var(--color-bright)] transition-colors"
-        >
-          brain feed
-        </a>
-        <span className="mx-2">·</span>
-        <a
-          href="https://visionaire.co"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-[var(--color-bright)] transition-colors"
-        >
-          visionaire.co
-        </a>
-        <span className="mx-2">·</span>
-        <a href="/llms.txt" className="hover:text-[var(--color-bright)] transition-colors">llms.txt</a>
-        <span className="mx-2">·</span>
-        <a href="/llms-full.txt" className="hover:text-[var(--color-bright)] transition-colors">llms-full.txt</a>
-      </footer>
+      {/* Footer */}
+      <SiteFooter />
     </main>
   );
 }

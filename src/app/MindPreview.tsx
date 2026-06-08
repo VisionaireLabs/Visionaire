@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Graph } from "./mind/graph";
 
 // Auto-spinning neural-map preview for the homepage. Rigid rotation (no
@@ -8,6 +8,7 @@ import type { Graph } from "./mind/graph";
 export default function MindPreview({ data }: { data: Graph }) {
   const elRef = useRef<HTMLDivElement>(null);
   const gRef = useRef<any>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let disposed = false;
@@ -69,6 +70,7 @@ export default function MindPreview({ data }: { data: Graph }) {
         }
         G.zoomToFit(800, 70);
         settled = true;
+        setReady(true);
       }, 2000);
       gRef.current = G; (G as any).__ro = ro;
     })();
@@ -92,14 +94,17 @@ export default function MindPreview({ data }: { data: Graph }) {
     >
       <style>{`
         @keyframes mindtilt {
-          0%   { transform: perspective(1500px) rotateX(8deg) rotateY(-7deg); }
-          50%  { transform: perspective(1500px) rotateX(2deg) rotateY(8deg); }
-          100% { transform: perspective(1500px) rotateX(8deg) rotateY(-7deg); }
+          0%   { transform: perspective(1500px) rotateX(9deg) rotateY(-9deg) translate3d(-2%,1%,0) scale(0.97); }
+          20%  { transform: perspective(1500px) rotateX(4deg) rotateY(6deg) translate3d(2%,-1.5%,0) scale(1.06); }
+          40%  { transform: perspective(1500px) rotateX(11deg) rotateY(10deg) translate3d(1.5%,2%,0) scale(1.0); }
+          60%  { transform: perspective(1500px) rotateX(3deg) rotateY(-6deg) translate3d(-2.5%,1.5%,0) scale(1.07); }
+          80%  { transform: perspective(1500px) rotateX(8deg) rotateY(8deg) translate3d(1%,-1%,0) scale(1.01); }
+          100% { transform: perspective(1500px) rotateX(9deg) rotateY(-9deg) translate3d(-2%,1%,0) scale(0.97); }
         }
-        .mindtilt-canvas { animation: mindtilt 26s ease-in-out infinite; transform-origin: 50% 50%; will-change: transform; }
+        .mindtilt-canvas { animation: mindtilt 30s ease-in-out infinite; transform-origin: 50% 50%; will-change: transform; }
       `}</style>
       {/* touch/pointer pass through so the page scrolls on mobile */}
-      <div ref={elRef} className="absolute inset-0 mindtilt-canvas" style={{ pointerEvents: "none", touchAction: "pan-y" }} />
+      <div ref={elRef} className="absolute inset-0 mindtilt-canvas" style={{ pointerEvents: "none", touchAction: "pan-y", opacity: ready ? 1 : 0, transition: "opacity 1s ease" }} />
 
       {/* labels + CTA aligned to the text column margins */}
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10">

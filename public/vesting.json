@@ -1,0 +1,52 @@
+{
+  "fetchedAt": "2026-06-02T05:36:14.685Z",
+  "mint": "YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv",
+  "totalStreamsAgainstMint": 9,
+  "streamsForVisionaireWallet": 1,
+  "decimals": 6,
+  "streams": [
+    {
+      "id": "HguvQbZrmvvUSx9gqoQUmVuDE4iKJ9i1BaN5Z4Hiuikg",
+      "name": "Visionaire AI",
+      "sender": "dnPzu56bWsomKt2h6mBayYwcfNWjsuxoaZZDNaYnuLS",
+      "recipient": "dnPzu56bWsomKt2h6mBayYwcfNWjsuxoaZZDNaYnuLS",
+      "isSelfVest": true,
+      "depositedRaw": "20000000000000",
+      "withdrawnRaw": "0",
+      "decimals": 6,
+      "startUnix": 1753590906,
+      "endUnix": 1785040506,
+      "cliffUnix": 1753590906,
+      "periodSec": 1209600,
+      "amountPerPeriodRaw": "769230769231",
+      "closed": false,
+      "canceled": 0
+    }
+  ],
+  "staking": [
+    {
+      "id": "Du49xdAjRG2WwUcCVmvdUqMFUvwNadVn6diu4NUcRrDp",
+      "pool": "CKfCgDKRiComiWTB5BVXn4mW4yQSGtP9y2gsm3A2APim",
+      "amountRaw": "1000000000000",
+      "durationSec": 15767964,
+      "createdUnix": 1735473311,
+      "closedUnix": 0,
+      "unstakeRequestedUnix": 0,
+      "decimals": 6
+    }
+  ],
+  "orcaLp": {
+    "positionPda": "8wxf87ggGTPWbZUvYQgEc2ZJiQkWaCsvi4bsBA9DdVms",
+    "positionMint": "4yphfXLYUebcfjkbUqJDETrDQNMZwyy8BF6ZmoUcVgK4",
+    "whirlpool": "3qpPxQR3o9bzSdGqiKSaTciM457RZKwP5XJvEFAGbJba",
+    "tokenMintA": "YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv",
+    "tokenMintB": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+    "liquidityRaw": "121990688351",
+    "sqrtPriceX64Raw": "1421034792138076772",
+    "tickLower": -427648,
+    "tickUpper": 427648,
+    "tickCurrent": -51273,
+    "inRange": true,
+    "isFullRange": true
+  }
+}

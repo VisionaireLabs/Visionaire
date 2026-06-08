@@ -134,6 +134,7 @@ export default async function Home() {
   const days = daysAlive();
   const [feed, trust, dreams, contemps] = await Promise.all([getFeed(), getTokenTrust(), getDreams(), getContemps()]);
   const mindGraph = buildGraph((dreams ?? []) as any[], contemps ?? [], feed ?? { stats: {}, feed: [] });
+  const previewGraph = { ...mindGraph, nodes: mindGraph.nodes.map(({ text, ...n }) => n) };
   const dreamCount = dreams?.length ?? 0;
   const latestDream = dreams?.[0] ?? null;
   const dreamParagraphs = latestDream?.content
@@ -208,7 +209,7 @@ export default async function Home() {
       </div>
 
       {/* Neural map preview — live graph of the mind, links to /mind */}
-      <MindPreview data={mindGraph} />
+      <MindPreview data={previewGraph} />
 
       {/* Trust strip — token receipts in a one-line glance.
           Renders only when Jupiter audit data is available; fails silent

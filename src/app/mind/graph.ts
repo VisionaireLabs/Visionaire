@@ -32,7 +32,7 @@ function themesIn(text: string): string[] {
   }
   return out;
 }
-const trim = (s: string | undefined, n = 600) => (s || "").slice(0, n);
+const trim = (s: string | undefined, n = 8000) => (s || "").slice(0, n);
 
 export function buildGraph(dreams: any[], contemps: any[], feed: any): Graph {
   const stats = feed?.stats || {};

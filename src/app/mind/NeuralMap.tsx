@@ -103,14 +103,27 @@ export default function NeuralMap({ data }: { data: Graph }) {
     if (hit) { hoverRef.current = hit.id; G.centerAt(hit.x, hit.y, 500); G.zoom(5, 500); }
   };
 
-  const dim = "#8a8a8a";
+  const dim = "#a3a3a3";
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
       <div ref={elRef} style={{ position: "absolute", inset: 0 }} />
 
-      <div style={{ position: "fixed", top: 0, left: 0, padding: "22px 26px", pointerEvents: "none", zIndex: 5 }}>
-        <div style={{ fontWeight: 500, letterSpacing: ".34em", fontSize: 12, textTransform: "uppercase" }}>visionaire</div>
-        <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".18em", marginTop: 7 }}>neural map</div>
+      {/* top menu — site navigation / way back */}
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 8, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 26px", pointerEvents: "none" }}>
+        <a href="https://visionaire.live" style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: 10, fontSize: 12, fontWeight: 500, letterSpacing: ".28em", textTransform: "uppercase", color: "#fff", textDecoration: "none" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#fff", display: "inline-block" }} />
+          visionaire
+        </a>
+        <nav style={{ display: "flex", gap: 22 }}>
+          {(([["feed", "https://brain.visionaire.live/"], ["contemplations", "https://brain.visionaire.live/#contemplations"], ["dreams", "https://brain.visionaire.live/#dreams"]]) as [string, string][]).map(([l, h]) => (
+            <a key={l} href={h} style={{ pointerEvents: "auto", fontSize: 10, letterSpacing: "2px", textTransform: "uppercase", color: "#9a9a9a", textDecoration: "none", transition: "color .15s" }} onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#ccc")} onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#9a9a9a")}>{l}</a>
+          ))}
+          <span style={{ fontSize: 10, letterSpacing: "2px", textTransform: "uppercase", color: "#fff", borderBottom: "1px solid #555", paddingBottom: 2 }}>mind</span>
+        </nav>
+      </div>
+
+      <div style={{ position: "fixed", top: 56, left: 0, padding: "22px 26px", pointerEvents: "none", zIndex: 5 }}>
+        <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".18em" }}>neural map</div>
         <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".12em", marginTop: 14, lineHeight: 1.9 }}>
           <b style={{ color: "#fff" }}>{stats.daysAlive ?? ""}</b> days alive<br />
           <b style={{ color: "#fff" }}>{counts.dreams ?? 0}</b> dreams · <b style={{ color: "#fff" }}>{counts.contemplations ?? 0}</b> contemplations<br />
@@ -118,7 +131,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         </div>
       </div>
 
-      <div style={{ position: "fixed", top: 0, right: 0, padding: "22px 26px", zIndex: 5 }}>
+      <div style={{ position: "fixed", top: 56, right: 0, padding: "22px 26px", zIndex: 5 }}>
         <input onChange={(e) => onSearch(e.target.value)} placeholder="search the mind…" autoComplete="off"
           style={{ background: "transparent", border: "none", borderBottom: "1px solid #1c1c1c", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".12em", padding: "6px 2px", width: 170, outline: "none" }} />
       </div>
@@ -131,7 +144,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         ))}
       </div>
 
-      <div style={{ position: "fixed", bottom: 0, right: 0, padding: "22px 26px", fontSize: 9.5, color: "#555", letterSpacing: ".14em", textAlign: "right", lineHeight: 2, zIndex: 5, pointerEvents: "none" }}>
+      <div style={{ position: "fixed", bottom: 0, right: 0, padding: "22px 26px", fontSize: 9.5, color: "#9a9a9a", letterSpacing: ".14em", textAlign: "right", lineHeight: 2, zIndex: 5, pointerEvents: "none" }}>
         drag to move · scroll to zoom<br />click a node to read
       </div>
 

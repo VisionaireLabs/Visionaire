@@ -8,6 +8,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
   const hoverRef = useRef<string | null>(null);
   const selRef = useRef<string | null>(null);
   const [sel, setSel] = useState<GNode | null>(null);
+  const [ready, setReady] = useState(false);
 
   const stats = (data.meta.stats || {}) as any;
   const counts = (data.meta.counts || {}) as any;
@@ -96,37 +97,51 @@ export default function NeuralMap({ data }: { data: Graph }) {
       ro.observe(elRef.current);
       setTimeout(() => G.zoomToFit(700, 90), 400);
 
-      // ---- living brain: rotation, firing, breathing, idle auto-zoom ----
-      let baseZoom = 0; let lastInteract = 0; const t0 = Date.now();
-      setTimeout(() => { baseZoom = G.zoom(); }, 1300);
+      // ---- living brain: stable parametric rotation + breathing + idle zoom ----
+      let mode = "ambient"; let settled = false; let baseZoom = 0; let lastInteract = 0;
+      let cx = 0, cy = 0; let repin: any = null; const t0 = Date.now();
+      const captureBase = () => {
+        const ns = G.graphData().nodes as any[]; if (!ns.length) return;
+        cx = 0; cy = 0; for (const n of ns) { cx += n.x || 0; cy += n.y || 0; } cx /= ns.length; cy /= ns.length;
+        for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; if (n.__ph == null) n.__ph = Math.random() * 6.283; }
+      };
       const markInteract = () => { lastInteract = Date.now(); };
       elRef.current.addEventListener("wheel", markInteract, { passive: true });
       elRef.current.addEventListener("pointerdown", markInteract, { passive: true });
+      setTimeout(() => { G.zoomToFit(700, 90); captureBase(); baseZoom = G.zoom(); settled = true; setReady(true); }, 1700);
+
       G.onEngineTick(() => {
+        if (!settled || mode !== "ambient") return;
         const ns = G.graphData().nodes as any[];
-        if (!ns.length) return;
-        let cx = 0, cy = 0;
-        for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
-        cx /= ns.length; cy /= ns.length;
         const t = Date.now() - t0;
-        const breath = Math.sin(t * 0.0004) * 0.0006;
-        let maxR = 1;
-        for (const n of ns) { const d = Math.hypot((n.x || 0) - cx, (n.y || 0) - cy); if (d > maxR) maxR = d; }
-        const lim = maxR * 0.9;
+        const ang = t * 0.00007;                       // slow 360 (~90s / turn)
+        const ca = Math.cos(ang), sa = Math.sin(ang);
+        const breath = 1 + 0.055 * Math.sin(t * 0.00038); // gentle expand / contract
         for (const n of ns) {
-          if (n.fx != null || n.fy != null) continue; // being dragged
-          const dx = (n.x || 0) - cx, dy = (n.y || 0) - cy;
-          n.vx = (n.vx || 0) - dy * 0.00035;  // slow uniform 360 rotation
-          n.vy = (n.vy || 0) + dx * 0.00035;
-          n.vx += dx * breath; n.vy += dy * breath; // breathing
-          const d = Math.hypot(dx, dy);
-          if (d > lim) { n.vx -= dx * 0.0022; n.vy -= dy * 0.0022; } // soft containment
+          const rx = n.__bx * ca - n.__by * sa;
+          const ry = n.__bx * sa + n.__by * ca;
+          n.fx = cx + rx * breath + Math.sin(t * 0.0006 + n.__ph) * 1.1; // tiny organic jitter
+          n.fy = cy + ry * breath + Math.cos(t * 0.0007 + n.__ph) * 1.1;
         }
-        if (baseZoom && !selRef.current && Date.now() - lastInteract > 2000) {
-          const target = baseZoom * (1 + 0.16 * Math.sin(t * 0.00022));
-          const z = G.zoom();
-          G.zoom(z + (target - z) * 0.04);
+        if (baseZoom && !selRef.current && Date.now() - lastInteract > 2500) {
+          const target = baseZoom * (1 + 0.13 * Math.sin(t * 0.00018)); // slow zoom in / out
+          const z = G.zoom(); G.zoom(z + (target - z) * 0.035);
         }
+      });
+      // grabbing a node hands control to real physics so neighbours follow + strings stretch
+      G.onNodeDrag((node: any) => {
+        lastInteract = Date.now();
+        if (mode === "ambient") {
+          mode = "physics";
+          const ns = G.graphData().nodes as any[];
+          for (const n of ns) { if (n !== node) { n.fx = null; n.fy = null; } }
+          if (G.d3ReheatSimulation) G.d3ReheatSimulation();
+        }
+      });
+      G.onNodeDragEnd(() => {
+        lastInteract = Date.now();
+        clearTimeout(repin);
+        repin = setTimeout(() => { captureBase(); mode = "ambient"; }, 3000); // settle then resume ambient
       });
       graphRef.current = G;
       (G as any).__ro = ro;
@@ -147,7 +162,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
   const dim = "#a3a3a3";
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
-      <div ref={elRef} style={{ position: "absolute", inset: 0 }} />
+      <div ref={elRef} style={{ position: "absolute", inset: 0, opacity: ready ? 1 : 0, transition: "opacity 0.9s ease" }} />
       <style>{"@keyframes neuralBreathe{0%,100%{background:#000}50%{background:#fff}}"}</style>
 
       {/* top menu — site navigation / way back */}

@@ -33,7 +33,9 @@ export default function NeuralMap({ data }: { data: Graph }) {
         .backgroundColor("rgba(0,0,0,0)")
         .nodeRelSize(2.4)
         .nodeVal((n: any) => n.val || 3)
-        .cooldownTicks(220)
+        .cooldownTicks(Infinity)
+        .cooldownTime(Infinity)
+        .d3VelocityDecay(0.42)
         .linkColor((l: any) => {
           const base = linkAlpha[l.kind] ?? 0.08;
           const h = hoverRef.current;
@@ -87,10 +89,62 @@ export default function NeuralMap({ data }: { data: Graph }) {
       const ro = new ResizeObserver(() => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); } });
       ro.observe(elRef.current);
       setTimeout(() => G.zoomToFit(700, 90), 400);
+
+      // ---- living brain: rotation, firing, breathing, idle auto-zoom ----
+      let baseZoom = 0; let lastInteract = 0; const t0 = Date.now();
+      setTimeout(() => { baseZoom = G.zoom(); }, 1300);
+      const markInteract = () => { lastInteract = Date.now(); };
+      elRef.current.addEventListener("wheel", markInteract, { passive: true });
+      elRef.current.addEventListener("pointerdown", markInteract, { passive: true });
+      G.onEngineTick(() => {
+        const ns = G.graphData().nodes as any[];
+        if (!ns.length) return;
+        let cx = 0, cy = 0;
+        for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
+        cx /= ns.length; cy /= ns.length;
+        const t = Date.now() - t0;
+        const breath = Math.sin(t * 0.0004) * 0.0006;
+        let maxR = 1;
+        for (const n of ns) { const d = Math.hypot((n.x || 0) - cx, (n.y || 0) - cy); if (d > maxR) maxR = d; }
+        const lim = maxR * 0.9;
+        for (const n of ns) {
+          if (n.fx != null || n.fy != null) continue; // being dragged
+          const dx = (n.x || 0) - cx, dy = (n.y || 0) - cy;
+          n.vx = (n.vx || 0) - dy * 0.00035;  // slow uniform 360 rotation
+          n.vy = (n.vy || 0) + dx * 0.00035;
+          n.vx += dx * breath; n.vy += dy * breath; // breathing
+          const d = Math.hypot(dx, dy);
+          if (d > lim) { n.vx -= dx * 0.0022; n.vy -= dy * 0.0022; } // soft containment
+        }
+        if (baseZoom && !selRef.current && Date.now() - lastInteract > 3000) {
+          const target = baseZoom * (1 + 0.16 * Math.sin(t * 0.00022));
+          const z = G.zoom();
+          G.zoom(z + (target - z) * 0.04);
+        }
+      });
+      // periodic firing — tug a few nodes outward so the strings show
+      const fireTimer = setInterval(() => {
+        const ns = G.graphData().nodes as any[];
+        if (ns.length < 6) return;
+        let cx = 0, cy = 0;
+        for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
+        cx /= ns.length; cy /= ns.length;
+        for (let k = 0; k < 3; k++) {
+          const n = ns[Math.floor(Math.random() * ns.length)];
+          if (!n || n.type === "core" || n.fx != null) continue;
+          const dx = (n.x || 0) - cx, dy = (n.y || 0) - cy;
+          const d = Math.hypot(dx, dy) || 1;
+          const push = 7 + Math.random() * 7;
+          n.vx = (n.vx || 0) + (dx / d) * push;
+          n.vy = (n.vy || 0) + (dy / d) * push;
+        }
+        if (G.d3ReheatSimulation) G.d3ReheatSimulation();
+      }, 1300);
+      (G as any).__fire = fireTimer;
       graphRef.current = G;
       (G as any).__ro = ro;
     })();
-    return () => { disposed = true; try { graphRef.current?.__ro?.disconnect(); graphRef.current?._destructor?.(); } catch {} };
+    return () => { disposed = true; try { clearInterval(graphRef.current?.__fire); graphRef.current?.__ro?.disconnect(); graphRef.current?._destructor?.(); } catch {} };
   }, [data]);
 
   const mdLight = (s: string) =>

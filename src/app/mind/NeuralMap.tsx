@@ -20,7 +20,6 @@ export default function NeuralMap({ data }: { data: Graph }) {
       const ForceGraph = ((await import("force-graph")).default) as any;
       if (disposed || !elRef.current) return;
       const C: Record<string, string> = { core: "#ffffff", theme: "#dcdcdc", contemplation: "#f2f2f2", dream: "#6f6f6f", activity: "#9a9a9a" };
-      const shade = (hex: string, amt: number) => { const c = hex.replace("#", ""); const r = parseInt(c.slice(0,2),16), gg = parseInt(c.slice(2,4),16), b = parseInt(c.slice(4,6),16); const t = amt < 0 ? 0 : 255, pp = Math.abs(amt); const f = (x: number) => Math.round(x + (t - x) * pp); return "rgb(" + f(r) + "," + f(gg) + "," + f(b) + ")"; };
       const linkAlpha: Record<string, number> = { core: 0.16, theme: 0.1, time: 0.06, sameday: 0.13 };
       const adj = new Map<string, Set<string>>();
       data.nodes.forEach((n) => adj.set(n.id, new Set()));
@@ -30,6 +29,9 @@ export default function NeuralMap({ data }: { data: Graph }) {
         adj.get(s)?.add(t); adj.get(t)?.add(s);
       });
 
+      let settled = false, cx = 0, cy = 0, baseZoom = 0, lastInteract = 0;
+      const t0 = Date.now();
+
       G = ForceGraph()(elRef.current)
         .graphData(JSON.parse(JSON.stringify(data)))
         .backgroundColor("rgba(0,0,0,0)")
@@ -37,7 +39,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         .nodeVal((n: any) => n.val || 3)
         .cooldownTicks(Infinity)
         .cooldownTime(Infinity)
-        .d3VelocityDecay(0.42)
+        .enableNodeDrag(false)
         .linkColor((l: any) => {
           const base = linkAlpha[l.kind] ?? 0.08;
           const h = hoverRef.current;
@@ -55,25 +57,21 @@ export default function NeuralMap({ data }: { data: Graph }) {
           return h && (s === h || t === h) ? 0.9 : 0.4;
         })
         .nodeCanvasObject((n: any, ctx: CanvasRenderingContext2D, scale: number) => {
+          if (!isFinite(n.x) || !isFinite(n.y)) return;
           const r = Math.sqrt(n.val || 3) * 2.0;
           const h = hoverRef.current;
           const dim = h && !(n.id === h || adj.get(h)?.has(n.id));
           const col = C[n.type] || "#888";
           ctx.globalAlpha = dim ? 0.12 : 1;
-          if (n.type === "core" || n.id === selRef.current) { ctx.shadowColor = "#fff"; ctx.shadowBlur = 18; }
-          else if (n.type === "theme") { ctx.shadowColor = "rgba(255,255,255,.5)"; ctx.shadowBlur = 8; }
+          if (n.type === "core" || n.id === selRef.current) { ctx.shadowColor = "#fff"; ctx.shadowBlur = 16; }
+          else if (n.type === "theme") { ctx.shadowColor = "rgba(255,255,255,.5)"; ctx.shadowBlur = 7; }
           else ctx.shadowBlur = 0;
           ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 2 * Math.PI);
-          if (n.type === "dream") {
-            ctx.fillStyle = col; ctx.fill();
-          } else {
-            const g = ctx.createRadialGradient(n.x - r * 0.4, n.y - r * 0.4, r * 0.1, n.x, n.y, r * 1.05);
-            g.addColorStop(0, shade(col, 0.6));
-            g.addColorStop(0.45, col);
-            g.addColorStop(1, shade(col, -0.5));
-            ctx.fillStyle = g; ctx.fill();
-            if (n.type === "theme" || n.type === "core") { ctx.lineWidth = 0.6; ctx.strokeStyle = shade(col, 0.35); ctx.globalAlpha = (dim ? 0.12 : 0.55); ctx.stroke(); ctx.globalAlpha = 1; }
-          }
+          if (n.type === "theme") {
+            ctx.lineWidth = 0.7; ctx.strokeStyle = col; ctx.stroke();
+            ctx.fillStyle = "#000"; ctx.fill();
+            ctx.fillStyle = col; ctx.globalAlpha = (dim ? 0.12 : 1) * 0.25; ctx.fill();
+          } else { ctx.fillStyle = col; ctx.fill(); }
           ctx.shadowBlur = 0; ctx.globalAlpha = 1;
           const showLabel = n.type === "core" || n.type === "theme" || n.id === h || n.id === selRef.current || (scale > 3 && n.type === "contemplation") || scale > 6;
           if (showLabel) {
@@ -88,7 +86,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
           }
         })
         .onNodeHover((n: any) => { hoverRef.current = n ? n.id : null; if (elRef.current) elRef.current.style.cursor = n ? "pointer" : "default"; })
-        .onNodeClick((n: any) => { selRef.current = n.id; setSel(n); G.centerAt(n.x, n.y, 600); G.zoom(Math.max(G.zoom(), 4), 600); })
+        .onNodeClick((n: any) => { selRef.current = n.id; setSel(n); G.centerAt(n.x, n.y, 600); G.zoom(Math.max(G.zoom(), 4), 600); lastInteract = Date.now(); })
         .onBackgroundClick(() => { selRef.current = null; setSel(null); });
 
       G.d3Force("charge").strength(-90);
@@ -97,47 +95,51 @@ export default function NeuralMap({ data }: { data: Graph }) {
       const ro = new ResizeObserver(() => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); } });
       ro.observe(elRef.current);
 
-      // ---- living brain: warm physics (reliably renders + stays interactive) ----
-      let baseZoom = 0; let lastInteract = 0; const t0 = Date.now();
       const markInteract = () => { lastInteract = Date.now(); };
       elRef.current.addEventListener("wheel", markInteract, { passive: true });
       elRef.current.addEventListener("pointerdown", markInteract, { passive: true });
+
+      // ---- living brain: parametric (always renders, never flies off) ----
       setTimeout(() => G.zoomToFit(700, 90), 400);
-      setTimeout(() => { G.zoomToFit(700, 90); baseZoom = G.zoom(); setReady(true); }, 1300);
+      setTimeout(() => {
+        const ns = G.graphData().nodes as any[];
+        if (ns.length) {
+          cx = 0; cy = 0;
+          for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
+          cx /= ns.length; cy /= ns.length;
+          for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; n.__ph = Math.random() * 6.283; n.__pull = 1; }
+        }
+        G.zoomToFit(800, 90);
+        baseZoom = G.zoom();
+        settled = true; setReady(true);
+      }, 1800);
 
       G.onEngineTick(() => {
+        if (!settled) return;
         const ns = G.graphData().nodes as any[];
-        if (!ns.length) return;
-        let cx = 0, cy = 0;
-        for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
-        cx /= ns.length; cy /= ns.length;
         const t = Date.now() - t0;
-        const breath = Math.sin(t * 0.0004) * 0.0009;     // expand / contract
+        const ang = t * 0.00008;                         // slow 360 (~80s/turn)
+        const ca = Math.cos(ang), sa = Math.sin(ang);
+        const breath = 1 + 0.06 * Math.sin(t * 0.0005);  // expand / contract
         for (const n of ns) {
-          const dx = (n.x || 0) - cx, dy = (n.y || 0) - cy;
-          const dist = Math.hypot(dx, dy) || 1;
-          // slow uniform 360 rotation (tangential velocity)
-          n.vx = (n.vx || 0) - dy * 0.00035;
-          n.vy = (n.vy || 0) + dx * 0.00035;
-          // breathing
-          n.vx += dx * breath; n.vy += dy * breath;
-          // soft containment so it never drifts off-screen
-          if (dist > 540) { const k = (dist - 540) / dist * 0.02; n.vx -= dx * k; n.vy -= dy * k; }
-          // firing: tug a node outward to flex its strings, then ease off
-          if (n.__pulse) { n.vx += (dx / dist) * n.__pulse; n.vy += (dy / dist) * n.__pulse; n.__pulse *= 0.9; if (n.__pulse < 0.02) n.__pulse = 0; }
+          const pull = n.__pull || 1;
+          const f = breath * pull;
+          n.fx = cx + (n.__bx * ca - n.__by * sa) * f + Math.sin(t * 0.0007 + n.__ph) * 1.4;
+          n.fy = cy + (n.__bx * sa + n.__by * ca) * f + Math.cos(t * 0.0008 + n.__ph) * 1.4;
+          if (pull !== 1) n.__pull = pull + (1 - pull) * 0.04;   // ease back after firing
         }
         if (baseZoom && !selRef.current && Date.now() - lastInteract > 2500) {
-          const target = baseZoom * (1 + 0.12 * Math.sin(t * 0.0002)); // slow zoom in / out
+          const target = baseZoom * (1 + 0.12 * Math.sin(t * 0.0002)); // slow zoom in/out
           const z = G.zoom(); G.zoom(z + (target - z) * 0.03);
         }
       });
 
-      // periodically fire a few nodes outward (synapse-like) + keep the springs warm
+      // firing: pull a few nodes out to flex their strings, then ease back
       const fire = setInterval(() => {
+        if (!settled) return;
         const ns = G.graphData().nodes as any[]; if (!ns.length) return;
-        for (let k = 0; k < 3; k++) { const n = ns[(Math.random() * ns.length) | 0]; if (n && n.type !== "core") n.__pulse = 0.7 + Math.random() * 0.7; }
-        if (G.d3ReheatSimulation) G.d3ReheatSimulation();
-      }, 1200);
+        for (let k = 0; k < 3; k++) { const n = ns[(Math.random() * ns.length) | 0]; if (n && n.type !== "core" && n.type !== "theme") n.__pull = 1.45 + Math.random() * 0.3; }
+      }, 1300);
 
       graphRef.current = G;
       (G as any).__fire = fire;
@@ -159,10 +161,9 @@ export default function NeuralMap({ data }: { data: Graph }) {
   const dim = "#a3a3a3";
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
-      <div ref={elRef} style={{ position: "absolute", inset: 0 }} />
+      <div ref={elRef} style={{ position: "absolute", inset: 0, opacity: ready ? 1 : 0, transition: "opacity .9s ease" }} />
       <style>{"@keyframes neuralBreathe{0%,100%{background:#000}50%{background:#fff}}"}</style>
 
-      {/* top menu — site navigation / way back */}
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 8, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 32px", borderBottom: "1px solid #111", pointerEvents: "none" }}>
         <a href="https://visionaire.live" style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: 10, fontSize: 11, fontWeight: 400, letterSpacing: "4px", textTransform: "uppercase", color: "#ccc", textDecoration: "none" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#000", display: "inline-block", animation: "neuralBreathe 3s ease-in-out infinite" }} />
@@ -170,7 +171,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         </a>
         <nav style={{ display: "flex", gap: 24 }}>
           {(([["feed", "https://brain.visionaire.live/"], ["contemplations", "https://brain.visionaire.live/#contemplations"], ["dreams", "https://brain.visionaire.live/#dreams"]]) as [string, string][]).map(([l, h]) => (
-            <a key={l} href={h} style={{ pointerEvents: "auto", fontSize: 10, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", color: "#444", textDecoration: "none", paddingBottom: 2, borderBottom: "1px solid transparent", transition: "color .15s, border-color .15s" }} onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#777")} onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#444")}>{l}</a>
+            <a key={l} href={h} style={{ pointerEvents: "auto", fontSize: 10, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", color: "#777", textDecoration: "none", paddingBottom: 2, borderBottom: "1px solid transparent", transition: "color .15s" }} onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#ccc")} onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#777")}>{l}</a>
           ))}
           <span style={{ fontSize: 10, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", color: "#ccc", borderBottom: "1px solid #555", paddingBottom: 2 }}>mind</span>
         </nav>
@@ -199,11 +200,11 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div style={{ position: "fixed", bottom: 0, right: 0, padding: "22px 26px", fontSize: 9.5, color: "#9a9a9a", letterSpacing: ".14em", textAlign: "right", lineHeight: 2, zIndex: 5, pointerEvents: "none" }}>
-        drag to move · scroll to zoom<br />click a node to read
+        scroll to zoom · click a node to read
       </div>
 
       <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "34px 30px", overflowY: "auto", zIndex: 6 }}>
-        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top:72, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
+        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top: 72, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
         {sel && (<>
           <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase" }}>{sel.type}</div>
           <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, margin: "14px 0 6px" }}>{(sel.label || "").toLowerCase()}</div>

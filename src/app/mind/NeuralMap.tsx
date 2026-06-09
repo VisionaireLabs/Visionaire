@@ -108,7 +108,8 @@ export default function NeuralMap({ data }: { data: Graph }) {
       const markInteract = () => { lastInteract = Date.now(); };
       elRef.current.addEventListener("wheel", markInteract, { passive: true });
       elRef.current.addEventListener("pointerdown", markInteract, { passive: true });
-      setTimeout(() => { G.zoomToFit(700, 90); captureBase(); baseZoom = G.zoom(); settled = true; setReady(true); }, 1700);
+      setTimeout(() => { G.zoomToFit(700, 90); }, 500);
+      setTimeout(() => { G.zoomToFit(700, 90); captureBase(); baseZoom = G.zoom(); settled = true; setReady(true); }, 3800);
 
       G.onEngineTick(() => {
         if (!settled || mode !== "ambient") return;
@@ -162,7 +163,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
   const dim = "#a3a3a3";
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
-      <div ref={elRef} style={{ position: "absolute", inset: 0, opacity: ready ? 1 : 0, transition: "opacity 0.9s ease" }} />
+      <div ref={elRef} style={{ position: "absolute", inset: 0 }} />
       <style>{"@keyframes neuralBreathe{0%,100%{background:#000}50%{background:#fff}}"}</style>
 
       {/* top menu — site navigation / way back */}

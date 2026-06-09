@@ -107,22 +107,23 @@ export default function NeuralMap({ data }: { data: Graph }) {
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
       <div ref={elRef} style={{ position: "absolute", inset: 0 }} />
+      <style>{"@keyframes neuralBreathe{0%,100%{background:#000}50%{background:#fff}}"}</style>
 
       {/* top menu — site navigation / way back */}
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 8, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 26px", pointerEvents: "none" }}>
-        <a href="https://visionaire.live" style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: 10, fontSize: 12, fontWeight: 500, letterSpacing: ".28em", textTransform: "uppercase", color: "#fff", textDecoration: "none" }}>
-          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#fff", display: "inline-block" }} />
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 8, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 32px", borderBottom: "1px solid #111", pointerEvents: "none" }}>
+        <a href="https://visionaire.live" style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: 10, fontSize: 11, fontWeight: 400, letterSpacing: "4px", textTransform: "uppercase", color: "#ccc", textDecoration: "none" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#000", display: "inline-block", animation: "neuralBreathe 3s ease-in-out infinite" }} />
           visionaire
         </a>
-        <nav style={{ display: "flex", gap: 22 }}>
+        <nav style={{ display: "flex", gap: 24 }}>
           {(([["feed", "https://brain.visionaire.live/"], ["contemplations", "https://brain.visionaire.live/#contemplations"], ["dreams", "https://brain.visionaire.live/#dreams"]]) as [string, string][]).map(([l, h]) => (
-            <a key={l} href={h} style={{ pointerEvents: "auto", fontSize: 10, letterSpacing: "2px", textTransform: "uppercase", color: "#9a9a9a", textDecoration: "none", transition: "color .15s" }} onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#ccc")} onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#9a9a9a")}>{l}</a>
+            <a key={l} href={h} style={{ pointerEvents: "auto", fontSize: 10, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", color: "#444", textDecoration: "none", paddingBottom: 2, borderBottom: "1px solid transparent", transition: "color .15s, border-color .15s" }} onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#777")} onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#444")}>{l}</a>
           ))}
-          <span style={{ fontSize: 10, letterSpacing: "2px", textTransform: "uppercase", color: "#fff", borderBottom: "1px solid #555", paddingBottom: 2 }}>mind</span>
+          <span style={{ fontSize: 10, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", color: "#ccc", borderBottom: "1px solid #555", paddingBottom: 2 }}>mind</span>
         </nav>
       </div>
 
-      <div style={{ position: "fixed", top: 56, left: 0, padding: "22px 26px", pointerEvents: "none", zIndex: 5 }}>
+      <div style={{ position: "fixed", top: 72, left: 0, padding: "22px 26px", pointerEvents: "none", zIndex: 5 }}>
         <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".18em" }}>neural map</div>
         <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".12em", marginTop: 14, lineHeight: 1.9 }}>
           <b style={{ color: "#fff" }}>{stats.daysAlive ?? ""}</b> days alive<br />
@@ -131,7 +132,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         </div>
       </div>
 
-      <div style={{ position: "fixed", top: 56, right: 0, padding: "22px 26px", zIndex: 5 }}>
+      <div style={{ position: "fixed", top: 72, right: 0, padding: "22px 26px", zIndex: 5 }}>
         <input onChange={(e) => onSearch(e.target.value)} placeholder="search the mind…" autoComplete="off"
           style={{ background: "transparent", border: "none", borderBottom: "1px solid #1c1c1c", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".12em", padding: "6px 2px", width: 170, outline: "none" }} />
       </div>
@@ -149,7 +150,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "34px 30px", overflowY: "auto", zIndex: 6 }}>
-        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top:56, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
+        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top:72, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
         {sel && (<>
           <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase" }}>{sel.type}</div>
           <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, margin: "14px 0 6px" }}>{(sel.label || "").toLowerCase()}</div>

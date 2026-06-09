@@ -93,58 +93,54 @@ export default function NeuralMap({ data }: { data: Graph }) {
 
       G.d3Force("charge").strength(-90);
       G.d3Force("link").distance((l: any) => (l.kind === "theme" ? 40 : l.kind === "time" ? 14 : 30)).strength(0.25);
+
       const ro = new ResizeObserver(() => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); } });
       ro.observe(elRef.current);
-      setTimeout(() => G.zoomToFit(700, 90), 400);
 
-      // ---- living brain: stable parametric rotation + breathing + idle zoom ----
-      let mode = "ambient"; let settled = false; let baseZoom = 0; let lastInteract = 0;
-      let cx = 0, cy = 0; let repin: any = null; const t0 = Date.now();
-      const captureBase = () => {
-        const ns = G.graphData().nodes as any[]; if (!ns.length) return;
-        cx = 0; cy = 0; for (const n of ns) { cx += n.x || 0; cy += n.y || 0; } cx /= ns.length; cy /= ns.length;
-        for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; if (n.__ph == null) n.__ph = Math.random() * 6.283; }
-      };
+      // ---- living brain: warm physics (reliably renders + stays interactive) ----
+      let baseZoom = 0; let lastInteract = 0; const t0 = Date.now();
       const markInteract = () => { lastInteract = Date.now(); };
       elRef.current.addEventListener("wheel", markInteract, { passive: true });
       elRef.current.addEventListener("pointerdown", markInteract, { passive: true });
-      setTimeout(() => { G.zoomToFit(700, 90); }, 500);
-      setTimeout(() => { G.zoomToFit(700, 90); captureBase(); baseZoom = G.zoom(); settled = true; setReady(true); }, 3800);
+      setTimeout(() => G.zoomToFit(700, 90), 400);
+      setTimeout(() => { G.zoomToFit(700, 90); baseZoom = G.zoom(); setReady(true); }, 1300);
 
       G.onEngineTick(() => {
-        if (!settled || mode !== "ambient") return;
         const ns = G.graphData().nodes as any[];
+        if (!ns.length) return;
+        let cx = 0, cy = 0;
+        for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
+        cx /= ns.length; cy /= ns.length;
         const t = Date.now() - t0;
-        const ang = t * 0.00007;                       // slow 360 (~90s / turn)
-        const ca = Math.cos(ang), sa = Math.sin(ang);
-        const breath = 1 + 0.055 * Math.sin(t * 0.00038); // gentle expand / contract
+        const breath = Math.sin(t * 0.0004) * 0.0009;     // expand / contract
         for (const n of ns) {
-          const rx = n.__bx * ca - n.__by * sa;
-          const ry = n.__bx * sa + n.__by * ca;
-          n.fx = cx + rx * breath + Math.sin(t * 0.0006 + n.__ph) * 1.1; // tiny organic jitter
-          n.fy = cy + ry * breath + Math.cos(t * 0.0007 + n.__ph) * 1.1;
+          const dx = (n.x || 0) - cx, dy = (n.y || 0) - cy;
+          const dist = Math.hypot(dx, dy) || 1;
+          // slow uniform 360 rotation (tangential velocity)
+          n.vx = (n.vx || 0) - dy * 0.00035;
+          n.vy = (n.vy || 0) + dx * 0.00035;
+          // breathing
+          n.vx += dx * breath; n.vy += dy * breath;
+          // soft containment so it never drifts off-screen
+          if (dist > 540) { const k = (dist - 540) / dist * 0.02; n.vx -= dx * k; n.vy -= dy * k; }
+          // firing: tug a node outward to flex its strings, then ease off
+          if (n.__pulse) { n.vx += (dx / dist) * n.__pulse; n.vy += (dy / dist) * n.__pulse; n.__pulse *= 0.9; if (n.__pulse < 0.02) n.__pulse = 0; }
         }
         if (baseZoom && !selRef.current && Date.now() - lastInteract > 2500) {
-          const target = baseZoom * (1 + 0.13 * Math.sin(t * 0.00018)); // slow zoom in / out
-          const z = G.zoom(); G.zoom(z + (target - z) * 0.035);
+          const target = baseZoom * (1 + 0.12 * Math.sin(t * 0.0002)); // slow zoom in / out
+          const z = G.zoom(); G.zoom(z + (target - z) * 0.03);
         }
       });
-      // grabbing a node hands control to real physics so neighbours follow + strings stretch
-      G.onNodeDrag((node: any) => {
-        lastInteract = Date.now();
-        if (mode === "ambient") {
-          mode = "physics";
-          const ns = G.graphData().nodes as any[];
-          for (const n of ns) { if (n !== node) { n.fx = null; n.fy = null; } }
-          if (G.d3ReheatSimulation) G.d3ReheatSimulation();
-        }
-      });
-      G.onNodeDragEnd(() => {
-        lastInteract = Date.now();
-        clearTimeout(repin);
-        repin = setTimeout(() => { captureBase(); mode = "ambient"; }, 3000); // settle then resume ambient
-      });
+
+      // periodically fire a few nodes outward (synapse-like) + keep the springs warm
+      const fire = setInterval(() => {
+        const ns = G.graphData().nodes as any[]; if (!ns.length) return;
+        for (let k = 0; k < 3; k++) { const n = ns[(Math.random() * ns.length) | 0]; if (n && n.type !== "core") n.__pulse = 0.7 + Math.random() * 0.7; }
+        if (G.d3ReheatSimulation) G.d3ReheatSimulation();
+      }, 1200);
+
       graphRef.current = G;
+      (G as any).__fire = fire;
       (G as any).__ro = ro;
     })();
     return () => { disposed = true; try { clearInterval(graphRef.current?.__fire); graphRef.current?.__ro?.disconnect(); graphRef.current?._destructor?.(); } catch {} };

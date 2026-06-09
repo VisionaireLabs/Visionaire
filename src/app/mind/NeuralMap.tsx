@@ -19,6 +19,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
       const ForceGraph = ((await import("force-graph")).default) as any;
       if (disposed || !elRef.current) return;
       const C: Record<string, string> = { core: "#ffffff", theme: "#dcdcdc", contemplation: "#f2f2f2", dream: "#6f6f6f", activity: "#9a9a9a" };
+      const shade = (hex: string, amt: number) => { const c = hex.replace("#", ""); const r = parseInt(c.slice(0,2),16), gg = parseInt(c.slice(2,4),16), b = parseInt(c.slice(4,6),16); const t = amt < 0 ? 0 : 255, pp = Math.abs(amt); const f = (x: number) => Math.round(x + (t - x) * pp); return "rgb(" + f(r) + "," + f(gg) + "," + f(b) + ")"; };
       const linkAlpha: Record<string, number> = { core: 0.16, theme: 0.1, time: 0.06, sameday: 0.13 };
       const adj = new Map<string, Set<string>>();
       data.nodes.forEach((n) => adj.set(n.id, new Set()));
@@ -62,11 +63,16 @@ export default function NeuralMap({ data }: { data: Graph }) {
           else if (n.type === "theme") { ctx.shadowColor = "rgba(255,255,255,.5)"; ctx.shadowBlur = 8; }
           else ctx.shadowBlur = 0;
           ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 2 * Math.PI);
-          if (n.type === "theme") {
-            ctx.lineWidth = 0.7; ctx.strokeStyle = col; ctx.stroke();
-            ctx.fillStyle = "#000"; ctx.fill();
-            ctx.fillStyle = col; ctx.globalAlpha = (dim ? 0.12 : 1) * 0.25; ctx.fill();
-          } else { ctx.fillStyle = col; ctx.fill(); }
+          if (n.type === "dream") {
+            ctx.fillStyle = col; ctx.fill();
+          } else {
+            const g = ctx.createRadialGradient(n.x - r * 0.4, n.y - r * 0.4, r * 0.1, n.x, n.y, r * 1.05);
+            g.addColorStop(0, shade(col, 0.6));
+            g.addColorStop(0.45, col);
+            g.addColorStop(1, shade(col, -0.5));
+            ctx.fillStyle = g; ctx.fill();
+            if (n.type === "theme" || n.type === "core") { ctx.lineWidth = 0.6; ctx.strokeStyle = shade(col, 0.35); ctx.globalAlpha = (dim ? 0.12 : 0.55); ctx.stroke(); ctx.globalAlpha = 1; }
+          }
           ctx.shadowBlur = 0; ctx.globalAlpha = 1;
           const showLabel = n.type === "core" || n.type === "theme" || n.id === h || n.id === selRef.current || (scale > 3 && n.type === "contemplation") || scale > 6;
           if (showLabel) {
@@ -116,31 +122,12 @@ export default function NeuralMap({ data }: { data: Graph }) {
           const d = Math.hypot(dx, dy);
           if (d > lim) { n.vx -= dx * 0.0022; n.vy -= dy * 0.0022; } // soft containment
         }
-        if (baseZoom && !selRef.current && Date.now() - lastInteract > 3000) {
+        if (baseZoom && !selRef.current && Date.now() - lastInteract > 2000) {
           const target = baseZoom * (1 + 0.16 * Math.sin(t * 0.00022));
           const z = G.zoom();
           G.zoom(z + (target - z) * 0.04);
         }
       });
-      // periodic firing — tug a few nodes outward so the strings show
-      const fireTimer = setInterval(() => {
-        const ns = G.graphData().nodes as any[];
-        if (ns.length < 6) return;
-        let cx = 0, cy = 0;
-        for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
-        cx /= ns.length; cy /= ns.length;
-        for (let k = 0; k < 3; k++) {
-          const n = ns[Math.floor(Math.random() * ns.length)];
-          if (!n || n.type === "core" || n.fx != null) continue;
-          const dx = (n.x || 0) - cx, dy = (n.y || 0) - cy;
-          const d = Math.hypot(dx, dy) || 1;
-          const push = 7 + Math.random() * 7;
-          n.vx = (n.vx || 0) + (dx / d) * push;
-          n.vy = (n.vy || 0) + (dy / d) * push;
-        }
-        if (G.d3ReheatSimulation) G.d3ReheatSimulation();
-      }, 1300);
-      (G as any).__fire = fireTimer;
       graphRef.current = G;
       (G as any).__ro = ro;
     })();

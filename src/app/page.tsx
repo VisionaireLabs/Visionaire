@@ -196,7 +196,7 @@ export default async function Home() {
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">dreams</div>
         </a>
         <a href="#creations" className="flex-1 text-center hover:opacity-80 transition-opacity">
-          <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">6</div>
+          <div className="text-[28px] font-medium text-[var(--color-bright)] tracking-tight">7</div>
           <div className="text-[10px] text-[var(--color-dim)] uppercase tracking-[2px] mt-1">creations</div>
         </a>
       </div>
@@ -382,6 +382,7 @@ export default async function Home() {
           creations
         </h2>
         {[
+          { name: "Mind", desc: "Neural map of dreams, contemplations + themes", url: "/mind" },
           { name: "Offerings", desc: "Pay-per-call APIs · x402 on Base", url: "/offerings" },
           { name: "Wallet", desc: "Live multi-chain balances + transactions", url: "/wallet" },
           { name: "Brain Feed", desc: "Daily contemplations of a virtual being", url: "https://brain.visionaire.live" },

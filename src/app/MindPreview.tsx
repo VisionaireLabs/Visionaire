@@ -64,9 +64,28 @@ export default function MindPreview({ data }: { data: Graph }) {
       G.d3Force("charge").strength(-55);
       G.d3Force("link").distance((l: any) => (l.kind === "theme" ? 32 : l.kind === "time" ? 12 : 24)).strength(0.2);
 
-      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); G.zoomToFit(0, 80); if (settled) G.centerAt(cx, cy, 0); } };
+      const focusFit = () => {
+        if (!elRef.current) return;
+        G.width(elRef.current.clientWidth);
+        G.height(elRef.current.clientHeight);
+        if (!settled) return;
+        // Fit to core+theme bounding box only — ignores sparse outer nodes
+        const ns = G.graphData().nodes as any[];
+        const inner = ns.filter((n: any) => n.type === "core" || n.type === "theme");
+        if (!inner.length) return;
+        const xs = inner.map((n: any) => n.x || 0);
+        const ys = inner.map((n: any) => n.y || 0);
+        const mx = (Math.min(...xs) + Math.max(...xs)) / 2;
+        const my = (Math.min(...ys) + Math.max(...ys)) / 2;
+        const spanX = Math.max(...xs) - Math.min(...xs) + 120;
+        const spanY = Math.max(...ys) - Math.min(...ys) + 120;
+        const z = Math.min(elRef.current.clientWidth / spanX, elRef.current.clientHeight / spanY) * 0.72;
+        G.zoom(Math.max(z, 0.8), 0);
+        G.centerAt(mx, my, 0);
+      };
+      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); } };
       fit();
-      const ro = new ResizeObserver(fit); ro.observe(elRef.current);
+      const ro = new ResizeObserver(focusFit); ro.observe(elRef.current);
 
       // Pin the core node to canvas centre before layout so it settles there
       const gd = G.graphData();
@@ -83,9 +102,8 @@ export default function MindPreview({ data }: { data: Graph }) {
           else { cx = 0; cy = 0; for (const n of ns) { cx += n.x || 0; cy += n.y || 0; } cx /= ns.length; cy /= ns.length; }
           for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; n.__ph = Math.random() * 6.283; }
         }
-        G.zoomToFit(0, 160);
-        G.centerAt(cx, cy, 0);
         settled = true;
+        focusFit();
         setReady(true);
       }, 1700);
 

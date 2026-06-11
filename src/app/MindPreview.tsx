@@ -24,7 +24,7 @@ export default function MindPreview({ data }: { data: Graph }) {
       const G = ForceGraph()(elRef.current)
         .graphData(JSON.parse(JSON.stringify(data)))
         .backgroundColor("rgba(0,0,0,0)")
-        .nodeRelSize(1.7)
+        .nodeRelSize(2.1)
         .nodeVal((n: any) => n.val || 3)
         .cooldownTicks(Infinity)
         .cooldownTime(Infinity) // keep the engine (and redraw) running forever
@@ -64,7 +64,7 @@ export default function MindPreview({ data }: { data: Graph }) {
       G.d3Force("charge").strength(-55);
       G.d3Force("link").distance((l: any) => (l.kind === "theme" ? 32 : l.kind === "time" ? 12 : 24)).strength(0.2);
 
-      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); G.zoomToFit(0, 110); } };
+      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); G.zoomToFit(0, 80); } };
       fit();
       const ro = new ResizeObserver(fit); ro.observe(elRef.current);
 
@@ -77,7 +77,7 @@ export default function MindPreview({ data }: { data: Graph }) {
           cx /= ns.length; cy /= ns.length;
           for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; n.__ph = Math.random() * 6.283; }
         }
-        G.zoomToFit(900, 110);
+        G.zoomToFit(900, 80);
         settled = true;
         setReady(true);
       }, 1700);
@@ -92,14 +92,14 @@ export default function MindPreview({ data }: { data: Graph }) {
     <div
       className="relative mb-16 overflow-hidden"
       style={{
-        height: 460,
+        height: "clamp(560px, 78vh, 1000px)",
         width: "100vw",
         left: "50%",
         right: "50%",
         marginLeft: "-50vw",
         marginRight: "-50vw",
-        WebkitMaskImage: "radial-gradient(120% 100% at 50% 50%, #000 50%, transparent 100%)",
-        maskImage: "radial-gradient(120% 100% at 50% 50%, #000 50%, transparent 100%)",
+        WebkitMaskImage: "radial-gradient(120% 100% at 50% 50%, #000 55%, transparent 100%)",
+        maskImage: "radial-gradient(120% 100% at 50% 55%, #000 55%, transparent 100%)",
       }}
     >
       <div ref={elRef} className="absolute inset-0" style={{ pointerEvents: "none", touchAction: "pan-y", opacity: ready ? 1 : 0, transition: "opacity 1s ease" }} />

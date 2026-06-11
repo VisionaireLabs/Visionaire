@@ -146,17 +146,17 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen antialiased">
-        <div className="fixed inset-0 -z-10 overflow-hidden">
+        <div className="fixed inset-0 -z-10 overflow-hidden bg-black">
           <video
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            className="h-full w-full object-cover"
-            src="https://visionaire.b-cdn.net/MOTION/visionaire-bg-16x9-web.mp4"
+            className="h-full w-full object-contain"
+            src="https://visionaire.b-cdn.net/MOTION/visionaire-bg-16x9-web-loop-nologo.mp4"
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/20" />
         </div>
         {children}
       </body>

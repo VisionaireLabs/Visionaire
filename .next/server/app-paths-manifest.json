@@ -1,0 +1,16 @@
+{
+  "/.well-known/x402/route": "app/.well-known/x402/route.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/audit/route": "app/api/audit/route.js",
+  "/api/contemplate/route": "app/api/contemplate/route.js",
+  "/api/discovery/route": "app/api/discovery/route.js",
+  "/api/forest/route": "app/api/forest/route.js",
+  "/api/oracle/route": "app/api/oracle/route.js",
+  "/api/portrait/route": "app/api/portrait/route.js",
+  "/icon/route": "app/icon/route.js",
+  "/offerings/page": "app/offerings/page.js",
+  "/page": "app/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/wallet/page": "app/wallet/page.js"
+}

@@ -153,7 +153,7 @@ export default function RootLayout({
             loop
             playsInline
             preload="auto"
-            className="h-full w-full object-contain"
+            className="h-full w-full object-cover"
             src="https://visionaire.b-cdn.net/MOTION/visionaire-bg-16x9-web-loop-nologo.mp4"
           />
           <div className="absolute inset-0 bg-black/20" />

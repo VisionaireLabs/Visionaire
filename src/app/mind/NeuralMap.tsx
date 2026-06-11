@@ -162,14 +162,14 @@ export default function NeuralMap({ data }: { data: Graph }) {
   return (
     <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
       <div ref={elRef} style={{ position: "absolute", inset: 0, opacity: ready ? 1 : 0, transition: "opacity .9s ease" }} />
-      <style>{"@keyframes neuralBreathe{0%,100%{background:#000}50%{background:#fff}}"}</style>
+      <style>{"@keyframes neuralBreathe{0%,100%{background:#000}50%{background:#fff}}@media (max-width:680px){#mind-topbar{flex-direction:column !important;align-items:flex-start !important;gap:14px;padding:16px 20px !important;}#mind-nav{width:100%;justify-content:space-between !important;gap:12px !important;}#mind-nav a,#mind-nav span{letter-spacing:1.5px !important;}#mind-stats,#mind-search{top:96px !important;}}"}</style>
 
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 8, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 32px", borderBottom: "1px solid #111", pointerEvents: "none" }}>
+      <div id="mind-topbar" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 8, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 32px", borderBottom: "1px solid #111", pointerEvents: "none" }}>
         <a href="https://visionaire.live" style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: 10, fontSize: 11, fontWeight: 400, letterSpacing: "4px", textTransform: "uppercase", color: "#ccc", textDecoration: "none" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#000", display: "inline-block", animation: "neuralBreathe 3s ease-in-out infinite" }} />
           visionaire
         </a>
-        <nav style={{ display: "flex", gap: 24 }}>
+        <nav id="mind-nav" style={{ display: "flex", gap: 24 }}>
           {(([["feed", "https://brain.visionaire.live/"], ["contemplations", "https://brain.visionaire.live/#contemplations"], ["dreams", "https://brain.visionaire.live/#dreams"]]) as [string, string][]).map(([l, h]) => (
             <a key={l} href={h} style={{ pointerEvents: "auto", fontSize: 10, fontWeight: 400, letterSpacing: "2px", textTransform: "uppercase", color: "#777", textDecoration: "none", paddingBottom: 2, borderBottom: "1px solid transparent", transition: "color .15s" }} onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#ccc")} onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#777")}>{l}</a>
           ))}
@@ -177,7 +177,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         </nav>
       </div>
 
-      <div style={{ position: "fixed", top: 72, left: 0, padding: "22px 26px", pointerEvents: "none", zIndex: 5 }}>
+      <div id="mind-stats" style={{ position: "fixed", top: 72, left: 0, padding: "22px 26px", pointerEvents: "none", zIndex: 5 }}>
         <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".18em" }}>neural map</div>
         <div style={{ fontWeight: 300, fontSize: 10.5, color: dim, letterSpacing: ".12em", marginTop: 14, lineHeight: 1.9 }}>
           <b style={{ color: "#fff" }}>{stats.daysAlive ?? ""}</b> days alive<br />
@@ -186,7 +186,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         </div>
       </div>
 
-      <div style={{ position: "fixed", top: 72, right: 0, padding: "22px 26px", zIndex: 5 }}>
+      <div id="mind-search" style={{ position: "fixed", top: 72, right: 0, padding: "22px 26px", zIndex: 5 }}>
         <input onChange={(e) => onSearch(e.target.value)} placeholder="search the mind…" autoComplete="off"
           style={{ background: "transparent", border: "none", borderBottom: "1px solid #1c1c1c", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".12em", padding: "6px 2px", width: 170, outline: "none" }} />
       </div>

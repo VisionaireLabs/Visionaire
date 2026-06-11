@@ -68,16 +68,19 @@ export default function MindPreview({ data }: { data: Graph }) {
       fit();
       const ro = new ResizeObserver(fit); ro.observe(elRef.current);
 
+      // Pin the core node to canvas centre before layout so it settles there
+      const gd = G.graphData();
+      const earlyCore = (gd.nodes as any[]).find((n: any) => n.type === "core");
+      if (earlyCore) { earlyCore.fx = 0; earlyCore.fy = 0; }
+
       // let it lay out, capture each node's base position, then animate
       setTimeout(() => {
         const ns = G.graphData().nodes as any[];
         if (ns.length) {
-          cx = 0; cy = 0;
-          for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
-          cx /= ns.length; cy /= ns.length;
-          // Re-anchor on the core node — sparse outer nodes drag the centroid far off
+          // Release the pin so the parametric animation can move it
           const coreNode = ns.find((n: any) => n.type === "core");
-          if (coreNode && isFinite(coreNode.x) && isFinite(coreNode.y)) { cx = coreNode.x; cy = coreNode.y; }
+          if (coreNode) { cx = coreNode.fx ?? coreNode.x ?? 0; cy = coreNode.fy ?? coreNode.y ?? 0; coreNode.fx = undefined; coreNode.fy = undefined; }
+          else { cx = 0; cy = 0; for (const n of ns) { cx += n.x || 0; cy += n.y || 0; } cx /= ns.length; cy /= ns.length; }
           for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; n.__ph = Math.random() * 6.283; }
         }
         G.zoomToFit(0, 160);

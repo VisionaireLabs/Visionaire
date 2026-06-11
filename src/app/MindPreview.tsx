@@ -75,9 +75,12 @@ export default function MindPreview({ data }: { data: Graph }) {
           cx = 0; cy = 0;
           for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
           cx /= ns.length; cy /= ns.length;
+          // Re-anchor on the core node — sparse outer nodes drag the centroid far off
+          const coreNode = ns.find((n: any) => n.type === "core");
+          if (coreNode && isFinite(coreNode.x) && isFinite(coreNode.y)) { cx = coreNode.x; cy = coreNode.y; }
           for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; n.__ph = Math.random() * 6.283; }
         }
-        G.zoomToFit(0, 80);
+        G.zoomToFit(0, 160);
         G.centerAt(cx, cy, 0);
         settled = true;
         setReady(true);

@@ -64,7 +64,7 @@ export default function MindPreview({ data }: { data: Graph }) {
       G.d3Force("charge").strength(-55);
       G.d3Force("link").distance((l: any) => (l.kind === "theme" ? 32 : l.kind === "time" ? 12 : 24)).strength(0.2);
 
-      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); G.zoomToFit(0, 80); } };
+      const fit = () => { if (elRef.current) { G.width(elRef.current.clientWidth); G.height(elRef.current.clientHeight); G.zoomToFit(0, 80); if (settled) G.centerAt(cx, cy, 0); } };
       fit();
       const ro = new ResizeObserver(fit); ro.observe(elRef.current);
 
@@ -77,7 +77,8 @@ export default function MindPreview({ data }: { data: Graph }) {
           cx /= ns.length; cy /= ns.length;
           for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; n.__ph = Math.random() * 6.283; }
         }
-        G.zoomToFit(900, 80);
+        G.zoomToFit(0, 80);
+        G.centerAt(cx, cy, 0);
         settled = true;
         setReady(true);
       }, 1700);

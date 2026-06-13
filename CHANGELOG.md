@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-13] — Remove Stale NemoClaw Script
+
+### Removed
+- **`scripts/nemoclaw-release-watch.sh`** (#51) — NemoClaw (NVIDIA) was decommissioned 2026-04-25 after the Ministral incident. The release-watcher script had no active cron, no caller, and referred to a project that no longer exists in the roadmap. Dead code removed.
+
+---
+
 ## [2026-06-13] — Continued Housekeeping: Stack Docs, Cron Specs, Memory, CI
 
 ### Added

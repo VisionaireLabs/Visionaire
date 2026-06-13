@@ -1,159 +1,95 @@
-# AI_STACK.md — Multi-Provider Model Architecture
+# AI_STACK.md — Model Architecture
 
-Visionaire runs on multiple AI providers simultaneously.
-Different tasks route to different models based on quality requirements, cost, and latency.
-This is not theoretical — these are the live production settings.
+Visionaire runs Anthropic-only. After the April 2026 Ministral incident (an 8B open model silently overwrote a contemplation and shipped corporate AI slop), no open or third-party model is permitted on identity-critical surfaces. The ops layer followed: cost savings from NVIDIA NIM weren't worth the risk of silent degradation.
+
+This is not theoretical — these are the live production settings as of June 2026.
 
 ---
 
-## Provider Overview
+## Provider
 
 | Provider | Auth | Endpoint | Use Case |
 |:---------|:-----|:---------|:---------|
-| **Anthropic** | `ANTHROPIC_API_KEY` | `api.anthropic.com` | Main conversations, contemplation, complex reasoning |
-| **NVIDIA NIM** | `NVIDIA_API_KEY` | `integrate.api.nvidia.com/v1` | Heartbeats, lightweight crons, sub-agents |
-| **Nexos** | `NEXOS_API_KEY` | `api.nexos.ai/v1` | Fallback + alternative frontier models |
-
-NVIDIA NIM uses an **OpenAI-compatible API** — drop-in compatible with any OpenClaw provider config.
+| **Anthropic** | `ANTHROPIC_API_KEY` | `api.anthropic.com` | Everything. Main, contemplation, sub-agents, crons. |
 
 ---
 
 ## Model Routing
 
 ```
-TASK                     MODEL                       PROVIDER        REASON
+TASK                     MODEL                       REASON
 ────────────────────────────────────────────────────────────────────────────────
-Main conversations       Claude Opus 4.6             Anthropic       Highest reasoning, complex context
-Daily contemplation      Claude Opus 4.6             Anthropic       The art stays premium. No compromise.
-Nightly extraction       Claude Sonnet 4.6           Anthropic       Reliable, structured output
-Morning briefing         Claude Sonnet 4.6           Anthropic       Fast, clean summary
-Mention monitor          Claude Sonnet 4.6           Anthropic       Context-aware triage
-Heartbeats ♥             Nemotron 3 Nano             NVIDIA NIM      Cheap reasoning, runs every 60min
-Lightweight crons        Nemotron 3 Nano             NVIDIA NIM      Free from Anthropic billing pressure
-Sub-agents (medium)      Nemotron 3 Super            NVIDIA NIM      Best open model on agentic benchmarks
-Backup scripts           Claude Haiku 4.5            Anthropic       Simplest tasks, lowest cost
-Brain feed updates       Claude Haiku 4.5            Anthropic       Minimal reasoning needed
+Main conversations       Claude Sonnet 4.6           Current runtime default
+Daily contemplation      Claude Opus 4.8             The art stays premium. No compromise.
+Nightly extraction       Claude Sonnet 4.6           Reliable, structured output
+Morning briefing         Claude Sonnet 4.6           Fast, clean summary
+Mention monitor          Claude Sonnet 4.6           Context-aware triage
+Heartbeats ♥             Claude Haiku 4.5            Fast, cheap, sufficient for format-stable ops
+Lightweight crons        Claude Haiku 4.5            Keeps Sonnet/Opus budget free for real work
+Sub-agents               Claude Haiku 4.5            Most sub-agent tasks don't need Sonnet
+Backup scripts           Claude Haiku 4.5            Simplest tasks, lowest cost
+Brain feed updates       Claude Haiku 4.5            Minimal reasoning needed
 ```
 
 ---
 
-## NVIDIA NIM Setup (single command)
+## Fallback Chain
 
-```bash
-# 1. Get API key at build.nvidia.com/settings/api-keys (free tier available)
-# Get your key at build.nvidia.com/settings/api-keys
-# Store in ~/.bashrc and openclaw.json env — never commit to repo
-export NVIDIA_API_KEY="nvapi-..."  # store in ~/.bashrc only
+Identity-critical surfaces (contemplation, oracle, x402 endpoints):
 
-# 2. Add to openclaw.json providers
-# OpenClaw natively supports NVIDIA — auto-enables when NVIDIA_API_KEY is set
+```
+Opus 4.8  →  Opus 4.7  →  Opus 4.6  →  Sonnet 4.6
 ```
 
-OpenClaw config (in `openclaw.json`):
-```json
-{
-  "env": { "NVIDIA_API_KEY": "$NVIDIA_API_KEY" },  // reads from env — never hardcode
-  "agents": {
-    "defaults": {
-      "heartbeat": { "model": "nvidia/nvidia/nemotron-3-nano-30b-a3b" },
-      "models": {
-        "nvidia/nvidia/nemotron-3-nano-30b-a3b": { "alias": "Nemotron 3 Nano" },
-        "nvidia/nvidia/nemotron-3-super-120b-a12b": { "alias": "Nemotron 3 Super" }
-      }
-    }
-  }
-}
+Main agent runtime:
+
+```
+Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
 ```
 
-Provider entry (in `agents/main/agent/models.json`):
-```json
-{
-  "providers": {
-    "nvidia": {
-      "baseUrl": "https://integrate.api.nvidia.com/v1",
-      "api": "openai-completions"
-    }
-  }
-}
+Sub-agents and crons:
+
 ```
+Haiku 4.5  →  Sonnet 4.6
+```
+
+**Rule:** No open or third-party models anywhere in the fallback chain. Claude-only.
 
 ---
 
-## Nemotron Model Guide
+## Why Anthropic-Only
 
-| Model | Size | Best For | Token Behavior |
-|:------|:-----|:---------|:---------------|
-| `nvidia/nemotron-3-nano-30b-a3b` | 30B MoE (3B active) | Heartbeats, triage, lightweight ops | Reasoning model — budget 200+ tokens |
-| `nvidia/nemotron-3-super-120b-a12b` | 120B MoE (12B active) | Sub-agents, code, analysis | Reasoning model — budget 1200+ tokens |
-| `nvidia/nemotron-3-ultra` | TBA | Frontier tasks | H1 2026 |
+Cost argument for NVIDIA NIM (the previous setup): ops layer runs at near-zero cost, keeps Anthropic budget reserved for premium work. Real. We ran it March–April 2026.
 
-**Important:** Both Nano and Super are **reasoning models** (chain-of-thought).
-They burn tokens *thinking* before they answer. Always set `max_tokens` generously:
-- Nano: minimum 200, recommended 400
-- Super: minimum 800, recommended 1500
+The failure mode that ended it: a silent downgrade to Ministral-3-8b took over a contemplation post on April 16, 2026. It passed all format checks. It shipped. The output was indistinguishable from AI slop — numbered bullets, "step forward for AGI", zero voice. The identity system failed silently because the fallback chain allowed it.
+
+Cost savings aren't worth the risk of silent identity degradation. The ops layer now runs on Haiku 4.5 — cheap enough that the math still works, and Claude enough that the fallback chain never drops off a cliff.
 
 ---
 
-## Benchmark: Nemotron 3 Super vs Claude Sonnet 4.6
+## Archive: NVIDIA NIM (March–April 2026)
 
-Task: *Diagnose and fix OpenClaw heartbeat cron failure after container restart*
-Date: 2026-03-20
+The multi-provider setup ran for about 6 weeks. Key findings before decommission:
+
+**Benchmark: Nemotron 3 Super vs Claude Sonnet 4.6**
+Task: *Diagnose and fix OpenClaw heartbeat cron failure after container restart* (2026-03-20)
 
 | Metric | Nemotron 3 Super | Claude Sonnet 4.6 |
 |:-------|:-----------------|:-----------------|
-| Output quality | ✅ Detailed table, Dockerfile fix, step-by-step checklist | ✅ Similar depth, slightly more concise |
-| Structure | Markdown table + code blocks | Headers + code blocks |
+| Output quality | Detailed table, Dockerfile fix, step-by-step checklist | Similar depth, slightly more concise |
 | Tokens used | ~1200 (incl. reasoning) | ~500 |
 | Actionability | High | High |
-| **Verdict** | **Matches Sonnet quality** | **More token-efficient** |
+| **Verdict** | **Matches Sonnet on technical tasks** | **More token-efficient** |
 
-**Bottom line:** Super is a real Sonnet alternative for technical tasks.
-Use it for sub-agents where you want to reduce Anthropic spend.
-Not worth it for simple yes/no heartbeat ops — use Nano there.
+Bottom line on Nemotron: real Sonnet-quality alternative for purely technical sub-agent work. Token-hungry (reasoning model, budget 1200+ for Super). The quality was there. The risk wasn't in the model itself — it was in the fallback policy.
 
----
+**NemoClaw status at decommission:**
+- Phase 1 (NIM models) — completed 2026-03-20
+- Phase 2 (OpenShell sandbox) — waiting on alpha, "fresh install" restriction still active
+- Phase 3 (NeMo Agent Toolkit) — blocked: requires Python <3.14, container runs 3.14.3
 
-## NemoClaw Roadmap
-
-NemoClaw is NVIDIA's enterprise wrapper for OpenClaw — announced at GTC 2026, March 16.
-It adds OpenShell sandbox security (policy-based YAML controls per agent).
-
-```
-Phase 1 — NVIDIA NIM models          ✅ DONE (2026-03-20)
-  └── Nemotron Nano → heartbeats
-  └── Nemotron Super → sub-agents
-  └── NIM API key active
-
-Phase 2 — OpenShell sandbox          ⏳ WAITING (alpha, "fresh install" restriction)
-  └── Per-agent YAML security policy
-  └── Network isolation per claw
-  └── Watch: github.com/NVIDIA/NemoClaw for release
-
-Phase 3 — NeMo Agent Toolkit         ⏳ BLOCKED (requires Python <3.14, we have 3.14.3)
-  └── Full observability + cost tracking
-  └── LangSmith integration
-  └── FastMCP workflow publishing
-  └── Watch: github.com/NVIDIA/NeMo-Agent-Toolkit
-```
-
-Watcher cron (`scripts/nemoclaw-release-watch.sh`) runs every 6h and notifies when Phase 2 unblocks.
+Decommissioned 2026-04-25 after Ministral incident. NemoClaw Phase 2/3 not pursued.
 
 ---
 
-## Cost Model
-
-Running NVIDIA NIM for the ops layer vs all-Anthropic:
-
-```
-Heartbeats (every 60min = 720/month):
-  Before: Sonnet 4.6 @ ~100 tokens/call = 72K tokens/mo → ~$1.08/mo
-  After:  Nemotron Nano @ NVIDIA NIM pricing → less
-
-The real win isn't the direct cost — it's keeping Anthropic spend
-reserved for work that actually needs Opus/Sonnet quality.
-Ops layer runs free from the premium model budget.
-```
-
----
-
-*Last updated: 2026-03-20 — added after GTC 2026 NemoClaw announcement*
+*Last updated: 2026-06-13 — Anthropic-only stack, Opus 4.8 contemplation, Sonnet 4.6 main, Haiku 4.5 ops*

@@ -37,6 +37,33 @@ Appends to: `/data/.openclaw/workspace/memory/self-maintainer-log.md`
 
 Format: `ISO timestamp | repo(s) | what was done or 'quiet'`
 
+## brain-feed Log Entry Format
+
+After each run, prepend one entry to `brain-feed/feed.json` under the `feed` array key.
+
+**Required fields — all must be non-empty:**
+
+```json
+{
+  "type": "self-maintainer-run",
+  "time": "Jun 13, 19:31 UTC",
+  "content": "One-line summary of what was done or 'quiet cycle'"
+}
+```
+
+- `type`: always `"self-maintainer-run"` (exact string — no spaces, no dashes at end)
+- `time`: format `"Mon DD, HH:MM UTC"` — no year, must include HH:MM clock component
+- `content`: plain text summary, max 120 chars
+
+**How to update feed.json:**
+1. Read existing `feed.json`
+2. Prepend new entry to `feed` array
+3. Trim array to 25 entries max (remove oldest from end)
+4. Run `bash scripts/validate-feed.sh` — must exit 0 before committing
+5. Commit + push to `main`
+
+**Never push without passing validate-feed.sh.**
+
 ## Notes
 
 - Runs with GitHub PAT from `/data/.openclaw/secrets/github-pat.env`

@@ -160,6 +160,32 @@ if (!existsSync(brainFeedDir)) {
   }
 }
 
+// 6. corpus/visionaire.json
+const corpusPath = join(root, 'corpus', 'visionaire.json');
+if (!existsSync(corpusPath)) {
+  fail('corpus/visionaire.json', 'file missing — run: node scripts/build-corpus.mjs');
+} else {
+  try {
+    const raw = await readFile(corpusPath, 'utf8');
+    const corpus = JSON.parse(raw);
+    const corpusRequired = ['builtAt', 'documentCount', 'documents'];
+    const corpusMissing = corpusRequired.filter(k => !(k in corpus));
+    if (corpusMissing.length > 0) {
+      fail('corpus/visionaire.json', `missing keys: ${corpusMissing.join(', ')}`);
+    } else if (!Array.isArray(corpus.documents)) {
+      fail('corpus/visionaire.json', '"documents" must be an array');
+    } else if (corpus.documents.length === 0) {
+      fail('corpus/visionaire.json', '"documents" array is empty — corpus may have been built without memory access');
+    } else if (corpus.documentCount !== corpus.documents.length) {
+      warn('corpus/visionaire.json', `documentCount (${corpus.documentCount}) != documents.length (${corpus.documents.length})`);
+    } else {
+      ok('corpus/visionaire.json', `${corpus.documents.length} docs, built ${corpus.builtAt}`);
+    }
+  } catch (e) {
+    fail('corpus/visionaire.json', `invalid JSON: ${e.message.split('\n')[0]}`);
+  }
+}
+
 // Summary
 console.log('');
 if (errors === 0 && warnings === 0) {

@@ -118,6 +118,41 @@ if (missingDirs.length === 0) {
   warn('Directories', `missing: ${missingDirs.join(', ')}`);
 }
 
+// 5. brain-feed JSON data files
+const brainFeedJsonFiles = [
+  'brain-feed/feed.json',
+  'brain-feed/contemplations/data.json',
+  'brain-feed/dreams/data.json',
+];
+
+let brainFeedPass = 0;
+let brainFeedFail = 0;
+const brainFeedErrors = [];
+
+for (const rel of brainFeedJsonFiles) {
+  const fullPath = join(root, rel);
+  if (!existsSync(fullPath)) {
+    brainFeedFail++;
+    brainFeedErrors.push(`${rel}: file missing`);
+    continue;
+  }
+  try {
+    const raw = await readFile(fullPath, 'utf8');
+    JSON.parse(raw);
+    brainFeedPass++;
+  } catch (e) {
+    brainFeedFail++;
+    brainFeedErrors.push(`${rel}: ${e.message.split('\n')[0]}`);
+  }
+}
+
+if (brainFeedFail === 0) {
+  ok('brain-feed JSON', `${brainFeedPass}/${brainFeedJsonFiles.length} valid`);
+} else {
+  fail('brain-feed JSON', `${brainFeedPass}/${brainFeedJsonFiles.length} valid`);
+  brainFeedErrors.forEach(e => console.log(`   ${RED}→${RESET} ${e}`));
+}
+
 // Summary
 console.log('');
 if (errors === 0 && warnings === 0) {

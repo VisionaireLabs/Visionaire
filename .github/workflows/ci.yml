@@ -45,3 +45,6 @@ jobs:
 
       - name: Run health check
         run: node scripts/health-check.mjs
+
+      - name: Smoke-test stats.mjs
+        run: node scripts/stats.mjs

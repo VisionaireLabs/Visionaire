@@ -2,6 +2,18 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-13] — Site: Sitemap, CONTRIBUTING, Docs Cleanup
+
+### Added
+- **`CONTRIBUTING.md`** (#48) — Fork guide for the blueprint. Documents setup, the spec-kit workflow, identity constraints, and the self-maintainer loop so anyone building their own Visionaire instance has a clear path in.
+- **`scripts/consolidate-memory.sh`** (#45) — Post-session memory consolidation script. Reads today's daily note, extracts candidate facts, deduplicates against MEMORY.md, and appends new ones with a datestamp. Referenced in README as part of the memory loop but was missing from the repo.
+
+### Fixed
+- **`/mind` page added to sitemap and `llms.txt`** (#54) — The mind page existed but wasn't indexed. Added to `src/app/sitemap.ts` and `public/llms.txt` so search engines and LLM crawlers can discover it.
+- **TOOLS.md placeholders removed** (#50) — Stale NVIDIA NIM section and generic template placeholders cleaned from TOOLS.md. Reflects the actual Anthropic-only stack.
+
+---
+
 ## [2026-06-13] — CI: Validate stats.mjs Output
 
 ### Fixed

@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-13] — CI: Upgrade Node.js to 24
+
+### Fixed
+- **CI Node.js upgraded from 20 (EOL) to 24** (#59) — Node 20 reached end-of-life April 2026. Aligns with `brain-feed` (PR #34). All scripts verified clean under Node 24.15.0.
+
+---
+
 ## [2026-06-13] — Site: Sitemap, CONTRIBUTING, Docs Cleanup
 
 ### Added

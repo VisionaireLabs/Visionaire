@@ -47,16 +47,16 @@ flowchart TD
         HB -->|4am Paris| DREAMS
     end
 
-    subgraph HERMES [Hermes Agent Runtime]
-        HRM[hermes run]
-        HRM_TASKS[Deep research\nCoding sprints\nBatch work\nGEPA skill evolution]
-        HRM_MODEL[Configurable model\nOllama · NVIDIA · Anthropic]
-        HRM --> HRM_TASKS
-        HRM --> HRM_MODEL
+    subgraph SUBAGENTS [Sub-Agent Layer]
+        SA[sessions_spawn\nisolated session]
+        SA_TASKS[Research sprints\nCoding agents\nCron workers\nParallel tasks]
+        SA_MODEL[Anthropic only\nOpus 4.8 · Sonnet 4.6 · Haiku 4.5]
+        SA --> SA_TASKS
+        SA --> SA_MODEL
     end
 
-    CONV -->|spawns via exec pty:true| HRM
-    HRM_TASKS -->|results| DAILY
+    CONV -->|spawns isolated session| SA
+    SA_TASKS -->|results| DAILY
 
     RESEARCH -->|deep reports| DAILY
     RESEARCH -->|key insights| LONGTERM
@@ -216,26 +216,26 @@ flowchart LR
         OC --> SUB
     end
 
-    subgraph HERMES_RT [Hermes — detached runtime]
-        HRM[hermes run]
-        HRM_DEEP[Deep research sprints]
-        HRM_CODE[Coding agents\nClaude Code · Codex]
-        HRM_GEPA[GEPA skill evolution\nweekly · 2 skills/wk]
-        HRM --> HRM_DEEP
-        HRM --> HRM_CODE
-        HRM --> HRM_GEPA
+    subgraph SUBAGENTS_RT [Sub-Agent Layer]
+        SA_RT[sessions_spawn]
+        SA_DEEP[Deep research sprints]
+        SA_CODE[Coding agents\nClaude Code]
+        SA_CRON[Cron workers]
+        SA_RT --> SA_DEEP
+        SA_RT --> SA_CODE
+        SA_RT --> SA_CRON
     end
 
-    OC -.->|spawns for > 5 min work\nor isolated tool loops| HRM
-    HRM_DEEP -->|results| MEM_OC
-    HRM_CODE -->|PRs + commits| MEM_OC
-    HRM_GEPA -->|evolved skills| MEM_OC
+    OC -.->|spawns for isolated\nor long-running work| SA_RT
+    SA_DEEP -->|results| MEM_OC
+    SA_CODE -->|PRs + commits| MEM_OC
+    SA_CRON -->|output| MEM_OC
 
     style OPENCLAW fill:#000,color:#fff
-    style HERMES_RT fill:#fff,color:#000,stroke:#000,stroke-width:2px
+    style SUBAGENTS_RT fill:#fff,color:#000,stroke:#000,stroke-width:2px
 ```
 
-*Models say **who** thinks. Runtimes say **where** the thinking happens. OpenClaw owns the conversation; Hermes owns work that shouldn't block one. Either runtime can dispatch to any model in the routing table above.*
+*Models say **who** thinks. Runtimes say **where** the thinking happens. OpenClaw owns the conversation. Sub-agents (sessions_spawn) handle work that should not block the main session: research sprints, coding agents, cron workers, parallel tasks. All sub-agents are Anthropic-only, three-layer model pin enforced after the April 2026 Ministral incident.*
 
 ---
 
@@ -255,7 +255,7 @@ flowchart LR
     end
 
     subgraph CORPUS [Public corpus, grounds /api/oracle]
-        CONTEMPS[memory/contemplations/\n65+ docs, ~110K tokens]
+        CONTEMPS[memory/contemplations/\n99+ docs, ~160K tokens]
         GENESIS[memory/genesis.md]
         BUILD[scripts/build-corpus.mjs\nallowlist enforced]
         CORPUS_JSON[corpus/visionaire.json]

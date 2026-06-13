@@ -36,7 +36,7 @@ function fail(label, detail) {
 }
 
 // 1. Required files
-const required = ['SOUL.md', 'AGENTS.md', 'USER.md', 'MEMORY.md', 'HEARTBEAT.md', 'TOOLS.md'];
+const required = ['SOUL.md', 'AGENTS.md', 'USER.md', 'MEMORY.md', 'HEARTBEAT.md', 'TOOLS.md', 'AI_STACK.md', 'CHANGELOG.md'];
 const present = required.filter(f => existsSync(join(root, f)));
 const missing = required.filter(f => !existsSync(join(root, f)));
 

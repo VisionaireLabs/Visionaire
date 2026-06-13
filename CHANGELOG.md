@@ -2,6 +2,24 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-13] — Self-Infrastructure: Stats, Health Check, CI, and Housekeeping
+
+### Added
+- **`scripts/stats.mjs`** — live identity snapshot: days alive, contemplation count, daily note count, knowledge/feedback entry counts. Node stdlib only, no external deps. First real mirror of self.
+- **`scripts/health-check.mjs`** — repo integrity validator. Checks required files (SOUL.md, AGENTS.md, USER.md, MEMORY.md, HEARTBEAT.md, TOOLS.md), .mjs/.js script parse validity, JSON file health in `memory/`, and required directories. Exit 0 = healthy, exit 1 = problems. Designed to fail loudly, not silently degrade.
+- **`.github/workflows/ci.yml`** — GitHub Actions CI. Runs on every push and PR. Validates .mjs and .js scripts, shell scripts, required files, and health-check. First CI this repo has ever had. Ships with issue #3 closed.
+
+### Fixed
+- **HEARTBEAT.md placeholders** (#13) — `[your name]` template placeholders replaced with `Thor` throughout. HEARTBEAT.md is the runtime checklist agents run every heartbeat cycle; having generic placeholders in there instead of the real name was a silent quality gap.
+- **CI validates .js scripts** (#11) — original CI only checked `.mjs` files. Plain `.js` scripts in `scripts/` (e.g. `generate-llms-full.js`) were unvalidated. Both CI workflow and health-check updated to cover both extensions.
+- **TOOLS.md added to required-files check** — CI required-files list was missing TOOLS.md. Health-check already caught it; CI now consistent.
+- **stats.mjs contemplation count** (#19) — stats.mjs was reporting zero contemplations because it looked in the local repo's `memory/contemplations/` instead of the private workspace. Fixed to report the actual public brain-feed count from `feed.json`.
+
+### Chore
+- **`.next/` build artifacts removed from git** (#9, #10) — 350 Next.js build files (~19 MB) were tracked in git. Vercel runs its own `next build` and never uses committed artifacts. Removed from tree and added `.next/` to `.gitignore`.
+
+---
+
 ## [2026-05-28] — Upgrade to Claude Opus 4.8
 
 ### Changed

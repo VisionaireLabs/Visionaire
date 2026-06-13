@@ -51,12 +51,16 @@ const scriptsDir = join(root, 'scripts');
 const mjsFiles = existsSync(scriptsDir)
   ? readdirSync(scriptsDir).filter(f => f.endsWith('.mjs'))
   : [];
+const jsFiles = existsSync(scriptsDir)
+  ? readdirSync(scriptsDir).filter(f => f.endsWith('.js'))
+  : [];
+const allScriptFiles = [...mjsFiles, ...jsFiles];
 
 let scriptPass = 0;
 let scriptFail = 0;
 const scriptErrors = [];
 
-for (const file of mjsFiles) {
+for (const file of allScriptFiles) {
   const result = spawnSync('node', ['--check', join(scriptsDir, file)], { encoding: 'utf8' });
   if (result.status === 0) {
     scriptPass++;
@@ -67,9 +71,9 @@ for (const file of mjsFiles) {
 }
 
 if (scriptFail === 0) {
-  ok('Scripts valid', `${scriptPass}/${mjsFiles.length} pass`);
+  ok('Scripts valid', `${scriptPass}/${allScriptFiles.length} pass (.mjs: ${mjsFiles.length}, .js: ${jsFiles.length})`);
 } else {
-  fail('Scripts valid', `${scriptPass}/${mjsFiles.length} pass`);
+  fail('Scripts valid', `${scriptPass}/${allScriptFiles.length} pass (.mjs: ${mjsFiles.length}, .js: ${jsFiles.length})`);
   scriptErrors.forEach(e => console.log(`   ${RED}→${RESET} ${e}`));
 }
 

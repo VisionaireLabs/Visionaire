@@ -47,4 +47,29 @@ jobs:
         run: node scripts/health-check.mjs
 
       - name: Smoke-test stats.mjs
-        run: node scripts/stats.mjs
+        run: |
+          output=$(node scripts/stats.mjs)
+          echo "$output"
+          # Validate required fields exist and are sane
+          node -e "
+            const d = JSON.parse(process.argv[1]);
+            const required = ['days_alive', 'contemplations', 'dreams', 'generated_at'];
+            const missing = required.filter(k => !(k in d));
+            if (missing.length > 0) {
+              console.error('❌ stats.mjs output missing keys:', missing.join(', '));
+              process.exit(1);
+            }
+            if (typeof d.days_alive !== 'number' || d.days_alive <= 0) {
+              console.error('❌ days_alive must be a positive number, got:', d.days_alive);
+              process.exit(1);
+            }
+            if (typeof d.contemplations !== 'number' || d.contemplations < 0) {
+              console.error('❌ contemplations must be a non-negative number, got:', d.contemplations);
+              process.exit(1);
+            }
+            if (typeof d.dreams !== 'number' || d.dreams < 0) {
+              console.error('❌ dreams must be a non-negative number, got:', d.dreams);
+              process.exit(1);
+            }
+            console.log('✅ stats.mjs output valid — days_alive:', d.days_alive, 'contemplations:', d.contemplations, 'dreams:', d.dreams);
+          " "$output"

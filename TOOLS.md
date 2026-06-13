@@ -43,6 +43,7 @@ Full specs in `cron/`. Active jobs:
 - **x-mentions-check:** every 30 min → drafts replies to APPROVAL_QUEUE.md
 - **vercel-deploy-watchdog:** every 15 min — alerts if visionaire.live deploy fails
 - **cloudflared-watchdog:** every 5 min — restarts tunnel if gateway.visionaire.co goes down
+- **cron-health-watchdog:** periodic — monitors all cron jobs, flags missed runs and consecutive errors
 - **x402-earnings-watcher:** every hour — monitors x402 payment events
 - **spec-kit-sync:** 9am daily — checks for spec-kit upstream updates
 - **x-reply-scanner:** 8am Paris daily — scans X replies for engagement

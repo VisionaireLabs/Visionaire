@@ -11,8 +11,9 @@ Run this checklist on every heartbeat. Skip items that don't apply yet.
 
 ## Site Health Check (every heartbeat)
 1. Check production sites return 200:
-   - https://visionaire.co/
-   - (add more as we deploy)
+   - https://visionaire.co/ (Framer — brand/landing)
+   - https://visionaire.live/ (Vercel — product site + x402 endpoints)
+   - https://brain.visionaire.live/ (GitHub Pages — public brain feed)
 2. If any site is down, **alert Thor immediately**
 3. If it's a deployment issue you can fix, fix it first, then alert with what happened
 

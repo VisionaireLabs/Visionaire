@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-13] — Docs: cron-health-watchdog added to TOOLS.md
+
+### Fixed
+- **TOOLS.md cron list now includes `cron-health-watchdog`** (#64) — `cron/cron-health-watchdog.md` spec existed but the job was absent from TOOLS.md. It monitors all other crons for missed runs and consecutive errors — a meaningful infrastructure piece that belongs in the reference.
+
+---
+
 ## [2026-06-13] — CI: Upgrade Node.js to 24
 
 ### Fixed

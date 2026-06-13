@@ -23,6 +23,13 @@ jobs:
             node --check "$f" && echo "✅ $f" || (echo "❌ $f" && exit 1)
           done
 
+      - name: Check .js scripts parse
+        run: |
+          shopt -s nullglob
+          for f in scripts/*.js; do
+            node --check "$f" && echo "✅ $f" || (echo "❌ $f" && exit 1)
+          done
+
       - name: Check .sh scripts
         run: |
           shopt -s nullglob

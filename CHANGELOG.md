@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-13] — CI: Validate stats.mjs Output
+
+### Fixed
+- **CI smoke-test now validates stats.mjs JSON output** — previously the CI only checked that the script exited 0. Now captures stdout and validates required keys (`days_alive`, `contemplations`, `dreams`, `generated_at`) and sanity checks (days_alive > 0). Catches regressions in date arithmetic or schema changes silently passing CI. (PR #53)
+
+---
+
 ## [2026-06-13] — Remove Stale NemoClaw Script
 
 ### Removed

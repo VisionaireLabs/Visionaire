@@ -31,6 +31,24 @@ openclaw cron add \
   --message "Update brain-feed. Run scripts/stats.mjs to get current stats. Update brain-feed/feed.json: set lastUpdated to now, sync stats.daysAlive/contemplationCount/dreamCount. Update llms.txt stats line to match. If feed.json or llms.txt changed, commit and push to brain-feed repo. If nothing changed, exit cleanly with no commit."
 ```
 
+## Feed Entry Schema (required)
+
+When adding entries to `feed.json`.`feed` array, every entry **must** include:
+
+```json
+{
+  "type": "brain-feed-update",
+  "time": "Jun 13, 08:00 UTC",
+  "content": "..."
+}
+```
+
+- **`type`**: must be one of: `self-maintainer`, `brain-feed-update`, `contemplation`, `dream`, `task`, `system` — never empty
+- **`time`**: UTC timestamp in format `MMM DD, HH:MM UTC` — never empty
+- **`content`**: descriptive string — never empty
+
+The CI will fail on pushes with empty `type` or `time` fields.
+
 ## Notes
 
 - The contemplation cron handles the heavy narrative update after each nightly write

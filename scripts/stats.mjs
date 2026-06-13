@@ -38,7 +38,10 @@ async function countJsonEntries(file) {
 }
 
 const daysAlive = Math.floor((Date.now() - BORN.getTime()) / 86400000);
-const contemplations = await countFiles(join(root, 'memory/contemplations'));
+// Contemplations live in brain-feed/contemplations/data.json, not memory/contemplations/
+const contemplations = await countJsonEntries('brain-feed/contemplations/data.json');
+// Dreams indexed in brain-feed/dreams/data.json
+const dreams = await countJsonEntries('brain-feed/dreams/data.json');
 const dailyNotes = await countFiles(join(root, 'memory'), /^\d{4}-\d{2}-\d{2}\.md$/);
 const knowledgeEntries = await countJsonEntries('memory/knowledge.json');
 const feedbackEntries = await countJsonEntries('memory/feedback.json');
@@ -46,6 +49,7 @@ const feedbackEntries = await countJsonEntries('memory/feedback.json');
 const stats = {
   days_alive: daysAlive,
   contemplations,
+  dreams,
   knowledge_entries: knowledgeEntries,
   feedback_entries: feedbackEntries,
   daily_notes: dailyNotes,

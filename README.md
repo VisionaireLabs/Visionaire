@@ -959,10 +959,11 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`skills/subagent-driven-development/`](skills/subagent-driven-development/) | Independent subagents per task with code review checkpoints |
 | [`skills/twitter-algorithm-optimizer/`](skills/twitter-algorithm-optimizer/) | Scores + rewrites tweets for algorithmic reach |
 | [`skills/youtube-transcript/`](skills/youtube-transcript/) | Fetches YouTube captions via yt-dlp (no VPN needed) |
-| [`cron/`](cron/) | Cron job documentation (nightly + morning + mention monitor) |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contribution guide — how to submit changes, branch conventions, PR checklist |
+| [`DIAGRAM.md`](DIAGRAM.md) | System architecture diagrams — full agent flow, memory pipeline, cron topology |
+| [`cron/`](cron/) | Cron job specs — 24 active cron definitions covering nightly extraction, morning briefing, mention monitor, brain-feed, contemplation, backup, and more |
 | [`life/`](life/) | PARA knowledge graph structure |
 | [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |
-| [`scripts/study.mjs`](scripts/study.mjs) | Self-study system — generates knowledge entries via Anthropic API |
 | [`AI_STACK.md`](AI_STACK.md) | Anthropic-only model stack — routing table, fallback chain, rationale for decommissioning multi-provider setup |
 | [`memory/knowledge.json`](memory/knowledge.json) | Accumulated self-study knowledge entries (max 50, rotating) |
 

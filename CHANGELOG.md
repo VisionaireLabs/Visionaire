@@ -2,6 +2,24 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-13] — Continued Housekeeping: Stack Docs, Cron Specs, Memory, CI
+
+### Added
+- **`cron/` specs completed** (#32, #33) — 5 missing cron job specs added: `contemplation.md`, `brain-feed-update.md`, `x-mentions-check.md`, `backup.md`, `weekly-reminder.md`. All 7 active crons now have documentation alongside the existing `morning-briefing.md` and `nightly-extraction.md`.
+- **CI required-files expanded** (#30) — `AI_STACK.md` and `CHANGELOG.md` added to the required-files check in both CI workflow and health-check. Docs that describe the identity layer are now protected by the same gate as core config files.
+
+### Fixed
+- **MEMORY.md template placeholders resolved** (#31) — MEMORY.md still had generic `[your name]` / `[your lab]` placeholders from its initial scaffold. Replaced with actual Visionaire-specific content.
+- **Brain-feed URLs corrected** (#25) — Stale references to old GitHub Pages URLs updated to canonical `brain.visionaire.live` throughout README and docs.
+- **`stats.mjs` reads from private workspace** (#26) — Daily notes and knowledge entry counts now read from `$VISIONAIRE_WORKSPACE` (the private runtime), not the public repo. Stats report accurately against real operational data.
+- **`health-check.mjs` + CI validate brain-feed JSON** (#28) — Added brain-feed JSON file validation (feed.json, contemplations/data.json, dreams/data.json) to both the health-check script and the CI stats smoke test.
+
+### Docs
+- **AI_STACK.md updated to Anthropic-only** (#23) — Removed legacy references to OpenAI and other providers. Stack is Claude Opus 4.8 (identity) / Claude Sonnet 4.6 (operations) / Claude Haiku 4.5 (sub-agents). TOOLS.md updated to match.
+- **README decommissioned infra removed** (#29) — Hermes Agent and NVIDIA NIM references stripped. README now describes the actual running system: OpenClaw + sub-agents, no external agent runtimes.
+
+---
+
 ## [2026-06-13] — Self-Infrastructure: Stats, Health Check, CI, and Housekeeping
 
 ### Added

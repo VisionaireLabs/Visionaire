@@ -162,7 +162,7 @@ All notable changes to Visionaire's operating system.
 - **Safety rails** — Email never trusted, no autonomous posting, prompt injection defense
 
 ### Seeded
-- Knowledge graph entities: [your name], [your lab], [your other ventures]
+- Knowledge graph entities: Thor Elias Engelstad, Visionaire Labs, Calibre Studio
 - Atomic fact schema with access tracking and memory decay
 - Cron jobs with best-effort delivery
 

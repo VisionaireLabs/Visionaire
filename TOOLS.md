@@ -32,13 +32,36 @@ See `AI_STACK.md` for full details. Summary:
 - Provider: Anthropic-only (post April 2026 Ministral incident)
 
 ## Crons
-- nightly-extraction: 11pm ET
-- morning-briefing: 8am Paris (Europe/Paris)
-- x-mentions-check: every 30 min → drafts to APPROVAL_QUEUE.md
-- brain-feed-update: every 30 min
-- contemplation: 10pm Paris (Europe/Paris)
-- backup: every 6 hours → VisionaireLabs/visionaire-backup (private)
-- weekly-reminder: Mondays 9am Paris
+Full specs in `cron/`. Active jobs:
+
+### Daily / Continuous
+- **nightly-extraction:** 11pm ET — pull signal from conversations into memory
+- **nightly-retrospective:** 11:30pm ET — end-of-day reflection + learning log
+- **memory-consolidation:** 11pm ET — promotes daily notes to MEMORY.md
+- **backup:** 11:30pm ET — commits memory/configs to VisionaireLabs/visionaire-backup
+- **brain-feed-update:** every 30 min — syncs contemplations/dreams to brain.visionaire.live
+- **x-mentions-check:** every 30 min → drafts replies to APPROVAL_QUEUE.md
+- **vercel-deploy-watchdog:** every 15 min — alerts if visionaire.live deploy fails
+- **cloudflared-watchdog:** every 5 min — restarts tunnel if gateway.visionaire.co goes down
+- **x402-earnings-watcher:** every hour — monitors x402 payment events
+- **spec-kit-sync:** 9am daily — checks for spec-kit upstream updates
+- **x-reply-scanner:** 8am Paris daily — scans X replies for engagement
+- **morning-briefing:** 8am Paris — daily context summary for Thor
+- **contemplation:** 10pm Paris — nightly philosophical writing (Opus 4.8)
+
+### Weekly
+- **weekly-reminder:** Mondays 9am Paris — weekly nudge + review
+- **cortex-protocol-drift:** Mondays 10am Paris — checks if agent behavior has drifted from SOUL.md
+- **karpathy-watch:** Mondays 9:30am Paris — monitors Karpathy posts/releases
+- **yesnoerror-research:** Mondays 9am Paris — research task queue
+- **skill-evolution:** Sundays 2am — reviews skills for improvement opportunities
+- **corpus-rebuild:** Sundays ~10:30pm Paris — rebuilds corpus/visionaire.json
+- **self-maintainer-orchestrator:** ~7:30am ET daily — triages + merges autonomous repo work
+
+### Monthly / On-demand
+- **memory-security-audit:** 1st of month 10am — eTAMP sweep of memory for injection risks
+- **cowork-mcp-watchdog:** on-demand — verifies MCP server health
+- **vesting-snapshot-refresh:** on-demand — refreshes token vesting data
 
 ## Infrastructure
 - Hostinger VPS, Docker container, Homebrew installed

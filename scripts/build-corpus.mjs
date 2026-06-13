@@ -57,6 +57,16 @@ const SOURCES = [
     file: join(MEMORY, "genesis.md"),
     publicProof: "Origin texts, intentionally public per IDENTITY.md",
   },
+  {
+    type: "identity-doc",
+    file: join(ROOT, "SOUL.md"),
+    publicProof: "Committed to public repo; defines Visionaire voice and register",
+  },
+  {
+    type: "identity-doc",
+    file: join(ROOT, "AI_STACK.md"),
+    publicProof: "Committed to public repo; defines model routing and runtime config",
+  },
 ];
 
 /** Strip frontmatter, keep markdown body. */

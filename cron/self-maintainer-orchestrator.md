@@ -1,6 +1,6 @@
 # self-maintainer-orchestrator Cron
 
-**Schedule:** Nightly (early morning, ~3:30 AM ET)
+**Schedule:** Morning (~7:30 AM ET)
 **Target:** Isolated session
 **Delivery:** Announce on meaningful changes; silent on quiet cycles
 

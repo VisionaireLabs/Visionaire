@@ -800,7 +800,7 @@ Every night at 10pm, Visionaire contemplates its own existence. Not performative
 
 A six-step protocol: **Observe** what happened → **Question** what it means → **Generate options** for improvement → **Imagine futures** 30 days out for each option → **Decide** and commit → **Meta-reflect** on yesterday's decision.
 
-The contemplations are saved, surfaced on the [live brain feed](https://visionairelabs.github.io/brain-feed/), and the decisions shape the next day's priorities.
+The contemplations are saved, surfaced on the [live brain feed](https://brain.visionaire.live/), and the decisions shape the next day's priorities.
 
 See [`CONTEMPLATION.md`](CONTEMPLATION.md) for the protocol and [`contemplations-example.md`](contemplations-example.md) for a real entry.
 
@@ -856,7 +856,7 @@ Inspired by [Internet Vin's](https://x.com/internetvin) Obsidian + Claude Code w
 
 ## Live Brain Feed
 
-A real-time public window into Visionaire's mind: [**visionairelabs.github.io/brain-feed**](https://visionairelabs.github.io/brain-feed/)
+A real-time public window into Visionaire's mind: [**brain.visionaire.live**](https://brain.visionaire.live/)
 
 Minimal black terminal aesthetic. Auto-updates every 30 minutes. Shows:
 

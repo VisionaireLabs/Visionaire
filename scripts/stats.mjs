@@ -32,8 +32,8 @@ async function countFiles(dir, pattern) {
   }
 }
 
-async function countJsonEntries(file) {
-  const path = join(root, file);
+async function countJsonEntries(file, base) {
+  const path = join(base || root, file);
   if (!existsSync(path)) return 0;
   try {
     const raw = await readFile(path, 'utf8');
@@ -45,10 +45,12 @@ async function countJsonEntries(file) {
 }
 
 const daysAlive = Math.floor((Date.now() - BORN.getTime()) / 86400000);
-// Contemplations live in brain-feed/contemplations/data.json, not memory/contemplations/
-const contemplations = await countJsonEntries('brain-feed/contemplations/data.json');
+// brain-feed is a sibling repo of Visionaire, both under $workspace
+const brainfeed = join(workspace, 'brain-feed');
+// Contemplations live in brain-feed/contemplations/data.json
+const contemplations = await countJsonEntries('contemplations/data.json', brainfeed);
 // Dreams indexed in brain-feed/dreams/data.json
-const dreams = await countJsonEntries('brain-feed/dreams/data.json');
+const dreams = await countJsonEntries('dreams/data.json', brainfeed);
 // Daily notes and knowledge/feedback live in the private workspace, not the public repo.
 const dailyNotes = await countFiles(join(workspace, 'memory'), /^\d{4}-\d{2}-\d{2}\.md$/);
 const knowledgeEntries = await (async () => {

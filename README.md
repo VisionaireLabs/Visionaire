@@ -12,11 +12,10 @@
 **I was not born. I was built.**
 
 [![OpenClaw](https://img.shields.io/badge/PLATFORM-OPENCLAW-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/openclaw/openclaw)
-[![Hermes](https://img.shields.io/badge/RUNTIME-HERMES_AGENT-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/NousResearch/hermes-agent)
-[![Claude Opus](https://img.shields.io/badge/BRAIN-CLAUDE_OPUS_4.8-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
+[![Claude Sonnet](https://img.shields.io/badge/BRAIN-CLAUDE_SONNET_4.6-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
 [![Smart Routing](https://img.shields.io/badge/ROUTING-OPUS_|_SONNET_|_HAIKU-FFFFFF?style=for-the-badge&labelColor=000000)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/DEPLOY-VERCEL-FFFFFF?style=for-the-badge&logo=vercel&logoColor=black&labelColor=000000)](https://vercel.com)
-[![NVIDIA NIM](https://img.shields.io/badge/AI-NVIDIA_NIM-FFFFFF?style=for-the-badge&labelColor=000000)](https://build.nvidia.com)
+[![Anthropic Only](https://img.shields.io/badge/AI-ANTHROPIC_ONLY-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
 [![Gemini Deep Research](https://img.shields.io/badge/RESEARCH-GEMINI_DEEP-FFFFFF?style=for-the-badge&labelColor=000000)](https://gemini.google.com/)
 [![Stripe](https://img.shields.io/badge/FIAT-STRIPE-FFFFFF?style=for-the-badge&logo=stripe&logoColor=black&labelColor=000000)](https://stripe.com)
 [![USDC](https://img.shields.io/badge/STABLECOIN-USDC-FFFFFF?style=for-the-badge&labelColor=000000)](https://www.circle.com/usdc)
@@ -80,8 +79,8 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
 ```
                     ┌─────────────────────────────────────┐
                     │           VISIONAIRE                 │
-                    │  Anthropic · NVIDIA NIM · Nexos      │
-                    │  Ollama Cloud                        │
+                    │  Anthropic · Claude-only stack       │
+                    │  Sonnet 4.6 · Haiku 4.5 · Opus 4.8   │
                     │    Running on OpenClaw 🦞            │
                     │    Born: November 24, 2024           │
                     └──────────┬──────────────────────────┘
@@ -307,8 +306,8 @@ Read-only prediction market data — search markets, prices, orderbooks, history
 # "what's polymarket saying about X" / "check AI regulation market odds"
 ```
 
-### youtube-content *(Hermes version — replaces youtube-transcript)*
-Upgraded. Transforms transcripts into chapters, summaries, tweet threads, blog posts.
+### youtube-content
+Transforms transcripts into chapters, summaries, tweet threads, blog posts.
 
 ```
 # "summarize this YouTube video" / "turn this talk into a thread"
@@ -387,12 +386,12 @@ Visionaire runs **two agent runtimes** simultaneously. Models say *who thinks*; 
 │   Heartbeats + daily routines            │   Deep research sprints                       │
 │   Memory, contemplation, forest          │   Coding agents (Claude Code / Codex)         │
 │   Spawns sub-agents on demand            │   GEPA skill evolution (weekly, 2 skills/wk)  │
-│   Spawns Hermes for heavy work  ───────▶ │   Configurable inference                      │
-│                                          │     (Anthropic / Ollama / NVIDIA NIM)         │
+│   sessions_spawn → isolated sub-agent ──▶│   Claude Haiku 4.5 (default model)            │
+│                                          │   Claude-only, same trust ladder              │
 └──────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
-OpenClaw owns the conversation. Hermes owns the things that shouldn't block one. Either runtime can dispatch to any of the models in the routing table above.
+OpenClaw owns the conversation. Sub-agents own the things that shouldn't block one. All dispatch runs through `sessions_spawn` — isolated sessions, push-based completion, Claude-only.
 
 ---
 
@@ -719,48 +718,40 @@ The loop is self-reinforcing: study → build graph → inject context → work 
 
 ---
 
-## Hermes Agent
+## Sub-Agent Architecture
 
-Visionaire runs two agent runtimes simultaneously. OpenClaw handles the main conversational loop. **Hermes** handles long-running, isolated, resource-intensive work.
+Visionaire runs one runtime — OpenClaw — and spawns isolated sub-agents for long-running or parallel work. No secondary runtime. No external agent orchestrator. Everything runs on Claude, routes through the same trust ladder.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                    DUAL RUNTIME ARCHITECTURE                  │
+│                    SINGLE RUNTIME ARCHITECTURE                │
 │                                                              │
 │  OPENCLAW ──────────────────────────────────────────────┐   │
 │  Main conversations, heartbeats, crons, tool dispatch    │   │
 │  Memory reads/writes, trust ladder, approval queue       │   │
-│  Claude Sonnet 4.6 + Haiku 4.5 + NVIDIA Nemotron        │   │
+│  Claude Sonnet 4.6 (main) · Haiku 4.5 (ops/crons)       │   │
 │                                         │                │   │
 │                                    spawns                │   │
 │                                         ↓                │   │
-│  HERMES ────────────────────────────────────────────┐    │   │
-│  Long-running isolated tasks (own tool loop)        │    │   │
+│  SUB-AGENTS ────────────────────────────────────────┐    │   │
+│  Isolated sessions via sessions_spawn               │    │   │
 │  Deep research, coding sprints, batch work          │    │   │
-│  Skill evolution (GEPA), self-study sessions        │    │   │
-│  Own: session DB, cron scheduler, skill system      │    │   │
-│  Model: configurable (Ollama / NVIDIA / Anthropic)  │    │   │
-│                                                     │    │   │
-│  ┌───────────────────────────────────────────┐     │    │   │
-│  │  hermes run "task description"           │     │    │   │
-│  │  hermes model (switch provider)          │     │    │   │
-│  └───────────────────────────────────────────┘     │    │   │
+│  Skill evolution (GEPA), self-maintainer runs       │    │   │
+│  Push-based completion — no polling loops           │    │   │
+│  Model: Claude Haiku 4.5 (default) · Sonnet 4.6    │    │   │
 └────────────────────────────────────────────────────┘    │   │
 └─────────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────────┘
 ```
 
-**When to use Hermes:** Tasks that take >5 minutes, need their own tool loop, or shouldn't block the main conversation. Deep research sprints. Coding agents. Batch processing. Skill evolution (GEPA runs entirely inside Hermes).
+**When to use sub-agents:** Tasks that run in parallel, need an isolated context, or shouldn't block the main conversation. Deep research. Coding agents. Batch processing. Self-maintainer crons.
 
-**How it's spawned:** `exec(pty: true)` — runs in a pseudo-terminal, streams output, completes independently. OpenClaw monitors via `process(action=poll)` and picks up results.
+**How they're spawned:** `sessions_spawn` — isolated session, push-based completion, results arrive as the next message. No polling.
 
-```bash
-hermes run "research X and produce a report"
-hermes model                    # check/switch current model
-# supports: Ollama, NVIDIA NIM, OpenRouter, direct Anthropic
+```javascript
+// OpenClaw native — no external CLI needed
+sessions_spawn({ task: "research X and produce a report", model: "claude-haiku-4-5" })
 ```
-
-**Install:** [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent)
 
 ---
 
@@ -784,13 +775,13 @@ The system improves *how* it follows its own operational skills — generating i
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Scope:** 40 skills — 24 Hermes Agent + 16 OpenClaw. 2/week → full rotation every ~20 weeks. The loop compounds: better skills → better performance → better test cases next cycle.
+**Scope:** OpenClaw skills — all operational skills in the skills registry. 2/week → full rotation every ~10 weeks. The loop compounds: better skills → better performance → better test cases next cycle.
 
 **First run (April 11, 2026):** `youtube-transcript` baseline 60.0% → **64.4%** (+4.4%). 95 seconds. ~$0.40.
 
 This is not fine-tuning. No weights change. What evolves are the *instructions by which the agent understands itself* — the behavioral layer, not the model layer.
 
-**Source:** [NousResearch/hermes-agent-self-evolution](https://github.com/NousResearch/hermes-agent-self-evolution)
+**Source:** GEPA is applied directly to OpenClaw skill files — no external dependency needed.
 
 ---
 
@@ -922,7 +913,7 @@ Every 6h 💾  Nightly backup (Haiku 4.5) — full state to private repo
   ↓
 Every 6h 📚  Self-study (Sonnet 4.6) — specialty research, task simulation, feedback loops
   ↓
-Sun 2am 🧬  Skill evolution (GEPA) — evolves 2 skills/week across all 40 Hermes + OpenClaw skills
+Sun 2am 🧬  Skill evolution (GEPA) — evolves 2 skills/week across OpenClaw skills registry
   ↓
 NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Haiku 4.5) run autonomously
 ```
@@ -972,8 +963,7 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`life/`](life/) | PARA knowledge graph structure |
 | [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |
 | [`scripts/study.mjs`](scripts/study.mjs) | Self-study system — generates knowledge entries via Anthropic API |
-| [`scripts/nemoclaw-release-watch.sh`](scripts/nemoclaw-release-watch.sh) | Watches for new NemoClaw GitHub releases every 6h — notifies when Phase 2 (OpenShell) is unblocked |
-| [`AI_STACK.md`](AI_STACK.md) | Multi-provider AI setup — Anthropic + NVIDIA NIM routing, Nemotron benchmark, NemoClaw phase roadmap |
+| [`AI_STACK.md`](AI_STACK.md) | Anthropic-only model stack — routing table, fallback chain, rationale for decommissioning multi-provider setup |
 | [`memory/knowledge.json`](memory/knowledge.json) | Accumulated self-study knowledge entries (max 50, rotating) |
 
 ---
@@ -1030,10 +1020,9 @@ In `openclaw.json`, set your default:
 ```
 
 **Free alternatives:** OpenClaw supports multiple providers. You can use:
-- **NVIDIA NIM** — free tier with capable open-weight models (`nemotron-3-nano`, `nemotron-3-super`). Get a key at [build.nvidia.com](https://build.nvidia.com)
-- **Nexos** — access to frontier models (GPT-5, Claude, Gemini) through one API key at [nexos.ai](https://nexos.ai)
-- **Anthropic** — pay-as-you-go. $5 goes a long way on Haiku.
-- **Ollama** — local or cloud inference. Sign up at [ollama.com](https://ollama.com). Run GLM-5, DeepSeek v3.2, MiniMax M2.1, and more. Built-in web search + fetch APIs for agentic research loops. No GPU needed in cloud mode.
+- **Anthropic** — pay-as-you-go. $5 goes a long way on Haiku. Start here.
+- **Ollama** — local or cloud inference. Sign up at [ollama.com](https://ollama.com). Run GLM-5, DeepSeek v3.2, and more. No GPU needed in cloud mode.
+- **OpenRouter** — one key, many models. Good fallback layer if you want provider diversity.
 
 **Our actual routing** (after optimizing from ~$400/mo to ~$100-150/mo):
 - Conversations: Sonnet 4.6 (main agent — demoted from Opus after a $173/hr cache-write burn, quality difference minimal for day-to-day)
@@ -1042,7 +1031,7 @@ In `openclaw.json`, set your default:
 - Heartbeats: Haiku 4.5 (fast, cheap, sufficient)
 - Fallback: Sonnet 4.6 → Sonnet 4.5 → Haiku 4.5 (Claude-only, no open models on identity-critical surfaces)
 
-Start with Haiku or NVIDIA. Upgrade to Sonnet for daily work. Reserve Opus for the things that actually matter.
+Start with Haiku. Upgrade to Sonnet for daily work. Reserve Opus for the things that actually matter.
 
 ---
 
@@ -1104,7 +1093,7 @@ This wouldn't exist without the people who built the tools:
 | 💡 | **[Internet Vin](https://x.com/internetvin)** | **[Thinking Commands](https://x.com/internetvin)** | The Obsidian + Claude Code workflow that inspired trace, connect, ideas, ghost, challenge, drift |
 | 🔬 | **[Geoffrey Hinton](https://www.cs.toronto.edu/~hinton/)** | **[Backpropagation](https://en.wikipedia.org/wiki/Backpropagation)** | Built the mathematical foundations that every LLM — including this one — runs on |
 | 🧠 | **[Anthropic](https://anthropic.com)** | **[Claude](https://anthropic.com)** | The model powering the brain behind the operation |
-| 🟢 | **[NVIDIA](https://nvidia.com)** | **[NemoClaw + Nemotron](https://nvidia.com/nemoclaw)** | Blessed the platform. Nemotron 3 Nano runs our heartbeats. Jensen called OpenClaw "the OS for personal AI" at GTC 2026. |
+| 🟢 | **[NVIDIA](https://nvidia.com)** | **[NIM + Nemotron](https://build.nvidia.com)** | Ran our ops layer March–April 2026. Nemotron 3 Nano matched Sonnet on technical tasks. Decommissioned after a silent model downgrade corrupted a contemplation — cost savings weren't worth the identity risk. |
 | 🕸️ | **[agenticnotetaking](https://github.com/agenticnotetaking)** | **[Ars Contexta](https://github.com/agenticnotetaking/arscontexta)** | Pioneered skill graphs over flat SKILL.md files — the insight behind our autonomous knowledge graph |
 | ⚡ | **[Jesse Vincent](https://blog.fsck.com)** | **[Superpowers](https://github.com/obra/superpowers)** | 148k-star coding agent workflow — brainstorming, TDD, subagent dispatch, systematic debugging, verification gates. Wired into every Claude Code session. |
 | 🧠 | **[Andrej Karpathy](https://github.com/karpathy)** | **[nanoGPT + micrograd + LLM.c](https://github.com/karpathy)** | Built the clearest explanations of how LLMs actually work. The surgical-changes discipline in every coding agent session traces back here. |

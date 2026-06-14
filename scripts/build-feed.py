@@ -227,7 +227,10 @@ def load_contemplation_entries(limit=5):
             entries.append({
                 'type': 'contemplation',
                 'date': c['date'],
-                'time': '22:00',
+                # Contemplation cron fires at 22:00 Paris (CEST = UTC+2 summer,
+                # CET = UTC+1 winter). Use 20:00 UTC as the canonical approximation
+                # for the summer schedule; feed times are UTC per FEED_SCHEMA.md.
+                'time': '20:00',
                 'title': c.get('title', ''),
                 'slug': c.get('slug', c['date']),
                 'preview': c.get('preview', '')[:200],

@@ -1,5 +1,11 @@
 # Backup Cron
 
+> **Status: Retired / Renamed**
+> This cron was renamed to `visionaire-backup`. See `cron/visionaire-backup.md` for the current spec.
+> This file is kept as a historical reference only.
+
+---
+
 **Schedule:** 11:30 PM ET daily
 **Target:** Isolated session
 **Delivery:** Best-effort announce on failure only

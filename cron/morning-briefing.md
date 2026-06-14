@@ -1,5 +1,10 @@
 # Morning Briefing Cron
 
+> **Status: Retired**
+> The morning briefing cron is no longer active. Morning context is surfaced via the heartbeat and on-demand instead.
+
+---
+
 **Schedule:** 8:00 AM (human's timezone) daily
 **Target:** Isolated session
 **Delivery:** Best-effort announce to last active channel

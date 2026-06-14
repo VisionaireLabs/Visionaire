@@ -1,5 +1,10 @@
 # corpus-rebuild Cron
 
+> **Status: Retired**
+> This cron is no longer running as a scheduled job. Corpus rebuilds are now triggered on-demand by the self-maintainer orchestrator and as part of the contemplation cron. Spec kept as historical reference.
+
+---
+
 **Schedule:** Weekly, post-contemplation batch (Sundays ~10:30 PM Paris) + on-demand by self-maintainer
 **Target:** Isolated session
 **Delivery:** Silent (no announce unless error)

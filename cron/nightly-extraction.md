@@ -1,5 +1,10 @@
 # Nightly Extraction Cron
 
+> **Status: Retired**
+> The nightly extraction cron is no longer active. Memory extraction is handled by the nightly-retrospective cron and on-demand memory consolidation.
+
+---
+
 **Schedule:** 11:00 PM ET daily
 **Target:** Isolated session (doesn't pollute main chat)
 **Delivery:** Best-effort announce to last active channel

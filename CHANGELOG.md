@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-06-14] — Fix: build-feed.py Uses data.json for Contemplation Count
+
+### Fixed
+- **`scripts/build-feed.py` contemplation count reads from `contemplations/data.json`** (#111, closes #110) — `build-feed.py` was counting `.md` files via glob in the brain-feed repo, but only the most recent ~11 contemplations are committed there. The authoritative index is `contemplations/data.json` (100 entries). This caused `feed.json stats.contemplations = 11` while `llms.txt` reported `100 contemplations published`, failing the CI `Check llms.txt stats consistency` step. Fixed to read count from `data.json` with glob fallback if the file is absent.
+
+---
+
 ## [2026-06-14] — Fix: Add Python Script Syntax Check to health-check.mjs
 
 ### Added

@@ -41,6 +41,13 @@ jobs:
             bash -n "$f" && echo "✅ $f" || (echo "❌ $f" && exit 1)
           done
 
+      - name: Check .py scripts
+        run: |
+          shopt -s nullglob
+          for f in scripts/*.py; do
+            python3 -m py_compile "$f" && echo "✅ $f" || (echo "❌ $f" && exit 1)
+          done
+
       - name: Required files exist
         run: |
           for f in SOUL.md AGENTS.md USER.md MEMORY.md HEARTBEAT.md TOOLS.md AI_STACK.md CHANGELOG.md; do

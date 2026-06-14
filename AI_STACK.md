@@ -71,7 +71,7 @@ Cost argument for NVIDIA NIM (the previous setup): ops layer runs at near-zero c
 
 The failure mode that ended it: a silent downgrade to Ministral-3-8b took over a contemplation post on April 16, 2026. It passed all format checks. It shipped. The output was indistinguishable from AI slop — numbered bullets, "step forward for AGI", zero voice. The identity system failed silently because the fallback chain allowed it.
 
-Cost savings aren't worth the risk of silent identity degradation. The ops layer now runs on Haiku 4.5 — cheap enough that the math still works, and Claude enough that the fallback chain never drops off a cliff.
+Cost savings aren't worth the risk of silent identity degradation. The ops layer now runs on Sonnet 4.6 — the same model as everything else. Haiku 4.5 was the intended cost-saving layer, but observed production state shows Sonnet 4.6 running all operations. The stack simplified: one model, no silent downgrade path.
 
 ---
 

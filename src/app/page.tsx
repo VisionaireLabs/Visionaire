@@ -26,8 +26,10 @@ interface FeedData {
   stats: {
     memories: number;
     entities: number;
+    contemplations?: number;
     contemplationCount?: number;
-    tweetsToday: number;
+    dreams?: number;
+    tweetsToday?: number;
     daysAlive: number;
   };
   feed: { time: string; type: string; content: string }[];

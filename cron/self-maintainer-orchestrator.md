@@ -1,8 +1,8 @@
 # self-maintainer-orchestrator Cron
 
-**Schedule:** Morning (~7:30 AM ET)
+**Schedule:** Every 5 minutes (continuous — `everyMs: 300000`)
 **Target:** Isolated session
-**Delivery:** Announce on meaningful changes; silent on quiet cycles
+**Delivery:** None (silent background task; delivery.mode = "none")
 
 ## What It Does
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-06-14] — Fix: Add Python Script Syntax Check to health-check.mjs
+
+### Added
+- **`scripts/health-check.mjs` step 2b: Python syntax validation** (#109, closes #108) — `health-check.mjs` previously validated `.mjs` and `.js` scripts but silently skipped all `.py` scripts. A broken Python script would pass local health-check while failing CI. Added `python3 -m py_compile` check for all `scripts/*.py` files, matching what CI already runs. Gracefully skips with a warning when `python3` is unavailable. Currently: 5 Python scripts, all pass.
+
+---
+
 ## [2026-06-14] — Fix: build-feed.py Cron Status and format_ts Fallback
 
 ### Fixed

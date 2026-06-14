@@ -77,6 +77,38 @@ if (scriptFail === 0) {
   scriptErrors.forEach(e => console.log(`   ${RED}→${RESET} ${e}`));
 }
 
+// 2b. Python scripts syntax check
+const pyFiles = existsSync(scriptsDir)
+  ? readdirSync(scriptsDir).filter(f => f.endsWith('.py'))
+  : [];
+
+if (pyFiles.length > 0) {
+  // Probe python3 availability first
+  const pyProbe = spawnSync('python3', ['--version'], { encoding: 'utf8' });
+  if (pyProbe.status !== 0) {
+    warn('Python scripts', `python3 not found — skipped ${pyFiles.length} .py file(s)`);
+  } else {
+    let pyPass = 0;
+    let pyFail = 0;
+    const pyErrors = [];
+    for (const file of pyFiles) {
+      const result = spawnSync('python3', ['-m', 'py_compile', join(scriptsDir, file)], { encoding: 'utf8' });
+      if (result.status === 0) {
+        pyPass++;
+      } else {
+        pyFail++;
+        pyErrors.push(`${file}: ${(result.stderr || '').split('\n')[0]}`);
+      }
+    }
+    if (pyFail === 0) {
+      ok('Python scripts valid', `${pyPass}/${pyFiles.length} pass`);
+    } else {
+      fail('Python scripts valid', `${pyPass}/${pyFiles.length} pass`);
+      pyErrors.forEach(e => console.log(`   ${RED}→${RESET} ${e}`));
+    }
+  }
+}
+
 // 3. JSON files in memory/
 const memoryDir = join(root, 'memory');
 const jsonFiles = existsSync(memoryDir)

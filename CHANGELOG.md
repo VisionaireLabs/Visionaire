@@ -2,6 +2,20 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-14] — Fix: x_reply_scanner.py Error Handling and Env Validation
+
+### Fixed
+- **`scripts/x_reply_scanner.py` hardened with error handling, logging, and env validation** (#85, closes #84) — Replaced bare `print()` calls with structured `logging` (stderr) to keep stdout clean for cron consumers. Added startup env validation: missing X API credentials exit with a clear error before any API call. All API calls, file I/O, and JSON parsing wrapped in try/except with appropriate log levels. HTTP 429 rate-limit responses handled gracefully (log warning, skip target). `HEARTBEAT_OK` stdout signal on no-opportunity runs follows cron convention.
+
+---
+
+## [2026-06-14] — Fix: Add Missing x402-earnings-watcher.py Script
+
+### Fixed
+- **`scripts/x402-earnings-watcher.py` added to repo** (#83, closes #82) — Script was referenced by the `x402-earnings-watcher` cron spec but absent from the repo, causing every hourly invocation to fail silently. Script queries Base mainnet via public RPC for inbound USDC Transfer events to the x402 payee address, tracks last-checked block in `memory/x402-earnings-state.json` (idempotent on re-run), and appends earnings events to `memory/events.jsonl`.
+
+---
+
 ## [2026-06-14] — CI: Add Python Script Syntax Validation
 
 ### Fixed

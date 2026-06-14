@@ -2,6 +2,20 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-14] — Docs: Add 8 Missing Crons to TOOLS.md
+
+### Fixed
+- **TOOLS.md now lists all 31 cron jobs** (#93, closes gap from #91) — PR #91 added spec files for 8 undocumented crons but TOOLS.md was not updated in the same pass. Added entries for: `llms-txt-weekly-refresh`, `x-unfollow-cleanup`, `memory-dreaming-promotion`, `agenc-big-task-watcher`, `multica-daemon-watchdog`, `agenc-task-watcher`, `x-to-telegram-mirror`, `visionaire-backup`. All 31 cron specs now have a corresponding TOOLS.md entry.
+
+---
+
+## [2026-06-14] — Docs: Add Spec Files for 8 Undocumented Crons
+
+### Added
+- **8 new cron spec files added to `cron/`** (#91, closes #90) — Eight crons appeared in brain-feed events but had no documentation. Specs added for: `visionaire-backup`, `llms-txt-weekly-refresh`, `multica-daemon-watchdog`, `agenc-task-watcher`, `agenc-big-task-watcher`, `memory-dreaming-promotion`, `x-unfollow-cleanup`, `x-to-telegram-mirror`. Each spec documents schedule, behavior, setup CLI command, and notes, following the existing format.
+
+---
+
 ## [2026-06-14] — Fix: validate-feed.sh Schema Parity with brain-feed CI
 
 ### Fixed

@@ -247,6 +247,40 @@ if (!existsSync(cronDir)) {
   }
 }
 
+// 8. cron spec files vs live jobs.json drift detection
+const jobsJsonPath = '/data/.openclaw/cron/jobs.json';
+if (!existsSync(jobsJsonPath)) {
+  ok('cron/jobs.json drift', 'jobs.json not found at runtime path — skipped (CI/offline environment)');
+} else {
+  try {
+    const jobsRaw = await readFile(jobsJsonPath, 'utf8');
+    const jobsData = JSON.parse(jobsRaw);
+    const liveJobs = (jobsData.jobs || []).map(j => j.name || '').filter(Boolean);
+
+    // Normalize: lowercase, replace spaces with hyphens
+    const normalize = s => s.toLowerCase().replace(/\s+/g, '-');
+    const liveNormalized = new Set(liveJobs.map(normalize));
+
+    const cronSpecs = existsSync(cronDir)
+      ? readdirSync(cronDir).filter(f => f.endsWith('.md')).map(f => f.replace(/\.md$/, ''))
+      : [];
+
+    const unmatched = cronSpecs.filter(spec => !liveNormalized.has(normalize(spec)));
+
+    // Warn only — stale specs are docs, not errors
+    if (unmatched.length === 0) {
+      ok('cron spec drift', `${cronSpecs.length} spec files — all match a live cron name (normalized)`);
+    } else {
+      warn(
+        'cron spec drift',
+        `${unmatched.length}/${cronSpecs.length} spec file(s) have no matching live cron: ${unmatched.join(', ')} — mark as Retired if intentional`
+      );
+    }
+  } catch (e) {
+    warn('cron spec drift', `failed to read/parse jobs.json: ${e.message.split('\n')[0]}`);
+  }
+}
+
 // Summary
 console.log('');
 if (errors === 0 && warnings === 0) {

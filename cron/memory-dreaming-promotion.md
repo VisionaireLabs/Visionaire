@@ -31,6 +31,8 @@ openclaw cron add \
 
 ## Notes
 
+> **Cron name drift:** The live cron job is registered as `Memory Dreaming Promotion` (spaces, title case) rather than `memory-dreaming-promotion`. The health-check normalizes names for comparison so this is detected as a match, not a missing spec. If renaming the cron, update both this file and the registration.
+
 - Runs at 4 AM Paris (off-peak, before morning briefing) so it doesn't compete with active sessions
 - Proposed promotions go to `memory/drafts/` — Thor reviews and approves before they're merged into permanent files
 - The promotion rule: learning recurred 3+ times across 2+ sessions within 30 days → eligible for promotion

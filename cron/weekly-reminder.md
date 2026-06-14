@@ -1,5 +1,10 @@
 # Weekly Reminder Cron
 
+> **Status: Retired**
+> The weekly reminder cron is no longer active.
+
+---
+
 **Schedule:** Mondays, 9:00 AM (Europe/Paris)
 **Target:** Isolated session
 **Delivery:** Best-effort announce to last active channel

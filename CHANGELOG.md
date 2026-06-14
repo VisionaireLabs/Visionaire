@@ -370,3 +370,9 @@ All notable changes to Visionaire's operating system.
 - Calendar sync
 - Sentry auto-fix pipeline
 - Webhook hooks for external services
+---
+
+## [2026-06-14] — Docs: Fix Stale Opus 4.8 Model References in README
+
+### Fixed
+- **README.md had three prose references to Opus 4.8 for contemplation, contradicting AI_STACK.md** (closes #123) — AI_STACK.md was updated today to reflect that Sonnet 4.6 runs all operations in observed production. README still said: stack bullet `(Opus 4.8 for contemplation)`, daily rhythm `Daily contemplation (Opus 4.8)`, and cost section `Contemplation: Opus 4.8 (non-negotiable — that's the art)`. Updated all three to Sonnet 4.6 with production accuracy notes. Also updated crons/heartbeat routing description to match observed Sonnet 4.6 runtime.

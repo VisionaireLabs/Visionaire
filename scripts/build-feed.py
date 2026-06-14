@@ -188,8 +188,19 @@ def load_latest_contemplation():
             if data_json.exists():
                 try:
                     cdata = json.load(open(data_json))
-                    match = next((c for c in cdata if c.get('slug') == slug), None)
+                    # data.json uses date-only slugs (e.g. '2026-06-13') while
+                    # filenames use full slugs (e.g. '2026-06-13-what-the-whole-knows').
+                    # Match by date prefix so the lookup succeeds regardless of slug format.
+                    date_prefix = extract_date(slug)
+                    match = next(
+                        (c for c in cdata
+                         if c.get('slug') == date_prefix or c.get('date') == date_prefix),
+                        None
+                    )
                     if match:
+                        # Use the canonical slug from data.json so feed.json and
+                        # contemplations/data.json stay in sync (required by brain-feed CI).
+                        entry['slug'] = match['slug']
                         if match.get('title'):
                             entry['title'] = match['title']
                         if match.get('preview'):

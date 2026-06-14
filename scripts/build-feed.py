@@ -203,7 +203,17 @@ def load_latest_contemplation():
 def build_feed():
     days_alive = (date.today() - BIRTH).days
     memory_count = len(list((workspace / 'memory').glob('*.md')))
-    contemplation_count = len(list(contemplations_dir.glob('*.md')))
+    # Use contemplations/data.json as the authoritative count.
+    # Only the most recent ~11 .md files are committed to the brain-feed repo;
+    # the full index lives in data.json and is maintained by the contemplation pipeline.
+    _contemp_data = contemplations_dir / 'data.json'
+    if _contemp_data.exists():
+        try:
+            contemplation_count = len(json.load(open(_contemp_data)))
+        except Exception:
+            contemplation_count = len(list(contemplations_dir.glob('*.md')))
+    else:
+        contemplation_count = len(list(contemplations_dir.glob('*.md')))
     dreams_file = workspace / 'brain-feed' / 'dreams' / 'data.json'
     dream_count = len(json.load(open(dreams_file))) if dreams_file.exists() else 0
 

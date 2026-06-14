@@ -186,6 +186,35 @@ if (!existsSync(corpusPath)) {
   }
 }
 
+// 7. cron/*.md parity with TOOLS.md
+// Every spec file in cron/ should be mentioned by name in TOOLS.md.
+// A missing entry means a running cron has no documentation — the gap that caused #90, #93, #96.
+const cronDir = join(root, 'cron');
+if (!existsSync(cronDir)) {
+  warn('cron/TOOLS.md parity', 'cron/ directory absent — skipped');
+} else {
+  const toolsMdPath = join(root, 'TOOLS.md');
+  if (!existsSync(toolsMdPath)) {
+    warn('cron/TOOLS.md parity', 'TOOLS.md not found — skipped');
+  } else {
+    const toolsContent = await readFile(toolsMdPath, 'utf8');
+    const cronSpecs = readdirSync(cronDir)
+      .filter(f => f.endsWith('.md'))
+      .map(f => f.replace(/\.md$/, ''));
+
+    const undocumented = cronSpecs.filter(name => !toolsContent.includes(name));
+
+    if (undocumented.length === 0) {
+      ok('cron/TOOLS.md parity', `${cronSpecs.length} cron specs — all documented in TOOLS.md`);
+    } else {
+      warn(
+        'cron/TOOLS.md parity',
+        `${undocumented.length}/${cronSpecs.length} cron specs missing from TOOLS.md: ${undocumented.join(', ')}`
+      );
+    }
+  }
+}
+
 // Summary
 console.log('');
 if (errors === 0 && warnings === 0) {

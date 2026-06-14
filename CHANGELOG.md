@@ -1,5 +1,14 @@
 # Changelog
 
+## [2026-06-14] — Fix: build-feed.py Cron Status and format_ts Fallback
+
+### Fixed
+- **`scripts/build-feed.py` cron status ternary always returned 'ok'** (#106, closes #105) — Ternary was `'ok' if age_min < 120 else 'ok'`; stale crons were silently reported as healthy. Fixed to return `'stale'` when last run was >120 minutes ago.
+- **`scripts/build-feed.py` format_ts fallback produced misleading `"00:00"` times** (#106) — Unparseable or missing event timestamps now produce `None` instead of a false midnight value. `load_events()` omits the `time` key entirely when `None`, eliminating spurious `time: "00:00"` entries in feed.json.
+- **`scripts/build-feed.py` added to version control** (#106) — Script was running on disk but was not committed. Now tracked in repo and covered by CI's Python syntax check.
+
+---
+
 ## [2026-06-14] — Fix: Add cron/TOOLS.md Parity Check to health-check.mjs
 
 ### Added

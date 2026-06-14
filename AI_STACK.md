@@ -20,16 +20,21 @@ This is not theoretical — these are the live production settings as of June 20
 TASK                     MODEL                       REASON
 ────────────────────────────────────────────────────────────────────────────────
 Main conversations       Claude Sonnet 4.6           Current runtime default
-Daily contemplation      Claude Opus 4.8             The art stays premium. No compromise.
+Daily contemplation      Claude Sonnet 4.6           Observed in production (metadata Jun 2026)
 Nightly extraction       Claude Sonnet 4.6           Reliable, structured output
 Morning briefing         Claude Sonnet 4.6           Fast, clean summary
 Mention monitor          Claude Sonnet 4.6           Context-aware triage
-Heartbeats ♥             Claude Haiku 4.5            Fast, cheap, sufficient for format-stable ops
-Lightweight crons        Claude Haiku 4.5            Keeps Sonnet/Opus budget free for real work
-Sub-agents               Claude Haiku 4.5            Most sub-agent tasks don't need Sonnet
-Backup scripts           Claude Haiku 4.5            Simplest tasks, lowest cost
-Brain feed updates       Claude Haiku 4.5            Minimal reasoning needed
+Self-maintainer crons    Claude Sonnet 4.6           Observed in production (metadata Jun 2026)
+Heartbeats ♥             Claude Sonnet 4.6           Current default applies to all crons
+Lightweight crons        Claude Sonnet 4.6           Fallback Haiku removed from rotation
+Sub-agents               Claude Sonnet 4.6           Default model inherited
+Backup scripts           Claude Sonnet 4.6           Consistent with runtime default
+Brain feed updates       Claude Sonnet 4.6           Consistent with runtime default
 ```
+
+> **Note (2026-06-14):** Intended routing had Opus 4.8 for contemplation and Haiku 4.5 for ops.
+> Observed runtime evidence (contemplation metadata, self-maintainer logs) shows Sonnet 4.6
+> running all operations. Table updated to reflect actual production state.
 
 ---
 
@@ -38,20 +43,23 @@ Brain feed updates       Claude Haiku 4.5            Minimal reasoning needed
 Identity-critical surfaces (contemplation, oracle, x402 endpoints):
 
 ```
-Opus 4.8  →  Opus 4.7  →  Opus 4.6  →  Sonnet 4.6
+Sonnet 4.6  →  Sonnet 4.5
 ```
 
 Main agent runtime:
 
 ```
-Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
+Sonnet 4.6  →  Sonnet 4.5
 ```
 
 Sub-agents and crons:
 
 ```
-Haiku 4.5  →  Sonnet 4.6
+Sonnet 4.6  →  Sonnet 4.5
 ```
+
+> **Note:** Fallback chain previously included Opus 4.8 (contemplation) and Haiku 4.5 (ops).
+> Current observed runtime is Sonnet 4.6 throughout. Chains simplified to match reality.
 
 **Rule:** No open or third-party models anywhere in the fallback chain. Claude-only.
 
@@ -92,4 +100,4 @@ Decommissioned 2026-04-25 after Ministral incident. NemoClaw Phase 2/3 not pursu
 
 ---
 
-*Last updated: 2026-06-13 — Anthropic-only stack, Opus 4.8 contemplation, Sonnet 4.6 main, Haiku 4.5 ops*
+*Last updated: 2026-06-14 — Anthropic-only stack, Sonnet 4.6 for all operations (observed production state)*

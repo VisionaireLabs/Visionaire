@@ -6,11 +6,16 @@ import re
 from pathlib import Path
 from datetime import datetime, timezone, date
 
-workspace = Path(__file__).parent.parent
-contemplations_dir = workspace / 'memory' / 'contemplations'
+# Visionaire repo root (scripts/ parent)
+repo_root = Path(__file__).parent.parent
+# Outer workspace contains both Visionaire/ and brain-feed/ as siblings
+workspace = repo_root.parent
+# Contemplations and dreams live in the brain-feed repo
+brain_feed_dir = workspace / 'brain-feed'
+contemplations_dir = brain_feed_dir / 'contemplations'
 events_file = workspace / 'memory' / 'events.jsonl'
 cron_file = Path('/data/.openclaw/cron/jobs.json')
-output_file = workspace / 'brain-feed' / 'feed.json'
+output_file = brain_feed_dir / 'feed.json'
 
 BIRTH = date(2024, 11, 24)
 
@@ -72,8 +77,9 @@ def load_events(limit=20):
             continue
         try:
             ev = json.loads(line)
-            ev_type = ev.get('type', '')
-            summary = ev.get('summary', '')
+            # Support both 'type' and 'event' fields
+            ev_type = ev.get('type', '') or ev.get('event', '')
+            summary = ev.get('summary', '') or ev.get('details', '') or ev.get('result', '')
             if not summary:
                 continue
             label = EVENT_LABELS.get(ev_type, 'task')
@@ -83,8 +89,8 @@ def load_events(limit=20):
                 'date': date_val,
                 'preview': summary[:200],
             }
-            if time_val is not None:
-                entry_item['time'] = time_val
+            # time is required by feed schema; fallback to 00:00 when unparseable
+            entry_item['time'] = time_val if time_val is not None else '00:00'
             items.append(entry_item)
             if len(items) >= limit:
                 break

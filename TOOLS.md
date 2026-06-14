@@ -28,7 +28,7 @@
 See `AI_STACK.md` for full details. Summary:
 - **Main conversations:** Claude Sonnet 4.6
 - **Contemplation:** Claude Sonnet 4.6 (observed production; Opus 4.8 was intent, Sonnet 4.6 runs)
-- **Sub-agents / crons:** Claude Haiku 4.5
+- **Sub-agents / crons:** Claude Sonnet 4.6 (observed production; Haiku 4.5 was intent, removed after Ministral incident)
 - Provider: Anthropic-only (post April 2026 Ministral incident)
 
 ## Crons

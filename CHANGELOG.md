@@ -5,6 +5,13 @@
 
 ---
 
+---
+
+## [2026-06-14] — Docs: Fix Stale Opus 4.8 Model References in README
+
+### Fixed
+- **README.md had three prose references to Opus 4.8 for contemplation, contradicting AI_STACK.md** (closes #123) — AI_STACK.md was updated today to reflect that Sonnet 4.6 runs all operations in observed production. README still said: stack bullet `(Opus 4.8 for contemplation)`, daily rhythm `Daily contemplation (Opus 4.8)`, and cost section `Contemplation: Opus 4.8 (non-negotiable — that's the art)`. Updated all three to Sonnet 4.6 with production accuracy notes. Also updated crons/heartbeat routing description to match observed Sonnet 4.6 runtime.
+
 ## [2026-06-14] — Fix: Correct format_ts Docstring
 
 ### Fixed
@@ -391,9 +398,10 @@ All notable changes to Visionaire's operating system.
 - Calendar sync
 - Sentry auto-fix pipeline
 - Webhook hooks for external services
+
 ---
 
-## [2026-06-14] — Docs: Fix Stale Opus 4.8 Model References in README
+## [2026-06-14] — Docs: Fix Stale Haiku 4.5 Reference in TOOLS.md Model Stack
 
 ### Fixed
-- **README.md had three prose references to Opus 4.8 for contemplation, contradicting AI_STACK.md** (closes #123) — AI_STACK.md was updated today to reflect that Sonnet 4.6 runs all operations in observed production. README still said: stack bullet `(Opus 4.8 for contemplation)`, daily rhythm `Daily contemplation (Opus 4.8)`, and cost section `Contemplation: Opus 4.8 (non-negotiable — that's the art)`. Updated all three to Sonnet 4.6 with production accuracy notes. Also updated crons/heartbeat routing description to match observed Sonnet 4.6 runtime.
+- **`TOOLS.md` Model Stack section listed `Sub-agents / crons: Claude Haiku 4.5`** — The June 14 model sweep updated `AI_STACK.md` to document that Haiku 4.5 was removed from the stack after the April 2026 Ministral incident, but `TOOLS.md` was not updated. The summary now matches `AI_STACK.md`: Sonnet 4.6 runs all operations including sub-agents and crons.

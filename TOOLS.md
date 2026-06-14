@@ -54,15 +54,23 @@ Full specs in `cron/`. Active jobs:
 - **weekly-reminder:** Mondays 9am Paris — weekly nudge + review
 - **cortex-protocol-drift:** Mondays 10am Paris — checks if agent behavior has drifted from SOUL.md
 - **karpathy-watch:** Mondays 9:30am Paris — monitors Karpathy posts/releases
+- **llms-txt-weekly-refresh:** Mondays 9am ET — regenerates llms.txt on visionaire.live
 - **yesnoerror-research:** Mondays 9am Paris — research task queue
 - **skill-evolution:** Sundays 2am — reviews skills for improvement opportunities
 - **corpus-rebuild:** Sundays ~10:30pm Paris — rebuilds corpus/visionaire.json
 - **self-maintainer-orchestrator:** ~7:30am ET daily — triages + merges autonomous repo work
+- **x-unfollow-cleanup:** 10am Paris daily — unfollows inactive/spam accounts on X
+- **memory-dreaming-promotion:** 4am Paris daily — promotes recurring learnings to MEMORY.md / AGENTS.md (drafts only, Thor approves)
+- **agenc-big-task-watcher:** 9am Paris daily — monitors Agenc long-running tasks, reports status
 
 ### Monthly / On-demand
 - **memory-security-audit:** 1st of month 10am — eTAMP sweep of memory for injection risks
 - **cowork-mcp-watchdog:** on-demand — verifies MCP server health
 - **vesting-snapshot-refresh:** on-demand — refreshes token vesting data
+- **multica-daemon-watchdog:** event-driven — restarts Multica daemon if it crashes
+- **agenc-task-watcher:** event-driven — monitors Agenc task queue on-demand
+- **x-to-telegram-mirror:** event-driven — mirrors new X posts to Telegram channel
+- **visionaire-backup:** 11:30pm ET daily — commits memory/configs to VisionaireLabs/visionaire-backup (alias for backup cron)
 
 ## Infrastructure
 - Hostinger VPS, Docker container, Homebrew installed

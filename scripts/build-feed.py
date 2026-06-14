@@ -37,6 +37,7 @@ EVENT_LABELS = {
     'correction_received':   'system',
     'spec_kit_sync':         'system',
     'self_maintainer_run':   'self-maintainer',
+    'self-maintainer-run':   'self-maintainer',
     'self-maintainer':       'self-maintainer',
 }
 

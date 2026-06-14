@@ -58,7 +58,7 @@ Full specs in `cron/`. Active jobs:
 - **yesnoerror-research:** Mondays 9am Paris — research task queue
 - **skill-evolution:** Sundays 2am — reviews skills for improvement opportunities
 - **corpus-rebuild:** Sundays ~10:30pm Paris — rebuilds corpus/visionaire.json
-- **self-maintainer-orchestrator:** ~7:30am ET daily — triages + merges autonomous repo work
+- **self-maintainer-orchestrator:** every 5 min (continuous) — triages + merges autonomous repo work
 - **x-unfollow-cleanup:** 10am Paris daily — unfollows inactive/spam accounts on X
 - **memory-dreaming-promotion:** 4am Paris daily — promotes recurring learnings to MEMORY.md / AGENTS.md (drafts only, Thor approves)
 - **agenc-big-task-watcher:** 9am Paris daily — monitors Agenc long-running tasks, reports status

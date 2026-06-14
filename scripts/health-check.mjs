@@ -261,19 +261,40 @@ if (!existsSync(jobsJsonPath)) {
     const normalize = s => s.toLowerCase().replace(/\s+/g, '-');
     const liveNormalized = new Set(liveJobs.map(normalize));
 
-    const cronSpecs = existsSync(cronDir)
-      ? readdirSync(cronDir).filter(f => f.endsWith('.md')).map(f => f.replace(/\.md$/, ''))
+    const cronSpecFiles = existsSync(cronDir)
+      ? readdirSync(cronDir).filter(f => f.endsWith('.md'))
       : [];
+    const cronSpecs = cronSpecFiles.map(f => f.replace(/\.md$/, ''));
 
-    const unmatched = cronSpecs.filter(spec => !liveNormalized.has(normalize(spec)));
+    // Detect retired specs: first 10 lines contain 'Status: Retired' or 'Status: Renamed' (case-insensitive)
+    const retiredSpecs = [];
+    const activeSpecs = [];
+    const retiredPattern = /status\s*:\s*(retired|renamed)/i;
+    for (const spec of cronSpecs) {
+      const specPath = join(cronDir, spec + '.md');
+      try {
+        const lines = (await readFile(specPath, 'utf8')).split('\n').slice(0, 10).join('\n');
+        if (retiredPattern.test(lines)) {
+          retiredSpecs.push(spec);
+        } else {
+          activeSpecs.push(spec);
+        }
+      } catch (_) {
+        activeSpecs.push(spec);
+      }
+    }
+
+    const unmatched = activeSpecs.filter(spec => !liveNormalized.has(normalize(spec)));
 
     // Warn only — stale specs are docs, not errors
     if (unmatched.length === 0) {
-      ok('cron spec drift', `${cronSpecs.length} spec files — all match a live cron name (normalized)`);
+      const retiredNote = retiredSpecs.length > 0 ? ` (${retiredSpecs.length} retired skipped: ${retiredSpecs.join(', ')})` : '';
+      ok('cron spec drift', `${cronSpecs.length} spec files — all active specs match a live cron${retiredNote}`);
     } else {
+      const retiredNote = retiredSpecs.length > 0 ? `; ${retiredSpecs.length} retired skipped` : '';
       warn(
         'cron spec drift',
-        `${unmatched.length}/${cronSpecs.length} spec file(s) have no matching live cron: ${unmatched.join(', ')} — mark as Retired if intentional`
+        `${unmatched.length}/${activeSpecs.length} active spec file(s) have no matching live cron: ${unmatched.join(', ')} — mark as Retired if intentional${retiredNote}`
       );
     }
   } catch (e) {

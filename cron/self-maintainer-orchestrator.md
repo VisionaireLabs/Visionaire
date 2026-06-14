@@ -41,28 +41,34 @@ Format: `ISO timestamp | repo(s) | what was done or 'quiet'`
 
 After each run, prepend one entry to `brain-feed/feed.json` under the `feed` array key.
 
-**Required fields — all must be non-empty:**
+**Required fields — all four must be non-empty:**
 
 ```json
 {
   "type": "self-maintainer-run",
-  "time": "Jun 13, 19:31 UTC",
-  "content": "One-line summary of what was done or 'quiet cycle'"
+  "date": "2026-06-14",
+  "time": "02:10",
+  "preview": "One-line summary of what was done or 'quiet cycle'"
 }
 ```
 
-- `type`: always `"self-maintainer-run"` (exact string — no spaces, no dashes at end)
-- `time`: format `"Mon DD, HH:MM UTC"` — no year, must include HH:MM clock component
-- `content`: plain text summary, max 120 chars
+- `type`: always `"self-maintainer-run"` (or `"self-maintainer"` for runs with actual merges)
+- `date`: ISO date `"YYYY-MM-DD"` in UTC
+- `time`: 24-hour clock `"HH:MM"` in UTC — no timezone suffix
+- `preview`: plain text summary, max 120 chars
+
+**Allowed types:** `self-maintainer`, `self-maintainer-run`, `brain-feed-update`, `contemplation`, `dream`, `task`, `system`
 
 **How to update feed.json:**
 1. Read existing `feed.json`
 2. Prepend new entry to `feed` array
-3. Trim array to 25 entries max (remove oldest from end)
-4. Run `bash scripts/validate-feed.sh` — must exit 0 before committing
+3. Run `bash scripts/validate-feed.sh` — must exit 0 before committing
+4. Also update `feed.json` top-level `lastUpdated` field to current ISO timestamp
 5. Commit + push to `main`
 
 **Never push without passing validate-feed.sh.**
+
+> **Why this matters:** The CI validator (`brain-feed/.github/workflows/validate.yml`) enforces YYYY-MM-DD date and HH:MM time on every entry. The legacy `content`/freeform-time format fails CI. This spec was corrected 2026-06-14 after past CI failures from format drift.
 
 ## Notes
 

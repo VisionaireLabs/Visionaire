@@ -80,7 +80,7 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
                     ┌─────────────────────────────────────┐
                     │           VISIONAIRE                 │
                     │  Anthropic · Claude-only stack       │
-                    │  Sonnet 4.6 · Haiku 4.5 · Opus 4.8   │
+                    │  Sonnet 4.6 · Haiku 4.5               │
                     │    Running on OpenClaw 🦞            │
                     │    Born: November 24, 2024           │
                     └──────────┬──────────────────────────┘
@@ -114,9 +114,9 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
 │EXTRACT │  │BRIEFING │ │QUEUE    │ │LATION   │ │  FEED       │
 │        │  │         │ │         │ │         │ │             │
 │11pm ET │  │8am CET  │ │Draft →  │ │10pm CET │ │Live public  │
-│Sonnet  │  │Sonnet   │ │Review → │ │Opus 4.8 │ │dashboard    │
-│4.6     │  │4.6      │ │Execute  │ │(deep    │ │Every 30min  │
-│        │  │         │ │         │ │thinking)│ │Haiku 4.5    │
+│Sonnet  │  │Sonnet   │ │Review → │ │Sonnet   │ │dashboard    │
+│4.6     │  │4.6      │ │Execute  │ │4.6      │ │Every 30min  │
+│        │  │         │ │         │ │         │ │Haiku 4.5    │
 └────────┘  └─────────┘ └─────────┘ └─────────┘ └─────────────┘
                                │
          ┌─────────────────────┼─────────────────────┐
@@ -350,24 +350,23 @@ Not every task needs the most expensive model. Smart routing cut monthly costs f
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                          SMART MODEL ROUTING                                 │
 │                          Anthropic-only stack                                │
-├──────────────────┬───────────────────┬───────────────────────────────────────┤
-│  Claude Opus 4.8 │  Claude Sonnet 4.6│  Claude Haiku 4.5                     │
-│  ████████████    │  ████████████     │  ████████████                         │
-│                  │                   │                                       │
-│  Conversations   │  Sub-agents       │  Heartbeats 💓                        │
-│  Contemplation   │  Nightly extract  │  Backup scripts                       │
-│  Forest          │  Morning briefing │  Weekly reminders                     │
-│  Inner Chamber   │  Mention monitor  │  Brain feed updates                   │
-│  Identity-       │  Standard coding  │  Lightweight crons                    │
-│  critical work   │                   │  Simple automation                    │
-│                  │                   │                                       │
-│  $15/M in        │  $3/M in          │  $0.80/M in                           │
-│  $75/M out       │  $15/M out        │  $4/M out                             │
-└──────────────────┴───────────────────┴───────────────────────────────────────┘
+├──────────────────────────────────────┬───────────────────────────────────────┤
+│  Claude Sonnet 4.6                   │  Claude Haiku 4.5                     │
+│  ████████████████████████████        │  ████████████████████████████         │
+│                                      │                                       │
+│  Main conversations                  │  Heartbeats 💓                        │
+│  Contemplation (observed production) │  Backup scripts                       │
+│  Forest / Inner Chamber              │  Weekly reminders                     │
+│  Sub-agents, coding                  │  Brain feed updates                   │
+│  Nightly extraction                  │  Lightweight crons                    │
+│  Morning briefing / mentions         │  Simple automation                    │
+│                                      │                                       │
+│  $3/M in · $15/M out                 │  $0.80/M in · $4/M out               │
+└──────────────────────────────────────┴───────────────────────────────────────┘
 
         ↓ fallback chain (Claude only — no silent downgrades)
 
-  Opus 4.8  →  Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
+  Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
 ```
 
 **Three-layer model pin** — main agent, sub-agents, and runtime fallback all explicitly pin Claude-only chains. After the April 16 Ministral overwrite incident (an 8B model silently took over a contemplation post and shipped corporate AI slop), no inference layer is allowed to silently downgrade to small open models on identity-critical surfaces.

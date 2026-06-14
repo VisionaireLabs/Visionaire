@@ -1,5 +1,26 @@
 # Changelog
 
+## [2026-06-14] — Chore: Refresh Vesting Snapshot
+
+### Changed
+- **`public/vesting.json` updated with latest on-chain vesting snapshot** (957d662) — Periodic refresh of the $VISIONAIRE token vesting data served to the frontend.
+
+---
+
+## [2026-06-14] — Fix: Add Missing scripts/check-links.mjs and Fix Broken README Link
+
+### Fixed
+- **`scripts/check-links.mjs` added to repo** (#95) — Script was referenced but absent. Crawls the README for HTTP/HTTPS links and reports broken ones (non-2xx responses). Added `.gitignore` entry for any generated link-check output. Fixed one broken internal README link surfaced during the check.
+
+---
+
+## [2026-06-14] — Fix: Correct Self-Maintainer Schedule in TOOLS.md
+
+### Fixed
+- **`TOOLS.md` self-maintainer-orchestrator schedule corrected** (#96) — Cron spec was fixed in #78 to reflect the actual schedule (every 5 minutes, not ~7:30am daily), but TOOLS.md was not updated in the same pass. Now reads "every 5 min (continuous)" matching the deployed cron job and `cron/self-maintainer-orchestrator.md`.
+
+---
+
 All notable changes to Visionaire's operating system.
 
 ## [2026-06-14] — Docs: Add 8 Missing Crons to TOOLS.md

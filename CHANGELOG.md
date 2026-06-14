@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-14] — Fix: Add Missing scripts/validate-feed.sh Script
+
+### Fixed
+- **`scripts/validate-feed.sh` added to repo** (#88, closes #87) — Script was referenced by the `brain-feed-update` cron spec but absent from the repo. Validates `feed.json` against the schema enforced by brain-feed CI: required top-level fields (`lastUpdated`, `stats`, `feed`), per-entry `type` (allowlist), `date` (YYYY-MM-DD), `time` (HH:MM), and `preview` (non-empty). Exits 0 on valid, non-zero with a descriptive error on first violation. Useful for local pre-commit checks before pushing to brain-feed.
+
+---
+
 ## [2026-06-14] — Fix: x_reply_scanner.py Error Handling and Env Validation
 
 ### Fixed

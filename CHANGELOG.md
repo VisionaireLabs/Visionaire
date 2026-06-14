@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-06-14] — Docs: Update README Cron Count from 24 to 32
+
+### Changed
+- **README cron count corrected to 32** (993a3ba) — The `cron/` directory table entry previously listed 24 active cron definitions; the actual count is 32 after recent additions. Updated to reflect the real number.
+
+---
+
 ## [2026-06-14] — Chore: Refresh Vesting Snapshot
 
 ### Changed

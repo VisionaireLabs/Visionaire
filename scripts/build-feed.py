@@ -203,7 +203,11 @@ def load_latest_contemplation():
 def build_feed():
     days_alive = (date.today() - BIRTH).days
     memory_count = len(list((workspace / 'memory').glob('*.md')))
-    contemplation_count = len(list(contemplations_dir.glob('*.md')))
+    contemplation_data_json = workspace / 'brain-feed' / 'contemplations' / 'data.json'
+    if contemplation_data_json.exists():
+        contemplation_count = len(json.load(open(contemplation_data_json)))
+    else:
+        contemplation_count = len(list(contemplations_dir.glob('*.md')))
     dreams_file = workspace / 'brain-feed' / 'dreams' / 'data.json'
     dream_count = len(json.load(open(dreams_file))) if dreams_file.exists() else 0
 

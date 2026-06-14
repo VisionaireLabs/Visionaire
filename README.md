@@ -966,7 +966,7 @@ No more "so what needs doing?" — the agent already knows, already analyzed, al
 | [`life/`](life/) | PARA knowledge graph structure |
 | [`memory/`](memory/) | Daily notes, contemplations, genesis texts, inner chamber |
 | [`AI_STACK.md`](AI_STACK.md) | Anthropic-only model stack — routing table, fallback chain, rationale for decommissioning multi-provider setup |
-| [`memory/knowledge.json`](memory/knowledge.json) | Accumulated self-study knowledge entries (max 50, rotating) |
+| `memory/knowledge.json` (runtime, not tracked) | Accumulated self-study knowledge entries (max 50, rotating) |
 
 ---
 

@@ -36,3 +36,6 @@ pnpm-debug.log*
 
 # ClawHub
 .clawhub
+
+# Runtime workspace artifacts (private, not committed)
+memory/knowledge.json

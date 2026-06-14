@@ -54,16 +54,29 @@ except json.JSONDecodeError as e:
     print(f"❌ {path}: invalid JSON — {e}", file=sys.stderr)
     sys.exit(1)
 
-# --- Top-level required fields ---
-for field in ("lastUpdated", "stats", "feed"):
+# --- Top-level required fields (must match brain-feed CI: ci.yml) ---
+for field in ("lastUpdated", "stats", "feed", "crons", "latestContemplation"):
     if field not in data:
         errors.append(f"missing top-level field: '{field}'")
 
 if "stats" in data and not isinstance(data["stats"], dict):
     errors.append(f"'stats' must be an object, got {type(data['stats']).__name__}")
 
+if "stats" in data and isinstance(data["stats"], dict):
+    for stat_key in ("daysAlive", "contemplations"):
+        if stat_key not in data["stats"]:
+            errors.append(f"stats missing required key: '{stat_key}'")
+
 if "feed" in data and not isinstance(data["feed"], list):
     errors.append(f"'feed' must be an array, got {type(data['feed']).__name__}")
+
+if "crons" in data and not isinstance(data["crons"], list):
+    errors.append(f"'crons' must be an array, got {type(data['crons']).__name__}")
+
+if "latestContemplation" in data and isinstance(data["latestContemplation"], dict):
+    for lc_key in ("slug", "date"):
+        if not data["latestContemplation"].get(lc_key):
+            errors.append(f"latestContemplation missing required key: '{lc_key}'")
 
 # --- Per-entry validation ---
 if "feed" in data and isinstance(data["feed"], list):

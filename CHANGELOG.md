@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-14] — Fix: validate-feed.sh Schema Parity with brain-feed CI
+
+### Fixed
+- **`scripts/validate-feed.sh` now validates all fields required by brain-feed CI** — Previously the local pre-commit validator only checked `lastUpdated`, `stats`, and `feed`. The actual brain-feed `ci.yml` also requires `crons` and `latestContemplation` top-level fields, plus `stats.daysAlive` and `stats.contemplations` sub-keys. A feed.json missing those fields would pass local validation but fail CI. The script now validates all five top-level required fields, required stats keys, array type assertions for `crons`, and presence of `slug`/`date` on `latestContemplation`.
+
+---
+
 ## [2026-06-14] — Fix: Add Missing scripts/validate-feed.sh Script
 
 ### Fixed

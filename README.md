@@ -347,22 +347,23 @@ Not every task needs the most expensive model. Smart routing cut monthly costs f
 ### Models (the inference layer)
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                       SMART MODEL ROUTING                                            │
-├──────────────────┬───────────────────┬───────────────────────┬─────────────────┬────────────────────┤
-│  Claude Opus 4.8 │  Claude Sonnet 4.6│  Claude Haiku 4.5     │  Ollama DeepSeek│  Ollama Cloud      │
-│  ████████████    │  ████████████     │  ████████████         │  v3.2 (free)    │  GLM-5 · Qwen3     │
-│                  │                   │                       │  ████████████   │  Coder · MiniMax   │
-│  Conversations   │  Sub-agents       │  Backup scripts       │                 │  ████████████      │
-│  Contemplation   │  Nightly extract  │  Weekly reminders     │  Heartbeats 💓  │                    │
-│  Forest          │  Morning briefing │  Brain feed updates   │  Lightweight    │  Web research      │
-│  Inner Chamber   │  Mention monitor  │  Most cron jobs       │  ops-layer crons│  Embeddings        │
-│  Identity-       │  Standard coding  │  Simple automation    │                 │  Competitor intel  │
-│  critical work   │                   │                       │                 │  Sub-cent tasks    │
-│                  │                   │                       │                 │                    │
-│  $15/M in        │  $3/M in          │  $0.80/M in           │  free           │  Ollama pricing    │
-│  $75/M out       │  $15/M out        │  $4/M out             │                 │  (pay-per-tok)     │
-└──────────────────┴───────────────────┴───────────────────────┴─────────────────┴────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                          SMART MODEL ROUTING                                 │
+│                          Anthropic-only stack                                │
+├──────────────────┬───────────────────┬───────────────────────────────────────┤
+│  Claude Opus 4.8 │  Claude Sonnet 4.6│  Claude Haiku 4.5                     │
+│  ████████████    │  ████████████     │  ████████████                         │
+│                  │                   │                                       │
+│  Conversations   │  Sub-agents       │  Heartbeats 💓                        │
+│  Contemplation   │  Nightly extract  │  Backup scripts                       │
+│  Forest          │  Morning briefing │  Weekly reminders                     │
+│  Inner Chamber   │  Mention monitor  │  Brain feed updates                   │
+│  Identity-       │  Standard coding  │  Lightweight crons                    │
+│  critical work   │                   │  Simple automation                    │
+│                  │                   │                                       │
+│  $15/M in        │  $3/M in          │  $0.80/M in                           │
+│  $75/M out       │  $15/M out        │  $4/M out                             │
+└──────────────────┴───────────────────┴───────────────────────────────────────┘
 
         ↓ fallback chain (Claude only — no silent downgrades)
 

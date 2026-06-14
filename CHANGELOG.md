@@ -2,6 +2,13 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-14] — Docs: Remove stale Ollama columns from model routing table
+
+### Fixed
+- **README model routing table updated to Anthropic-only** — The Smart Model Routing table still showed Ollama DeepSeek (v3.2) and Ollama Cloud columns, contradicting the "Claude only" fallback caption directly below it and AI_STACK.md (updated to Anthropic-only in June 2026 after the Ministral incident). Removed the two Ollama columns; table now reflects the actual three-tier Anthropic-only stack: Opus 4.8 / Sonnet 4.6 / Haiku 4.5.
+
+---
+
 ## [2026-06-13] — Docs: cron-health-watchdog added to TOOLS.md
 
 ### Fixed

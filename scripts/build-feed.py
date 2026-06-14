@@ -55,8 +55,9 @@ def extract_date(slug):
 def format_ts(ts_str):
     """Return (date_iso, time_hhmm) from an ISO timestamp string.
 
-    Returns (date, None) when the timestamp is absent or unparseable so that
-    feed entries do not show a misleading '00:00' time.
+    Returns (date, None) when the timestamp is absent or unparseable.
+    Callers that require a time field (feed schema) should fall back to '00:00'
+    rather than omitting the key, since the schema requires time to be present.
     """
     try:
         dt = datetime.fromisoformat(ts_str.replace('Z', '+00:00'))

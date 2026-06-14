@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-06-14] — Fix: Add cron/TOOLS.md Parity Check to health-check.mjs
+
+### Added
+- **`scripts/health-check.mjs` step 7: cron/TOOLS.md parity** (#103, closes #102) — Every `cron/*.md` spec file is now cross-referenced against `TOOLS.md` at health-check time. Missing entries emit a warning (not error) to avoid blocking CI on docs-only lag, while still surfacing drift. Prevents recurrence of gaps seen in #90, #93, #96. Currently: 32 cron specs, all documented.
+
+---
+
 ## [2026-06-14] — Docs: Update README Cron Count from 24 to 32
 
 ### Changed

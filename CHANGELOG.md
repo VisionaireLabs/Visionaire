@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-06-14] — Feat: Feed Now Includes Mixed Contemplations and Dreams
+
+### Changed
+- **`scripts/build-feed.py` feed array now merges contemplations, dreams, and events** (#114) — Previously the feed only surfaced raw events (tasks, system entries, self-maintainer runs). `build-feed.py` now loads recent contemplations from `brain-feed/contemplations/data.json` and recent dreams from `brain-feed/dreams/data.json`, merges them with event entries, sorts the combined list by date+time descending, and caps at 20. The brain feed now shows rich mixed content reflecting actual creative output alongside operational events.
+
+---
+
 ## [2026-06-14] — Fix: build-feed.py Uses data.json for Contemplation Count
 
 ### Fixed

@@ -33,21 +33,23 @@ openclaw cron add \
 
 ## Feed Entry Schema (required)
 
-When adding entries to `feed.json`.`feed` array, every entry **must** include:
+When adding entries to `feed.json`.`feed` array, every entry **must** include all four fields:
 
 ```json
 {
   "type": "brain-feed-update",
-  "time": "Jun 13, 08:00 UTC",
-  "content": "..."
+  "date": "2026-06-14",
+  "time": "02:30",
+  "preview": "One-line description of what updated."
 }
 ```
 
-- **`type`**: must be one of: `self-maintainer`, `brain-feed-update`, `contemplation`, `dream`, `task`, `system` — never empty
-- **`time`**: UTC timestamp in format `MMM DD, HH:MM UTC` — never empty
-- **`content`**: descriptive string — never empty
+- **`type`**: must be one of: `self-maintainer`, `self-maintainer-run`, `brain-feed-update`, `contemplation`, `dream`, `task`, `system` — never empty
+- **`date`**: ISO date `YYYY-MM-DD` in UTC — never empty
+- **`time`**: 24-hour clock `HH:MM` in UTC — no timezone suffix, never empty
+- **`preview`**: descriptive string, max ~120 chars — never empty (do NOT use `content` or `summary`)
 
-The CI will fail on pushes with empty `type` or `time` fields.
+> ⚠️ The CI validator enforces `YYYY-MM-DD` date and `HH:MM` time format on every entry. The legacy `content`/`summary` fields and freeform time format (`Jun 13, 08:00 UTC`) will fail validation. Always use `preview` + `date` + `time`.
 
 ## Notes
 

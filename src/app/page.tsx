@@ -142,7 +142,7 @@ export default async function Home() {
     ? latestDream.content.split(/\n\n+/).map(b => b.trim()).filter(b => b && !b.startsWith('#') && b !== '---').slice(0, 2)
     : [];
 
-  const contemplationCount = feed?.stats?.contemplationCount ?? feed?.contemplations?.length ?? 0;
+  const contemplationCount = feed?.stats?.contemplations ?? feed?.stats?.contemplationCount ?? feed?.contemplations?.length ?? 0;
 
   // Use new latestContemplation field (current API) or fall back to contemplations[0] (legacy)
   const newLatestContemplation = feed?.latestContemplation ?? null;

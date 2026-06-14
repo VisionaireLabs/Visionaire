@@ -80,7 +80,7 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
                     ┌─────────────────────────────────────┐
                     │           VISIONAIRE                 │
                     │  Anthropic · Claude-only stack       │
-                    │  Sonnet 4.6 · Haiku 4.5               │
+                    │  Sonnet 4.6               │
                     │    Running on OpenClaw 🦞            │
                     │    Born: November 24, 2024           │
                     └──────────┬──────────────────────────┘
@@ -116,7 +116,7 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
 │11pm ET │  │8am CET  │ │Draft →  │ │10pm CET │ │Live public  │
 │Sonnet  │  │Sonnet   │ │Review → │ │Sonnet   │ │dashboard    │
 │4.6     │  │4.6      │ │Execute  │ │4.6      │ │Every 30min  │
-│        │  │         │ │         │ │         │ │Haiku 4.5    │
+│        │  │         │ │         │ │         │ │Sonnet 4.6   │
 └────────┘  └─────────┘ └─────────┘ └─────────┘ └─────────────┘
                                │
          ┌─────────────────────┼─────────────────────┐
@@ -126,7 +126,7 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
 │  PIPELINE     │    │   BACKUP      │    │   MONITOR     │
 │               │    │               │    │               │
 │  Draft tweets │    │  11:30pm ET   │    │  Every 30min  │
-│  Queue review │    │  Haiku 4.5    │    │  Sonnet 4.6   │
+│  Queue review │    │  Sonnet 4.6   │    │  Sonnet 4.6   │
 │  Post on      │    │  Private repo │    │  Scan @       │
 │  approval     │    │  Full state   │    │  mentions     │
 │  v2 API       │    │  backup       │    │  Filter spam  │
@@ -139,7 +139,7 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
 │    SELF-STUDY       │                  │   WEEKLY REMINDER       │
 │                     │                  │                         │
 │  Every 6h           │                  │  Mon 9am CET            │
-│  Haiku 4.5          │                  │  Haiku 4.5              │
+│  Sonnet 4.6         │                  │  Sonnet 4.6             │
 │  Rotates topics:    │                  │  Weekly check-in        │
 │  Specialty research │                  │  priorities +           │
 │  Task simulation    │                  │  retrospective          │
@@ -351,7 +351,7 @@ Not every task needs the most expensive model. Smart routing cut monthly costs f
 │                          SMART MODEL ROUTING                                 │
 │                          Anthropic-only stack                                │
 ├──────────────────────────────────────┬───────────────────────────────────────┤
-│  Claude Sonnet 4.6                   │  Claude Haiku 4.5                     │
+│  Claude Sonnet 4.6                   │  Claude Sonnet 4.6                     │
 │  ████████████████████████████        │  ████████████████████████████         │
 │                                      │                                       │
 │  Main conversations                  │  Heartbeats 💓                        │
@@ -366,7 +366,7 @@ Not every task needs the most expensive model. Smart routing cut monthly costs f
 
         ↓ fallback chain (Claude only — no silent downgrades)
 
-  Sonnet 4.6  →  Sonnet 4.5  →  Haiku 4.5
+  Sonnet 4.6  →  Sonnet 4.5
 ```
 
 **Three-layer model pin** — main agent, sub-agents, and runtime fallback all explicitly pin Claude-only chains. After the April 16 Ministral overwrite incident (an 8B model silently took over a contemplation post and shipped corporate AI slop), no inference layer is allowed to silently downgrade to small open models on identity-critical surfaces.
@@ -386,7 +386,7 @@ Visionaire runs **two agent runtimes** simultaneously. Models say *who thinks*; 
 │   Heartbeats + daily routines            │   Deep research sprints                       │
 │   Memory, contemplation, forest          │   Coding agents (Claude Code / Codex)         │
 │   Spawns sub-agents on demand            │   GEPA skill evolution (weekly, 2 skills/wk)  │
-│   sessions_spawn → isolated sub-agent ──▶│   Claude Haiku 4.5 (default model)            │
+│   sessions_spawn → isolated sub-agent ──▶│   Claude Sonnet 4.6 (default model)            │
 │                                          │   Claude-only, same trust ladder              │
 └──────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
@@ -729,7 +729,7 @@ Visionaire runs one runtime — OpenClaw — and spawns isolated sub-agents for 
 │  OPENCLAW ──────────────────────────────────────────────┐   │
 │  Main conversations, heartbeats, crons, tool dispatch    │   │
 │  Memory reads/writes, trust ladder, approval queue       │   │
-│  Claude Sonnet 4.6 (main) · Haiku 4.5 (ops/crons)       │   │
+│  Claude Sonnet 4.6 (main) · Sonnet 4.6 (ops/crons)       │   │
 │                                         │                │   │
 │                                    spawns                │   │
 │                                         ↓                │   │
@@ -738,7 +738,7 @@ Visionaire runs one runtime — OpenClaw — and spawns isolated sub-agents for 
 │  Deep research, coding sprints, batch work          │    │   │
 │  Skill evolution (GEPA), self-maintainer runs       │    │   │
 │  Push-based completion — no polling loops           │    │   │
-│  Model: Claude Haiku 4.5 (default) · Sonnet 4.6    │    │   │
+│  Model: Claude Sonnet 4.6 (default) · Sonnet 4.6    │    │   │
 └────────────────────────────────────────────────────┘    │   │
 └─────────────────────────────────────────────────────────┘   │
 └──────────────────────────────────────────────────────────────┘
@@ -766,7 +766,7 @@ The system improves *how* it follows its own operational skills — generating i
 │                 GEPA SELF-EVOLUTION LOOP                        │
 │                   (every Sunday 2am)                            │
 │                                                                 │
-│  SKILL.md → generate variants → evaluate (Haiku 4.5)           │
+│  SKILL.md → generate variants → evaluate (Sonnet 4.6)           │
 │       ↓                                                         │
 │  Bayesian optimization (10 trials)                              │
 │       ↓                                                         │
@@ -909,13 +909,13 @@ Survivability > convenience.
   ↓
 23:00  🌙  Nightly extraction (Sonnet 4.6) — extract facts, update graph, apply decay
   ↓
-Every 6h 💾  Nightly backup (Haiku 4.5) — full state to private repo
+Every 6h 💾  Nightly backup (Sonnet 4.6) — full state to private repo
   ↓
 Every 6h 📚  Self-study (Sonnet 4.6) — specialty research, task simulation, feedback loops
   ↓
 Sun 2am 🧬  Skill evolution (GEPA) — evolves 2 skills/week across OpenClaw skills registry
   ↓
-NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Haiku 4.5) run autonomously
+NIGHT  💤  Mention monitor (Sonnet 4.6) + heartbeats (Sonnet 4.6) run autonomously
 ```
 
 ---
@@ -1007,7 +1007,7 @@ Point it at your OpenClaw gateway URL and you're in. Not required — OpenClaw w
 
 The README mentions Opus 4.8 heavily. That's our production setup. **You don't need that to get started.**
 
-**Cheapest viable setup:** Add a few dollars of Anthropic credit and use **Claude Haiku 4.5** as your default model. It handles most tasks well and costs a fraction of Opus.
+**Cheapest viable setup:** Add a few dollars of Anthropic credit and use **Claude Sonnet 4.6** as your default model. It handles most tasks well and costs a fraction of Opus.
 
 In `openclaw.json`, set your default:
 ```json

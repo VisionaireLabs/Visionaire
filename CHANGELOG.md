@@ -2,6 +2,14 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-14] — CI: Add Python Script Syntax Validation
+
+### Fixed
+- **CI now validates `scripts/*.py` files** (#81, closes #80) — Three Python scripts (`session-retrospective.py`, `x_reply_scanner.py`, `yesnoerror-research.py`) were not covered by CI syntax checks. Added `python3 -m py_compile` step consistent with existing `.mjs`/`.js`/`.sh` validation. A syntax error in any of these scripts would have silently passed CI.
+
+---
+
+
 ## [2026-06-14] — Docs: Fix Self-Maintainer Cron Spec Schedule and Delivery
 
 ### Fixed

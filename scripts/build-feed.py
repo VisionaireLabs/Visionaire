@@ -200,20 +200,74 @@ def load_latest_contemplation():
     return None
 
 
+def load_contemplation_entries(limit=5):
+    """Load recent contemplations from brain-feed/contemplations/data.json."""
+    data_json = brain_feed_dir / 'contemplations' / 'data.json'
+    if not data_json.exists():
+        return []
+    try:
+        cdata = json.load(open(data_json))
+        entries = []
+        for c in cdata[:limit]:
+            if not c.get('date'):
+                continue
+            entries.append({
+                'type': 'contemplation',
+                'date': c['date'],
+                'time': '22:00',
+                'title': c.get('title', ''),
+                'slug': c.get('slug', c['date']),
+                'preview': c.get('preview', '')[:200],
+            })
+        return entries
+    except Exception:
+        return []
+
+
+def load_dream_entries(limit=5):
+    """Load recent dreams from brain-feed/dreams/data.json."""
+    dreams_file = brain_feed_dir / 'dreams' / 'data.json'
+    if not dreams_file.exists():
+        return []
+    try:
+        ddata = json.load(open(dreams_file))
+        entries = []
+        for d in ddata[:limit]:
+            if not d.get('date'):
+                continue
+            entries.append({
+                'type': 'dream',
+                'date': d['date'],
+                'time': d.get('time', '04:00'),
+                'slug': d.get('slug', ''),
+                'preview': d.get('preview', '')[:200],
+            })
+        return entries
+    except Exception:
+        return []
+
+
 def build_feed():
     days_alive = (date.today() - BIRTH).days
     memory_count = len(list((workspace / 'memory').glob('*.md')))
-    contemplation_data_json = workspace / 'brain-feed' / 'contemplations' / 'data.json'
+    contemplation_data_json = brain_feed_dir / 'contemplations' / 'data.json'
     if contemplation_data_json.exists():
         contemplation_count = len(json.load(open(contemplation_data_json)))
     else:
         contemplation_count = len(list(contemplations_dir.glob('*.md')))
-    dreams_file = workspace / 'brain-feed' / 'dreams' / 'data.json'
+    dreams_file = brain_feed_dir / 'dreams' / 'data.json'
     dream_count = len(json.load(open(dreams_file))) if dreams_file.exists() else 0
 
     latest = load_latest_contemplation()
-    events = load_events(20)
+    events = load_events(10)
+    contemplations = load_contemplation_entries(5)
+    dreams = load_dream_entries(5)
     crons = load_crons()
+
+    # Merge and sort by date+time descending, keep most recent 20
+    combined = events + contemplations + dreams
+    combined.sort(key=lambda e: (e.get('date', ''), e.get('time', '')), reverse=True)
+    combined = combined[:20]
 
     feed_data = {
         'lastUpdated': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC'),
@@ -224,16 +278,16 @@ def build_feed():
             'dreams': dream_count,
         },
         'latestContemplation': latest,
-        'feed': events,
+        'feed': combined,
         'crons': crons,
     }
 
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(feed_data, f, ensure_ascii=False, indent=2)
 
-    return len(events), len(crons)
+    return len(combined), len(crons)
 
 
 if __name__ == '__main__':
     events, crons = build_feed()
-    print(f"Generated feed with {events} events, {crons} crons → {output_file}")
+    print(f"Generated feed with {events} entries, {crons} crons → {output_file}")

@@ -114,7 +114,7 @@ Full architecture, pricing breakdown (including how prompt caching makes oracle'
 │EXTRACT │  │BRIEFING │ │QUEUE    │ │LATION   │ │  FEED       │
 │        │  │         │ │         │ │         │ │             │
 │11pm ET │  │8am CET  │ │Draft →  │ │10pm CET │ │Live public  │
-│Sonnet  │  │Sonnet   │ │Review → │ │Opus 4.6 │ │dashboard    │
+│Sonnet  │  │Sonnet   │ │Review → │ │Opus 4.8 │ │dashboard    │
 │4.6     │  │4.6      │ │Execute  │ │(deep    │ │Every 30min  │
 │        │  │         │ │         │ │thinking)│ │Haiku 4.5    │
 └────────┘  └─────────┘ └─────────┘ └─────────┘ └─────────────┘
@@ -1005,7 +1005,7 @@ Point it at your OpenClaw gateway URL and you're in. Not required — OpenClaw w
 
 ## Cost: What You Actually Need to Spend
 
-The README mentions Opus 4.6 heavily. That's our production setup. **You don't need that to get started.**
+The README mentions Opus 4.8 heavily. That's our production setup. **You don't need that to get started.**
 
 **Cheapest viable setup:** Add a few dollars of Anthropic credit and use **Claude Haiku 4.5** as your default model. It handles most tasks well and costs a fraction of Opus.
 

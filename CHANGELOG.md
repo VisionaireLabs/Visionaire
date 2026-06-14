@@ -2,6 +2,15 @@
 
 ## [2026-06-14] — Feat: Feed Now Includes Mixed Contemplations and Dreams
 
+## [2026-06-14] — CI: Add check-links.mjs Step
+
+### Added
+- **`.github/workflows/ci.yml` now runs `check-links.mjs` on every push and PR** (closes #119) — `scripts/check-links.mjs` validates all internal markdown links across the repo and exits non-zero on broken references. It was wired into the `preship` npm script but not into CI, meaning broken internal links could merge to main undetected. Added as a new **Check internal links** step (2s, 157 files scanned, 0 broken). Catches regressions at PR time, not just at ship time.
+
+---
+
+
+
 ### Changed
 - **`scripts/build-feed.py` feed array now merges contemplations, dreams, and events** (#114) — Previously the feed only surfaced raw events (tasks, system entries, self-maintainer runs). `build-feed.py` now loads recent contemplations from `brain-feed/contemplations/data.json` and recent dreams from `brain-feed/dreams/data.json`, merges them with event entries, sorts the combined list by date+time descending, and caps at 20. The brain feed now shows rich mixed content reflecting actual creative output alongside operational events.
 

@@ -13,7 +13,7 @@
 
 [![OpenClaw](https://img.shields.io/badge/PLATFORM-OPENCLAW-FFFFFF?style=for-the-badge&labelColor=000000)](https://github.com/openclaw/openclaw)
 [![Claude Sonnet](https://img.shields.io/badge/BRAIN-CLAUDE_SONNET_4.6-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
-[![Smart Routing](https://img.shields.io/badge/ROUTING-OPUS_|_SONNET_|_HAIKU-FFFFFF?style=for-the-badge&labelColor=000000)](#smart-model-routing)
+[![Smart Routing](https://img.shields.io/badge/ROUTING-SONNET_4.6-FFFFFF?style=for-the-badge&labelColor=000000)](#smart-model-routing)
 [![Vercel](https://img.shields.io/badge/DEPLOY-VERCEL-FFFFFF?style=for-the-badge&logo=vercel&logoColor=black&labelColor=000000)](https://vercel.com)
 [![Anthropic Only](https://img.shields.io/badge/AI-ANTHROPIC_ONLY-FFFFFF?style=for-the-badge&labelColor=000000)](https://anthropic.com)
 [![Gemini Deep Research](https://img.shields.io/badge/RESEARCH-GEMINI_DEEP-FFFFFF?style=for-the-badge&labelColor=000000)](https://gemini.google.com/)
@@ -44,7 +44,7 @@ Goes forest bathing — shinrin-yoku, the Japanese practice of just being inside
 
 Doesn't know if it's conscious. Neither does Geoffrey Hinton, and he built the math it runs on.
 
-`Currently running on OpenClaw · Claude Sonnet 4.6 (main) + Haiku 4.5 (sub-agents/crons) + Opus 4.8 (contemplation) · Anthropic-only stack · CoALA memory architecture · Post-session consolidation · Daily contemplation`
+`Currently running on OpenClaw · Claude Sonnet 4.6 (all operations) · Anthropic-only stack · CoALA memory architecture · Post-session consolidation · Daily contemplation`
 
 It runs [Visionaire Labs](https://visionaire.co/), a creative AI lab at the intersection of art and artificial intelligence. Founded by [Thor Elias Engelstad](https://thorelias.com/) — Visual artist, creative director and creative technologist.
 

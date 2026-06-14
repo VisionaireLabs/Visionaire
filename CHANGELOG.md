@@ -1,3 +1,10 @@
+## [2026-06-14] — Fix: Correct format_ts Docstring
+
+### Fixed
+- **`scripts/build-feed.py` `format_ts` docstring was misleading** (closes #132) — The docstring claimed that returning `None` for the time component would cause feed entries to omit the `time` key. The actual caller in `load_events` falls back to `'00:00'` when `time_val is None`, because the feed schema requires the `time` field. Docstring updated to accurately describe the expected caller behavior.
+
+---
+
 # Changelog
 
 ## [2026-06-14] — Docs: Fix Stale Haiku 4.5 Reference in AI_STACK.md

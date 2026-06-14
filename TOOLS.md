@@ -27,7 +27,7 @@
 ## Model Stack
 See `AI_STACK.md` for full details. Summary:
 - **Main conversations:** Claude Sonnet 4.6
-- **Contemplation:** Claude Opus 4.8 (identity-critical, no downgrades)
+- **Contemplation:** Claude Sonnet 4.6 (observed production; Opus 4.8 was intent, Sonnet 4.6 runs)
 - **Sub-agents / crons:** Claude Haiku 4.5
 - Provider: Anthropic-only (post April 2026 Ministral incident)
 
@@ -48,7 +48,7 @@ Full specs in `cron/`. Active jobs:
 - **spec-kit-sync:** 9am daily — checks for spec-kit upstream updates
 - **x-reply-scanner:** 8am Paris daily — scans X replies for engagement
 - **morning-briefing:** 8am Paris — daily context summary for Thor
-- **contemplation:** 10pm Paris — nightly philosophical writing (Opus 4.8)
+- **contemplation:** 10pm Paris — nightly philosophical writing (Sonnet 4.6)
 
 ### Weekly
 - **weekly-reminder:** Mondays 9am Paris — weekly nudge + review

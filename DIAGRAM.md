@@ -50,7 +50,7 @@ flowchart TD
     subgraph SUBAGENTS [Sub-Agent Layer]
         SA[sessions_spawn\nisolated session]
         SA_TASKS[Research sprints\nCoding agents\nCron workers\nParallel tasks]
-        SA_MODEL[Anthropic only\nOpus 4.8 · Sonnet 4.6 · Haiku 4.5]
+        SA_MODEL[Anthropic only\nSonnet 4.6 · Haiku 4.5]
         SA --> SA_TASKS
         SA --> SA_MODEL
     end
@@ -174,7 +174,7 @@ flowchart LR
 flowchart TD
     TASK[Incoming Task] --> ROUTE{Route by\ncomplexity + cost}
 
-    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Opus 4.8\nAnthropic]
+    ROUTE -->|Conversations\nContemplation\nComplex tasks| OPUS[Claude Sonnet 4.6\nAnthropic]
     ROUTE -->|Sub-agents\nBriefings\nExtraction\nCoding| SONNET[Claude Sonnet 4.6\nAnthropic]
     ROUTE -->|Crons\nBackups\nSimple tasks| HAIKU[Claude Haiku 4.5\nAnthropic]
     ROUTE -->|Heartbeats\nOps layer| DEEPSEEK[Ollama DeepSeek v3.2\nfree]

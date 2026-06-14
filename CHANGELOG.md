@@ -1,3 +1,10 @@
+## [2026-06-14] — Fix: EVENT_LABELS Missing 'self-maintainer-run' Hyphen Variant
+
+### Fixed
+- **`scripts/build-feed.py` EVENT_LABELS misclassified 'self-maintainer-run' events as 'task'** (closes #134) — The map only covered `self_maintainer_run` (underscore) and `self-maintainer`, but actual `events.jsonl` entries use the hyphen form `self-maintainer-run`. Added the missing key so self-maintainer run events are correctly typed as `self-maintainer` in the brain feed instead of falling through to the generic `task` label.
+
+---
+
 ## [2026-06-14] — Fix: Correct format_ts Docstring
 
 ### Fixed

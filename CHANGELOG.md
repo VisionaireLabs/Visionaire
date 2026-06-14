@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-06-14] — Docs: Fix Stale Haiku 4.5 Reference in AI_STACK.md
+
+### Fixed
+- **`AI_STACK.md` Why Anthropic-Only section contained stale Haiku 4.5 prose** (closes #127, #128) — The sentence *"The ops layer now runs on Haiku 4.5"* survived the June 14 model sweep because it was in narrative prose, not a bare model-name reference. The routing table and notes already documented Haiku's removal. Prose now matches: Sonnet 4.6 runs all operations, Haiku 4.5 is not in the current stack.
+
+---
+
 ## [2026-06-14] — Feat: Feed Now Includes Mixed Contemplations and Dreams
 
 ## [2026-06-14] — CI: Add check-links.mjs Step

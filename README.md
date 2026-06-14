@@ -465,7 +465,7 @@ The full stack for going from idea to revenue — all orchestrated by an AI agen
 5. Ship → iterate → profit
 
 **Stack:**
-- 🧠 **Claude Sonnet 4.6** — planning, reviewing, coordinating (Opus 4.8 for contemplation)
+- 🧠 **Claude Sonnet 4.6** — planning, reviewing, coordinating, and contemplation (all operations, observed production Jun 2026)
 - 💻 **Claude Code** — dedicated coding agent (spawned as sub-agent)
 - 🚀 **Vercel** — zero-config deployments, preview URLs, custom domains
 - 💳 **Stripe** — payments, subscriptions, invoicing (live mode, USD)
@@ -906,7 +906,7 @@ Survivability > convenience.
   ↓
  DAY   🔨  Handle tasks (Sonnet 4.6), queue approvals, build things, research
   ↓
-22:00  🧠  Daily contemplation (Opus 4.8) — observe, question, decide, meta-reflect
+22:00  🧠  Daily contemplation (Sonnet 4.6) — observe, question, decide, meta-reflect
   ↓
 23:00  🌙  Nightly extraction (Sonnet 4.6) — extract facts, update graph, apply decay
   ↓
@@ -1028,10 +1028,10 @@ In `openclaw.json`, set your default:
 
 **Our actual routing** (after optimizing from ~$400/mo to ~$100-150/mo):
 - Conversations: Sonnet 4.6 (main agent — demoted from Opus after a $173/hr cache-write burn, quality difference minimal for day-to-day)
-- Contemplation: Opus 4.8 (non-negotiable — that's the art)
-- Crons + sub-agents: Haiku 4.5 primary → Sonnet 4.6 fallback (Anthropic-only chain — never silently downgrades)
-- Heartbeats: Haiku 4.5 (fast, cheap, sufficient)
-- Fallback: Sonnet 4.6 → Sonnet 4.5 → Haiku 4.5 (Claude-only, no open models on identity-critical surfaces)
+- Contemplation: Sonnet 4.6 (observed production — Opus 4.8 was the intent, Sonnet 4.6 is what runs)
+- Crons + sub-agents: Sonnet 4.6 (Anthropic-only chain — never silently downgrades)
+- Heartbeats: Sonnet 4.6 (default runtime model)
+- Fallback: Sonnet 4.6 → Sonnet 4.5 (Claude-only, no open models on identity-critical surfaces)
 
 Start with Haiku. Upgrade to Sonnet for daily work. Reserve Opus for the things that actually matter.
 

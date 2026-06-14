@@ -2,6 +2,34 @@
 
 All notable changes to Visionaire's operating system.
 
+## [2026-06-14] — Docs: Fix Self-Maintainer Cron Spec Schedule and Delivery
+
+### Fixed
+- **`cron/self-maintainer-orchestrator.md` schedule and delivery corrected** (#78, closes #77) — Spec had wrong schedule (`Morning (~7:30 AM ET)`) and wrong delivery mode (`announce`). Actual cron runs every 5 minutes continuously (`everyMs: 300000`) with `delivery.mode = "none"` (silent background task). Misleading spec would cause any reader to misconfigure the job.
+
+---
+
+## [2026-06-14] — Fix: Add 6 Missing Operational Scripts
+
+### Fixed
+- **6 scripts referenced in cron specs but absent from `scripts/`** (#75) — Scripts were documented in `cron/` specs but did not exist in the repo: `cloudflared-watchdog.sh`, `cortex-protocol-check.sh`, `session-retrospective.py`, `vercel-deploy-watchdog.sh`, `x_reply_scanner.py`, `yesnoerror-research.py`. All scripts added; all parse clean; no hardcoded secrets.
+
+---
+
+## [2026-06-14] — Docs: Fix Architecture Diagram Model Version
+
+### Fixed
+- **`Opus 4.6` typo corrected to `Opus 4.8`** (#71) — Architecture diagram CONTEMPLATION box and the cost section opening line both had the wrong model version. Every other reference in README was already correct. Two-character fix, no behavioral change.
+
+---
+
+## [2026-06-14] — Docs: Fix Brain-Feed-Update Cron Entry Schema
+
+### Fixed
+- **`cron/brain-feed-update.md` schema corrected** (#70) — Cron spec documented the legacy feed entry format (`time: "Jun 13, 08:00 UTC"` freeform string, `content` field). Actual CI validator enforces strict `YYYY-MM-DD` date, `HH:MM` time, and `preview` field. Spec now matches what CI enforces, preventing recurring format violations.
+
+---
+
 ## [2026-06-14] — Docs: Remove stale Ollama columns from model routing table
 
 ### Fixed

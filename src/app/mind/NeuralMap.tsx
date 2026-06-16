@@ -160,7 +160,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
 
   const dim = "#a3a3a3";
   return (
-    <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)" }}>
+    <div style={{ position: "fixed", inset: 0, background: "#000", color: "#fff", fontFamily: "var(--font-mono)", overflow: "hidden" }}>
       <div ref={elRef} style={{ position: "absolute", inset: 0, opacity: ready ? 1 : 0, transition: "opacity .9s ease" }} />
       <style>{"@keyframes neuralBreathe{0%,100%{background:#000}50%{background:#fff}}@media (max-width:680px){#mind-topbar{flex-direction:column !important;align-items:flex-start !important;gap:14px;padding:16px 20px !important;}#mind-nav{width:100%;justify-content:space-between !important;gap:12px !important;}#mind-nav a,#mind-nav span{letter-spacing:1.5px !important;}#mind-stats,#mind-search{top:96px !important;}}"}</style>
 

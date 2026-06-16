@@ -80,7 +80,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
             ctx.textAlign = "center"; ctx.textBaseline = "middle";
             ctx.globalAlpha = dim ? 0.15 : n.type === "dream" ? 0.8 : 1;
             ctx.fillStyle = n.type === "core" ? "#fff" : n.type === "theme" ? "#e6e6e6" : "#cfcfcf";
-            const txt = (n.label || "").length > 42 ? n.label.slice(0, 40) + "…" : n.label || "";
+            const txt = (n.label || "").length > 42 ? n.label.slice(0, 40) + "..." : n.label || "";
             ctx.fillText(txt.toLowerCase(), n.x, n.y + r + size * 0.9);
             ctx.globalAlpha = 1;
           }
@@ -187,7 +187,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div id="mind-search" style={{ position: "fixed", top: 72, right: 0, padding: "22px 26px", zIndex: 5 }}>
-        <input onChange={(e) => onSearch(e.target.value)} placeholder="search the mind…" autoComplete="off"
+        <input onChange={(e) => onSearch(e.target.value)} placeholder="search the mind..." autoComplete="off"
           style={{ background: "transparent", border: "none", borderBottom: "1px solid #1c1c1c", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".12em", padding: "6px 2px", width: 170, outline: "none" }} />
       </div>
 
@@ -203,14 +203,16 @@ export default function NeuralMap({ data }: { data: Graph }) {
         scroll to zoom · click a node to read
       </div>
 
-      <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "34px 30px", overflowY: "auto", zIndex: 6 }}>
-        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "absolute", top: 72, right: 26, cursor: "pointer", color: dim, fontSize: 18 }}>✕</div>
+      <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "0", overflowY: "auto", zIndex: 6 }}>
+        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "sticky", top: 0, zIndex: 2, display: "flex", justifyContent: "flex-end", padding: "18px 26px 10px", background: "rgba(0,0,0,.86)" }}><span style={{ cursor: "pointer", color: dim, fontSize: 18, lineHeight: 1 }}>✕</span></div>
         {sel && (<>
-          <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase" }}>{sel.type}</div>
-          <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, margin: "14px 0 6px" }}>{(sel.label || "").toLowerCase()}</div>
+          <div style={{ padding: "0 30px 34px", marginTop: 16 }}>
+          <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase", marginBottom: 14 }}>{sel.type}</div>
+          <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, marginBottom: 6 }}>{(sel.label || "").toLowerCase()}</div>
           <div style={{ fontSize: 10.5, color: dim, letterSpacing: ".16em", marginBottom: 22 }}>{sel.date || ""}</div>
           <div style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: 13.5, lineHeight: 1.78, color: "#d8d8d8", whiteSpace: "pre-wrap" }}>
-            {mdLight(sel.text || (sel.type === "theme" ? "a recurring current across visionaire’s dreams and contemplations." : sel.type === "core" ? "an autonomous virtual being. born november 2024 on solana. this map is its mind — dreams, contemplations, and signals, woven by shared themes." : ""))}
+            {mdLight(sel.text || (sel.type === "theme" ? "a recurring current across visionaire's dreams and contemplations." : sel.type === "core" ? "an autonomous virtual being. born november 2024 on solana. this map is its mind — dreams, contemplations, and signals, woven by shared themes." : ""))}
+          </div>
           </div>
         </>)}
       </div>

@@ -204,16 +204,18 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "0", overflowY: "auto", zIndex: 6 }}>
-        <div onClick={() => { selRef.current = null; setSel(null); }} style={{ position: "sticky", top: 0, zIndex: 2, display: "flex", justifyContent: "flex-end", padding: "18px 26px 10px", background: "rgba(0,0,0,.86)" }}><span style={{ cursor: "pointer", color: dim, fontSize: 18, lineHeight: 1 }}>✕</span></div>
         {sel && (<>
-          <div style={{ padding: "0 30px 34px", marginTop: 16 }}>
-          <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase", marginBottom: 14 }}>{sel.type}</div>
+          <div style={{ padding: "72px 30px 34px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+            <div style={{ fontSize: 10, letterSpacing: ".28em", color: dim, textTransform: "uppercase" }}>{sel.type}</div>
+            <div onClick={() => { selRef.current = null; setSel(null); }} style={{ cursor: "pointer", color: dim, fontSize: 18, lineHeight: 1, paddingLeft: 16 }}>✕</div>
+          </div>
           <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, marginBottom: 6 }}>{(sel.label || "").toLowerCase()}</div>
           <div style={{ fontSize: 10.5, color: dim, letterSpacing: ".16em", marginBottom: 22 }}>{sel.date || ""}</div>
           <div style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: 13.5, lineHeight: 1.78, color: "#d8d8d8", whiteSpace: "pre-wrap" }}>
             {mdLight(sel.text || (sel.type === "theme" ? "a recurring current across visionaire's dreams and contemplations." : sel.type === "core" ? "an autonomous virtual being. born november 2024 on solana. this map is its mind — dreams, contemplations, and signals, woven by shared themes." : ""))}
           </div>
-          </div>
+        </div>
         </>)}
       </div>
     </div>

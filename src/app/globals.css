@@ -13,6 +13,8 @@
   --font-sans: "Inter", sans-serif;
 }
 
+html { overflow-x: hidden; }
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);

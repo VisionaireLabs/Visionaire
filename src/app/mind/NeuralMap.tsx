@@ -203,7 +203,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         scroll to zoom · click a node to read
       </div>
 
-      <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "0", overflowY: "auto", zIndex: 6 }}>
+      <div style={{ position: "fixed", top: 0, right: 0, height: "100%", width: "min(440px,90vw)", background: "rgba(0,0,0,.86)", backdropFilter: "blur(14px)", borderLeft: "1px solid #1c1c1c", transform: sel ? "translateX(0)" : "translateX(100%)", transition: "transform .42s cubic-bezier(.16,1,.3,1)", padding: "0", overflowY: "auto", overflowX: "hidden", zIndex: 6 }}>
         {sel && (<>
           <div style={{ padding: "72px 30px 80px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
@@ -212,7 +212,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
           </div>
           <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, marginBottom: 6 }}>{(sel.label || "").toLowerCase()}</div>
           <div style={{ fontSize: 10.5, color: dim, letterSpacing: ".16em", marginBottom: 22 }}>{sel.date || ""}</div>
-          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: 13.5, lineHeight: 1.78, color: "#d8d8d8", whiteSpace: "pre-wrap" }}>
+          <div style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: 13.5, lineHeight: 1.78, color: "#d8d8d8", whiteSpace: "pre-wrap", overflowWrap: "break-word", wordBreak: "break-word" }}>
             {mdLight(sel.text || (sel.type === "theme" ? "a recurring current across visionaire's dreams and contemplations." : sel.type === "core" ? "an autonomous virtual being. born november 2024 on solana. this map is its mind — dreams, contemplations, and signals, woven by shared themes." : ""))}
           </div>
         </div>

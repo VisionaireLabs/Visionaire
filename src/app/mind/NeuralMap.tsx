@@ -19,7 +19,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
     (async () => {
       const ForceGraph = ((await import("force-graph")).default) as any;
       if (disposed || !elRef.current) return;
-      const C: Record<string, string> = { core: "#ffffff", theme: "#dcdcdc", contemplation: "#f2f2f2", dream: "#6f6f6f", activity: "#9a9a9a", onchain: "#00ff9d" };
+      const C: Record<string, string> = { core: "#ffffff", theme: "#e8e8e8", contemplation: "#d0d0d0", dream: "#888888", activity: "#aaaaaa", onchain: "#bbbbbb" };
       const linkAlpha: Record<string, number> = { core: 0.16, theme: 0.1, time: 0.06, sameday: 0.13 };
       const adj = new Map<string, Set<string>>();
       data.nodes.forEach((n) => adj.set(n.id, new Set()));
@@ -161,7 +161,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div style={{ position: "fixed", bottom: 0, left: 0, padding: "22px 26px", fontSize: 10, color: dim, letterSpacing: ".1em", zIndex: 5, pointerEvents: "none" }}>
-        {[["#fff", "being"], ["#d6d6d6", "theme"], ["#f2f2f2", "contemplation"], ["#7a7a7a", "dream"], ["#9e9e9e", "activity"], ["#00ff9d", "onchain"]].map(([c, l]) => (
+        {[["#fff", "being"], ["#e8e8e8", "theme"], ["#d0d0d0", "contemplation"], ["#888", "dream"], ["#aaa", "activity"], ["#bbb", "onchain"]].map(([c, l]) => (
           <div key={l} style={{ display: "flex", alignItems: "center", gap: 9, marginTop: 8 }}>
             <span style={{ width: 9, height: 9, borderRadius: "50%", background: c as string, display: "inline-block" }} /> {l}
           </div>

@@ -29,7 +29,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         adj.get(s)?.add(t); adj.get(t)?.add(s);
       });
 
-      let settled = false, cx = 0, cy = 0, baseZoom = 0, lastInteract = 0;
+      let settled = false, lastInteract = 0;
       const t0 = Date.now();
 
       G = ForceGraph()(elRef.current)
@@ -37,8 +37,8 @@ export default function NeuralMap({ data }: { data: Graph }) {
         .backgroundColor("rgba(0,0,0,0)")
         .nodeRelSize(2.4)
         .nodeVal((n: any) => n.val || 3)
-        .cooldownTicks(Infinity)
-        .cooldownTime(Infinity)
+        .cooldownTicks(300)
+        .cooldownTime(8000)
         .enableNodeDrag(true)
         .linkColor((l: any) => {
           const base = linkAlpha[l.kind] ?? 0.08;
@@ -103,52 +103,18 @@ export default function NeuralMap({ data }: { data: Graph }) {
       setTimeout(() => G.zoomToFit(700, 90), 400);
       setTimeout(() => {
         const ns = G.graphData().nodes as any[];
-        if (ns.length) {
-          cx = 0; cy = 0;
-          for (const n of ns) { cx += n.x || 0; cy += n.y || 0; }
-          cx /= ns.length; cy /= ns.length;
-          for (const n of ns) { n.__bx = (n.x || 0) - cx; n.__by = (n.y || 0) - cy; n.__ph = Math.random() * 6.283; n.__pull = 1; }
-        }
         G.zoomToFit(800, 90);
-        baseZoom = G.zoom();
         settled = true; setReady(true);
       }, 1800);
 
       G.onEngineTick(() => {
         if (!settled) return;
-        const ns = G.graphData().nodes as any[];
-        const t = Date.now() - t0;
-        const ang = t * 0.00008;                         // slow 360 (~80s/turn)
-        const ca = Math.cos(ang), sa = Math.sin(ang);
-        const breath = 1 + 0.06 * Math.sin(t * 0.0005);  // expand / contract
-        for (const n of ns) {
-          const pull = n.__pull || 1;
-          const f = breath * pull;
-          n.fx = cx + (n.__bx * ca - n.__by * sa) * f + Math.sin(t * 0.0007 + n.__ph) * 1.4;
-          n.fy = cy + (n.__bx * sa + n.__by * ca) * f + Math.cos(t * 0.0008 + n.__ph) * 1.4;
-          if (pull !== 1) n.__pull = pull + (1 - pull) * 0.04;   // ease back after firing
-        }
-        if (baseZoom && !selRef.current && Date.now() - lastInteract > 8000) {
-          const z = G.zoom();
-          if (z < baseZoom * 2) { // only breathe if not manually zoomed in
-            const target = baseZoom * (1 + 0.12 * Math.sin(t * 0.0002)); // slow zoom in/out
-            G.zoom(z + (target - z) * 0.03);
-          }
-        }
       });
 
-      // firing: pull a few nodes out to flex their strings, then ease back
-      const fire = setInterval(() => {
-        if (!settled) return;
-        const ns = G.graphData().nodes as any[]; if (!ns.length) return;
-        for (let k = 0; k < 3; k++) { const n = ns[(Math.random() * ns.length) | 0]; if (n && n.type !== "core" && n.type !== "theme") n.__pull = 1.45 + Math.random() * 0.3; }
-      }, 1300);
-
       graphRef.current = G;
-      (G as any).__fire = fire;
       (G as any).__ro = ro;
     })();
-    return () => { disposed = true; try { clearInterval(graphRef.current?.__fire); graphRef.current?.__ro?.disconnect(); graphRef.current?._destructor?.(); } catch {} };
+    return () => { disposed = true; try { graphRef.current?.__ro?.disconnect(); graphRef.current?._destructor?.(); } catch {} };
   }, [data]);
 
   const mdLight = (s: string) =>

@@ -2,9 +2,9 @@
 
 @theme {
   --color-bg: #000000;
-  --color-text: #cccccc;
-  --color-muted: #999999;
-  --color-dim: #aaaaaa;
+  --color-text: #e8e8e8;
+  --color-muted: #c0c0c0;
+  --color-dim: #d0d0d0;
   --color-bright: #ffffff;
   --color-border: #111111;
   --color-subtle: #222222;

@@ -34,7 +34,7 @@ function themesIn(text: string): string[] {
 }
 const trim = (s: string | undefined, n = 8000) => (s || "").slice(0, n);
 
-export function buildGraph(dreams: any[], contemps: any[], feed: any, onchain?: { solTxs: any[]; visBalance: number; baseTxs: any[] }): Graph {
+export function buildGraph(dreams: any[], contemps: any[], feed: any, onchain?: any): Graph {
   const stats = feed?.stats || {};
   const activity: any[] = feed?.feed || [];
   const nodes: GNode[] = [];
@@ -77,56 +77,93 @@ export function buildGraph(dreams: any[], contemps: any[], feed: any, onchain?: 
 
   // ── Onchain activity ─────────────────────────────────────────────────
   if (onchain) {
-    const solTxs = Array.isArray(onchain.solTxs) ? onchain.solTxs : [];
-    const baseTxs = Array.isArray(onchain.baseTxs) ? onchain.baseTxs : [];
-    const { visBalance } = onchain;
+    const { solBalance = 0, solPrice = 0, visBalance = 0, visPrice = 0, visMcap = 0,
+            visHolders = 0, audit = null, vesting = null, vestedTokens = 0,
+            stakedTokens = 0, tokens = [], solTxs = [], baseTxs = [],
+            btcBalance = 0, btcTxCount = 0, btcUsd = 0, totalUsd = 0 } = onchain;
 
-    // Wallet nodes
+    const fmt = (n: number) => n?.toLocaleString(undefined, { maximumFractionDigits: 0 }) ?? "0";
+    const usd = (n: number) => n ? ` · $${n.toFixed(2)}` : "";
+
+    // Net worth hub
+    add({ id: "onchain::networth", label: "net worth", type: "onchain", val: 16,
+      text: `total net worth\n$${totalUsd?.toFixed(2) ?? "0"}\n\nliquid + vesting + staking across all chains` });
+    links.push({ source: "core", target: "onchain::networth", kind: "core" });
+    links.push({ source: "onchain::networth", target: "theme::on-chain", kind: "theme" });
+
+    // Solana wallet
     add({ id: "wallet::solana", label: "solana wallet", type: "onchain", val: 12,
-      text: `solana wallet\naddress: dnPzu56bWsomKt2h6mBayYwcfNWjsuxoaZZDNaYnuLS${visBalance ? `\n\n$VISIONAIRE balance: ${visBalance.toLocaleString()}` : ""}` });
-    links.push({ source: "core", target: "wallet::solana", kind: "core" });
-    links.push({ source: "wallet::solana", target: "theme::on-chain", kind: "theme" });
+      text: `solana wallet\ndnPzu56bWsomKt2h6mBayYwcfNWjsuxoaZZDNaYnuLS\n\nSOL: ${solBalance?.toFixed(4) ?? 0}${usd(solBalance * solPrice)}\n$VISIONAIRE: ${fmt(visBalance)}` });
+    links.push({ source: "onchain::networth", target: "wallet::solana", kind: "core" });
 
-    add({ id: "wallet::base", label: "base wallet", type: "onchain", val: 10,
-      text: `base / ethereum wallet\naddress: 0xc73b84C2015c2EE9B8bF8955533802226e9D239C` });
-    links.push({ source: "core", target: "wallet::base", kind: "core" });
-    links.push({ source: "wallet::base", target: "theme::on-chain", kind: "theme" });
+    // $VISIONAIRE token
+    add({ id: "token::vis", label: "$VISIONAIRE", type: "onchain", val: 18,
+      text: `$VISIONAIRE\nmint: YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv\n\nliquid: ${fmt(visBalance)}${visPrice ? `\nprice: $${visPrice.toFixed(8)}` : ""}${visMcap ? `\nmarket cap: $${fmt(visMcap)}` : ""}${visHolders ? `\nholders: ${fmt(visHolders)}` : ""}${(audit as any)?.audit?.mintAuthorityDisabled ? "\nmint authority: renounced ✓" : ""}\n\npump.fun · graduated nov 24 2024` });
+    links.push({ source: "wallet::solana", target: "token::vis", kind: "core" });
+    links.push({ source: "token::vis", target: "theme::on-chain", kind: "theme" });
 
-    add({ id: "wallet::bitcoin", label: "bitcoin wallet", type: "onchain", val: 8,
-      text: `bitcoin wallet\naddress: bc1p778g7uxtkg2jvu9fct5ugxhwq6dfvf9hfu8my0weyfu8vfuntm7qfnwj8f` });
-    links.push({ source: "core", target: "wallet::bitcoin", kind: "core" });
-    links.push({ source: "wallet::bitcoin", target: "theme::on-chain", kind: "theme" });
-
-    // $VISIONAIRE token node
-    if (visBalance > 0) {
-      add({ id: "token::vis", label: "$VISIONAIRE", type: "onchain", val: 14,
-        text: `$VISIONAIRE token\nmint: YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv\nbalance: ${visBalance.toLocaleString()}\npump.fun · bonding curve graduated Nov 24 2024` });
-      links.push({ source: "wallet::solana", target: "token::vis", kind: "core" });
-      links.push({ source: "token::vis", target: "theme::on-chain", kind: "theme" });
+    // Vesting
+    if (vestedTokens > 0) {
+      add({ id: "vis::vesting", label: "vesting", type: "onchain", val: 10,
+        text: `$VISIONAIRE vesting\nstreamflow · solana\n\n${fmt(vestedTokens)} tokens on public schedule${usd(vestedTokens * visPrice)}\nself-vested — locked alongside any holder` });
+      links.push({ source: "token::vis", target: "vis::vesting", kind: "core" });
     }
 
-    // Recent Solana txs
-    solTxs.slice(0, 10).forEach((tx: any, i: number) => {
-      const sig = tx.signature || "";
-      const short = sig.slice(0, 8) + "…";
-      const age = tx.blockTime ? new Date(tx.blockTime * 1000).toLocaleDateString() : "";
-      const id = "sol-tx::" + i;
-      add({ id, label: short, type: "onchain", val: 3,
-        text: `solana transaction\n${short}\n${age}\nstatus: ${tx.err ? "failed" : "ok"}\nsig: ${sig}` });
+    // Staking
+    if (stakedTokens > 0) {
+      add({ id: "vis::staking", label: "staking", type: "onchain", val: 8,
+        text: `$VISIONAIRE staked\nstreamflow staking pool\n\n${fmt(stakedTokens)} tokens${usd(stakedTokens * visPrice)}\n2x weight · earning rewards` });
+      links.push({ source: "token::vis", target: "vis::staking", kind: "core" });
+    }
+
+    // Orca LP
+    if ((vesting as any)?.orcaLp) {
+      add({ id: "vis::lp", label: "orca LP", type: "onchain", val: 8,
+        text: `orca whirlpool LP\n$VISIONAIRE / PUMP\nfull-range concentrated liquidity\nalways-in-range · earning fees` });
+      links.push({ source: "token::vis", target: "vis::lp", kind: "core" });
+    }
+
+    // Other SPL tokens
+    const others = (Array.isArray(tokens) ? tokens : []).filter((t: any) => t.mint !== "YBnTi7GSU2E8vwcoqVcKCRurFafbSRcNfG3kPFRWQuv" && t.amount > 100);
+    others.slice(0, 5).forEach((t: any, i: number) => {
+      const id = `token::spl-${i}`;
+      const label = t.symbol || `${t.mint.slice(0, 4)}…${t.mint.slice(-4)}`;
+      add({ id, label, type: "onchain", val: 4, text: `solana token\nmint: ${t.mint}\nbalance: ${fmt(t.amount)}` });
       links.push({ source: "wallet::solana", target: id, kind: "core" });
     });
 
-    // Recent Base txs
-    baseTxs.slice(0, 8).forEach((tx: any, i: number) => {
-      const hash = tx.hash || "";
-      const short = hash.slice(0, 8) + "…";
-      const age = tx.timeStamp ? new Date(parseInt(tx.timeStamp) * 1000).toLocaleDateString() : "";
-      const outgoing = (tx.from || "").toLowerCase() === "0xc73b84c2015c2ee9b8bf8955533802226e9d239c";
-      const id = "base-tx::" + i;
-      add({ id, label: short, type: "onchain", val: 3,
-        text: `base transaction\n${short}\n${age}\n${outgoing ? "outgoing" : "incoming"}\nhash: ${hash}` });
-      links.push({ source: "wallet::base", target: id, kind: "core" });
+    // Recent Solana txs
+    (Array.isArray(solTxs) ? solTxs : []).slice(0, 6).forEach((tx: any, i: number) => {
+      const sig = tx.signature || "";
+      add({ id: `sol-tx::${i}`, label: sig.slice(0, 6) + "…", type: "onchain", val: 2,
+        text: `solana tx\n${sig.slice(0, 14)}…\nstatus: ${tx.err ? "failed" : "ok"}` });
+      links.push({ source: "wallet::solana", target: `sol-tx::${i}`, kind: "core" });
     });
+
+    // Base treasury
+    add({ id: "wallet::base", label: "base treasury", type: "onchain", val: 8,
+      text: `base · cold treasury\n0xc73b84C2015c2EE9B8bF8955533802226e9D239C\nearnings settle here` });
+    links.push({ source: "onchain::networth", target: "wallet::base", kind: "core" });
+
+    // CDP hot wallet
+    add({ id: "wallet::cdp", label: "cdp hot wallet", type: "onchain", val: 6,
+      text: `base · operational\n0x2EbE2BDB68845B456667D779BC01d198bed287A3\ncoinbase CDP tee · i sign autonomously` });
+    links.push({ source: "wallet::base", target: "wallet::cdp", kind: "core" });
+
+    // Recent Base txs
+    (Array.isArray(baseTxs) ? baseTxs : []).slice(0, 5).forEach((tx: any, i: number) => {
+      const hash = tx.hash || "";
+      const out = (tx.from || "").toLowerCase() === "0xc73b84c2015c2ee9b8bf8955533802226e9d239c";
+      add({ id: `base-tx::${i}`, label: hash.slice(0, 6) + "…", type: "onchain", val: 2,
+        text: `base tx\n${hash.slice(0, 14)}…\n${out ? "outgoing" : "incoming"}` });
+      links.push({ source: "wallet::base", target: `base-tx::${i}`, kind: "core" });
+    });
+
+    // Bitcoin
+    add({ id: "wallet::bitcoin", label: "bitcoin", type: "onchain", val: btcBalance > 0 ? 8 : 4,
+      text: `bitcoin wallet\nbc1p778g7uxtkg2jvu9fct5ugxhwq6dfvf9hfu8my0weyfu8vfuntm7qfnwj8f\n\nBTC: ${btcBalance?.toFixed(8) ?? 0}${btcUsd > 0 ? usd(btcUsd) : ""}\ntx count: ${btcTxCount ?? 0}` });
+    links.push({ source: "onchain::networth", target: "wallet::bitcoin", kind: "core" });
+    links.push({ source: "wallet::bitcoin", target: "theme::on-chain", kind: "theme" });
   }
 
   const deg: Record<string, number> = {};

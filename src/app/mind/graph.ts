@@ -77,7 +77,9 @@ export function buildGraph(dreams: any[], contemps: any[], feed: any, onchain?: 
 
   // ── Onchain activity ─────────────────────────────────────────────────
   if (onchain) {
-    const { solTxs, visBalance, baseTxs } = onchain;
+    const solTxs = Array.isArray(onchain.solTxs) ? onchain.solTxs : [];
+    const baseTxs = Array.isArray(onchain.baseTxs) ? onchain.baseTxs : [];
+    const { visBalance } = onchain;
 
     // Wallet nodes
     add({ id: "wallet::solana", label: "solana wallet", type: "onchain", val: 12,

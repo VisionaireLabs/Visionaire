@@ -47,11 +47,13 @@ async function getOnchain() {
       getJSON<any>(`https://api.basescan.org/api?module=account&action=txlist&address=${BASE_WALLET}&page=1&offset=10&sort=desc`, null),
     ]);
 
-    const solTxs = sigResult.status === "fulfilled" ? (sigResult.value || []) : [];
+    const rawSol = sigResult.status === "fulfilled" ? sigResult.value : null;
+    const solTxs = Array.isArray(rawSol) ? rawSol : [];
     const visBalance = tokenResult.status === "fulfilled" && tokenResult.value?.value?.[0]
       ? tokenResult.value.value[0].account?.data?.parsed?.info?.tokenAmount?.uiAmount || 0
       : 0;
-    const baseTxs = baseTxResult.status === "fulfilled" ? (baseTxResult.value?.result || []) : [];
+    const rawBase = baseTxResult.status === "fulfilled" ? baseTxResult.value?.result : null;
+    const baseTxs = Array.isArray(rawBase) ? rawBase : [];
 
     return { solTxs, visBalance, baseTxs };
   } catch {

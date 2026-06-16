@@ -128,9 +128,12 @@ export default function NeuralMap({ data }: { data: Graph }) {
           n.fy = cy + (n.__bx * sa + n.__by * ca) * f + Math.cos(t * 0.0008 + n.__ph) * 1.4;
           if (pull !== 1) n.__pull = pull + (1 - pull) * 0.04;   // ease back after firing
         }
-        if (baseZoom && !selRef.current && Date.now() - lastInteract > 2500) {
-          const target = baseZoom * (1 + 0.12 * Math.sin(t * 0.0002)); // slow zoom in/out
-          const z = G.zoom(); G.zoom(z + (target - z) * 0.03);
+        if (baseZoom && !selRef.current && Date.now() - lastInteract > 8000) {
+          const z = G.zoom();
+          if (z < baseZoom * 2) { // only breathe if not manually zoomed in
+            const target = baseZoom * (1 + 0.12 * Math.sin(t * 0.0002)); // slow zoom in/out
+            G.zoom(z + (target - z) * 0.03);
+          }
         }
       });
 

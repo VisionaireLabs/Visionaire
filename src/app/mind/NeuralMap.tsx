@@ -39,7 +39,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
         .nodeVal((n: any) => n.val || 3)
         .cooldownTicks(Infinity)
         .cooldownTime(Infinity)
-        .enableNodeDrag(false)
+        .enableNodeDrag(true)
         .linkColor((l: any) => {
           const base = linkAlpha[l.kind] ?? 0.08;
           const h = hoverRef.current;

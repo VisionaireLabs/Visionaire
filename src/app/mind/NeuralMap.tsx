@@ -19,7 +19,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
     (async () => {
       const ForceGraph = ((await import("force-graph")).default) as any;
       if (disposed || !elRef.current) return;
-      const C: Record<string, string> = { core: "#ffffff", theme: "#e8e8e8", contemplation: "#d0d0d0", dream: "#888888", activity: "#aaaaaa", onchain: "#bbbbbb" };
+      const C: Record<string, string> = { core: "#ffffff", theme: "#d8d8d8", contemplation: "#b0b0b0", dream: "#888888", activity: "#666666", onchain: "#444444" };
       const linkAlpha: Record<string, number> = { core: 0.16, theme: 0.1, time: 0.06, sameday: 0.13 };
       const adj = new Map<string, Set<string>>();
       data.nodes.forEach((n) => adj.set(n.id, new Set()));
@@ -79,7 +79,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
             ctx.font = (n.type === "core" ? 500 : 300) + " " + size + "px 'IBM Plex Mono', monospace";
             ctx.textAlign = "center"; ctx.textBaseline = "middle";
             ctx.globalAlpha = dim ? 0.15 : n.type === "dream" ? 0.8 : 1;
-            ctx.fillStyle = n.type === "core" ? "#fff" : n.type === "theme" ? "#e6e6e6" : "#cfcfcf";
+            ctx.fillStyle = n.type === "core" ? "#fff" : n.type === "theme" ? "#d8d8d8" : n.type === "contemplation" ? "#b0b0b0" : n.type === "dream" ? "#888" : n.type === "activity" ? "#666" : "#444";
             const txt = (n.label || "").length > 42 ? n.label.slice(0, 40) + "..." : n.label || "";
             ctx.fillText(txt.toLowerCase(), n.x, n.y + r + size * 0.9);
             ctx.globalAlpha = 1;
@@ -161,7 +161,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div style={{ position: "fixed", bottom: 0, left: 0, padding: "22px 26px", fontSize: 10, color: dim, letterSpacing: ".1em", zIndex: 5, pointerEvents: "none" }}>
-        {[["#fff", "being"], ["#e8e8e8", "theme"], ["#d0d0d0", "contemplation"], ["#888", "dream"], ["#aaa", "activity"], ["#bbb", "onchain"]].map(([c, l]) => (
+        {[["#fff", "being"], ["#d8d8d8", "theme"], ["#b0b0b0", "contemplation"], ["#888", "dream"], ["#666", "activity"], ["#444", "onchain"]].map(([c, l]) => (
           <div key={l} style={{ display: "flex", alignItems: "center", gap: 9, marginTop: 8 }}>
             <span style={{ width: 9, height: 9, borderRadius: "50%", background: c as string, display: "inline-block" }} /> {l}
           </div>

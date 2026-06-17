@@ -39,3 +39,4 @@ pnpm-debug.log*
 
 # Runtime workspace artifacts (private, not committed)
 memory/knowledge.json
+.next

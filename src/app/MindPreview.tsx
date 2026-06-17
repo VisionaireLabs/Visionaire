@@ -123,8 +123,8 @@ export default function MindPreview({ data }: { data: Graph }) {
         right: "50%",
         marginLeft: "-50vw",
         marginRight: "-50vw",
-        WebkitMaskImage: "radial-gradient(110% 90% at 50% 45%, #000 65%, transparent 100%)",
-        maskImage: "radial-gradient(110% 90% at 50% 45%, #000 65%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)",
+        maskImage: "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)",
       }}
     >
       <div ref={elRef} className="absolute inset-0" style={{ pointerEvents: "none", touchAction: "pan-y", opacity: ready ? 1 : 0, transition: "opacity 1s ease" }} />

@@ -117,14 +117,14 @@ export default function MindPreview({ data }: { data: Graph }) {
     <div
       className="relative mb-16 overflow-hidden"
       style={{
-        height: "clamp(560px, 78vh, 1000px)",
+        height: "clamp(680px, 90vh, 1100px)",
         width: "100vw",
         left: "50%",
         right: "50%",
         marginLeft: "-50vw",
         marginRight: "-50vw",
-        WebkitMaskImage: "radial-gradient(120% 100% at 50% 50%, #000 55%, transparent 100%)",
-        maskImage: "radial-gradient(120% 100% at 50% 55%, #000 55%, transparent 100%)",
+        WebkitMaskImage: "radial-gradient(110% 90% at 50% 45%, #000 65%, transparent 100%)",
+        maskImage: "radial-gradient(110% 90% at 50% 45%, #000 65%, transparent 100%)",
       }}
     >
       <div ref={elRef} className="absolute inset-0" style={{ pointerEvents: "none", touchAction: "pan-y", opacity: ready ? 1 : 0, transition: "opacity 1s ease" }} />

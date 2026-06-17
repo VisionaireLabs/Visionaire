@@ -1,0 +1,10 @@
+var R=require("../../../chunks/[turbopack]_runtime.js")("server/app/api/oracle/route.js")
+R.c("server/chunks/[root-of-the-server]__633af729._.js")
+R.c("server/chunks/_f1cb0bc7._.js")
+R.c("server/chunks/node_modules_formdata-node_lib_esm_File_ccf0a600.js")
+R.c("server/chunks/[root-of-the-server]__c28f2985._.js")
+R.c("server/chunks/_d4374f58._.js")
+R.c("server/chunks/[root-of-the-server]__6ac8ec31._.js")
+R.c("server/chunks/_next-internal_server_app_api_oracle_route_actions_d71d3818.js")
+R.m(50817)
+module.exports=R.m(50817).exports

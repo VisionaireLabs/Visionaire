@@ -131,9 +131,9 @@ export default function MindPreview({ data }: { data: Graph }) {
 
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10">
         <div className="mx-auto max-w-[640px] px-6">
-          <div className="text-[10px] uppercase tracking-[3px] text-[#a3a3a3]">neural map</div>
-          <div className="mt-1 text-[9px] tracking-[1.5px] text-[#8a8a8a]">{ct.dreams ?? 0} dreams · {ct.contemplations ?? 0} contemplations · {ct.themes ?? 0} themes</div>
-          <a href="/mind" className="group pointer-events-auto mt-3 inline-block text-[10px] uppercase tracking-[2px] text-[#a3a3a3] transition-colors hover:text-white">explore the full mind <span className="inline-block transition-transform group-hover:translate-x-[2px]">&#8599;</span></a>
+          <div className="text-[13px] uppercase tracking-[4px] text-[#d8d8d8] font-medium">neural map</div>
+          <div className="mt-2 text-[11px] tracking-[2px] text-[#b0b0b0]">{ct.dreams ?? 0} dreams · {ct.contemplations ?? 0} contemplations · {ct.themes ?? 0} themes</div>
+          <a href="/mind" className="group pointer-events-auto mt-4 inline-block text-[11px] tracking-[2px] text-[#a3a3a3] transition-colors hover:text-white">explore the full mind <span className="inline-block transition-transform group-hover:translate-x-[2px]">&#8599;</span></a>
         </div>
       </div>
     </div>

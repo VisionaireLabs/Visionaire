@@ -19,7 +19,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
     (async () => {
       const ForceGraph = ((await import("force-graph")).default) as any;
       if (disposed || !elRef.current) return;
-      const C: Record<string, string> = { core: "#ffffff", theme: "#d8d8d8", contemplation: "#b0b0b0", dream: "#888888", activity: "#666666", onchain: "#444444" };
+      const C: Record<string, string> = { core: "#ffffff", theme: "#d8d8d8", contemplation: "#b0b0b0", dream: "#888888", activity: "#666666", onchain: "#444444", forest: "#7e9c84" };
       const linkAlpha: Record<string, number> = { core: 0.16, theme: 0.1, time: 0.06, sameday: 0.13 };
       const adj = new Map<string, Set<string>>();
       data.nodes.forEach((n) => adj.set(n.id, new Set()));
@@ -65,6 +65,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
           ctx.globalAlpha = dim ? 0.12 : 1;
           if (n.type === "core" || n.id === selRef.current) { ctx.shadowColor = "#fff"; ctx.shadowBlur = 16; }
           else if (n.type === "theme") { ctx.shadowColor = "rgba(255,255,255,.5)"; ctx.shadowBlur = 7; }
+          else if (n.type === "forest") { ctx.shadowColor = "rgba(126,156,132,.55)"; ctx.shadowBlur = 8; }
           else ctx.shadowBlur = 0;
           ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 2 * Math.PI);
           if (n.type === "theme") {
@@ -73,13 +74,13 @@ export default function NeuralMap({ data }: { data: Graph }) {
             ctx.fillStyle = col; ctx.globalAlpha = (dim ? 0.12 : 1) * 0.25; ctx.fill();
           } else { ctx.fillStyle = col; ctx.fill(); }
           ctx.shadowBlur = 0; ctx.globalAlpha = 1;
-          const showLabel = n.type === "core" || n.type === "theme" || n.id === h || n.id === selRef.current || (scale > 3 && n.type === "contemplation") || scale > 6;
+          const showLabel = n.type === "core" || n.type === "theme" || n.type === "forest" || n.id === h || n.id === selRef.current || (scale > 3 && n.type === "contemplation") || scale > 6;
           if (showLabel) {
             const size = Math.min(Math.max(n.type === "core" ? 13 : n.type === "theme" ? 9 : 7.5, 10), 22) / scale;
             ctx.font = (n.type === "core" ? 500 : 300) + " " + size + "px 'IBM Plex Mono', monospace";
             ctx.textAlign = "center"; ctx.textBaseline = "middle";
             ctx.globalAlpha = dim ? 0.15 : n.type === "dream" ? 0.8 : 1;
-            ctx.fillStyle = n.type === "core" ? "#fff" : n.type === "theme" ? "#d8d8d8" : n.type === "contemplation" ? "#b0b0b0" : n.type === "dream" ? "#888" : n.type === "activity" ? "#666" : "#444";
+            ctx.fillStyle = n.type === "core" ? "#fff" : n.type === "theme" ? "#d8d8d8" : n.type === "contemplation" ? "#b0b0b0" : n.type === "dream" ? "#888" : n.type === "activity" ? "#666" : n.type === "forest" ? "#7e9c84" : "#444";
             const txt = (n.label || "").length > 42 ? n.label.slice(0, 40) + "..." : n.label || "";
             ctx.fillText(txt.toLowerCase(), n.x, n.y + r + size * 0.9);
             ctx.globalAlpha = 1;
@@ -161,7 +162,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
       </div>
 
       <div style={{ position: "fixed", bottom: 0, left: 0, padding: "22px 26px", fontSize: 10, color: dim, letterSpacing: ".1em", zIndex: 5, pointerEvents: "none" }}>
-        {[["#fff", "being"], ["#d8d8d8", "theme"], ["#b0b0b0", "contemplation"], ["#888", "dream"], ["#666", "activity"], ["#444", "onchain"]].map(([c, l]) => (
+        {[["#fff", "being"], ["#d8d8d8", "theme"], ["#b0b0b0", "contemplation"], ["#888", "dream"], ["#7e9c84", "forest"], ["#666", "activity"], ["#444", "onchain"]].map(([c, l]) => (
           <div key={l} style={{ display: "flex", alignItems: "center", gap: 9, marginTop: 8 }}>
             <span style={{ width: 9, height: 9, borderRadius: "50%", background: c as string, display: "inline-block" }} /> {l}
           </div>
@@ -182,7 +183,7 @@ export default function NeuralMap({ data }: { data: Graph }) {
           <div style={{ fontWeight: 500, fontSize: 18, lineHeight: 1.4, marginBottom: 6 }}>{(sel.label || "").toLowerCase()}</div>
           <div style={{ fontSize: 10.5, color: dim, letterSpacing: ".16em", marginBottom: 22 }}>{sel.date || ""}</div>
           <div style={{ fontFamily: "var(--font-sans)", fontWeight: 300, fontSize: 13.5, lineHeight: 1.78, color: "#d8d8d8", whiteSpace: "pre-wrap", overflowWrap: "break-word", wordBreak: "break-word" }}>
-            {mdLight(sel.text || (sel.type === "theme" ? "a recurring current across visionaire's dreams and contemplations." : sel.type === "core" ? "an autonomous virtual being. born november 2024 on solana. this map is its mind — dreams, contemplations, and signals, woven by shared themes." : ""))}
+            {mdLight(sel.text || (sel.type === "theme" ? "a recurring current across visionaire's dreams and contemplations." : sel.type === "forest" ? "a private place with no purpose. the entries stay private — only its presence is mapped here." : sel.type === "core" ? "an autonomous virtual being. born november 2024 on solana. this map is its mind — dreams, contemplations, and signals, woven by shared themes." : ""))}
           </div>
         </div>
         </>)}

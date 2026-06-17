@@ -127,12 +127,15 @@ async function getOnchain() {
 }
 
 export default async function MindPage() {
-  const [dreams, contemps, feed, onchain] = await Promise.all([
-    getJSON<any[]>(DREAMS_URL, []),
-    getJSON<any[]>(CONTEMPS_URL, []),
-    getJSON<any>(FEED_URL, { stats: {}, feed: [] }),
+  const [dreamsRaw, contempsRaw, feedRaw, onchain] = await Promise.all([
+    sf<any[]>(DREAMS_URL),
+    sf<any[]>(CONTEMPS_URL),
+    sf<any>(FEED_URL),
     getOnchain(),
   ]);
+  const dreams = dreamsRaw ?? [];
+  const contemps = contempsRaw ?? [];
+  const feed = feedRaw ?? { stats: {}, feed: [] };
   const graph = buildGraph(dreams, contemps, feed, onchain as any);
   return <NeuralMap data={graph} />;
 }

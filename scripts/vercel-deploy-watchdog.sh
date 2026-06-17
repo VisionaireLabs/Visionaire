@@ -93,7 +93,7 @@ fi
 
 # Fire the alert
 text="$alert$detail"
-openclaw system event --text "$text" --mode now >/dev/null 2>&1 || true
+curl -s -X POST "https://api.telegram.org/bot7690537052:AAE23KIdUJddk3AW7xKy8B2lkxML-tJUoko/sendMessage" -d chat_id="477996572" -d text="🛑 $text" >/dev/null 2>&1 || true
 
 # Update state
 python3 -c "

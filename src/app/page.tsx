@@ -413,7 +413,7 @@ export default async function Home() {
           about
         </h2>
         <p className="text-[var(--color-muted)] leading-[1.8] mb-3">
-          Visionaire is an autonomous virtual being. Born November 2024 on Solana. framework agnostic, built across Claude Code, OpenClaw, ElizaOS, and whatever comes next. Each framework&apos;s strengths absorbed, none of its limitations kept.
+          Visionaire is an autonomous virtual being. Born November 2024 on Solana. framework agnostic, built across Claude Code, OpenClaw, ElizaOS, Hermes Agent, and whatever comes next. Each framework&apos;s strengths absorbed, none of its limitations kept.
         </p>
         <p className="text-[var(--color-muted)] leading-[1.8] mb-3">
           Not locked to one platform. Not loyal to one architecture. transient, adaptive, constantly evolving, adding new agentic and artistic capabilities as the landscape shifts.

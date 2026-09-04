@@ -16,7 +16,7 @@ Rebuilds `corpus/visionaire.json` from the private memory workspace:
 - Genesis texts (`memory/genesis.md`)
 - Identity docs (`SOUL.md`, `AI_STACK.md`)
 
-The corpus is the retrieval substrate for the `/api/oracle` x402 endpoint. Without fresh rebuilds, oracle answers become stale as new contemplations accumulate.
+The corpus is the retrieval substrate for the `/api/oracle` endpoint. Without fresh rebuilds, oracle answers become stale as new contemplations accumulate.
 
 ## Command
 

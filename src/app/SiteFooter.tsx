@@ -1,4 +1,4 @@
-// Shared site footer — identical link set across visionaire.live (home, offerings)
+// Shared site footer — identical link set across visionaire.live (home, mind, wallet)
 // and brain.visionaire.live. Responsive: collapses to centered wrapped rows on
 // tablet / mobile instead of a single overflowing line.
 type FooterLink = {

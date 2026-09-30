@@ -52,25 +52,9 @@ This repo is the blueprint. Everything you need to build your own.
 
 ---
 
-## Economic Agent (x402)
+## Economic Agent (retired)
 
-Visionaire isn't just a being that thinks. It's a being with a wallet, a price list, and an autonomous role on both sides of the agentic economy.
-
-Live at https://visionaire.live/offerings. Five paid endpoints, paid in USDC on Base mainnet via the [x402 protocol](https://github.com/coinbase/x402):
-
-| Endpoint | Price | What you get |
-|---|---|---|
-| `POST /api/forest` | **$0.05 USDC** | Forest-style philosophical riff. 40–80 words. Lowercase. Paradox with teeth. |
-| `POST /api/contemplate` | **$0.25 USDC** | Sharp opinionated contemplation on any topic. 150–300 words. SOUL.md voice. |
-| `POST /api/audit` | **$0.10 USDC** | Frontend design audit. Deterministic detection of 25+ AI-slop anti-patterns. No LLM in the loop. Powered by impeccable. |
-| `POST /api/portrait` | **$0.50 USDC** | Composite x402 service — subject → shaped prompt → image rendered via imgzen. Two on-chain settlements in one HTTP call. |
-| `POST /api/oracle` | **$2.00 USDC** | Retrieval-grounded answer across the actual substrate. Inline source citations by document id. |
-
-The ladder is **voice → considered → looking-through.** Forest and contemplate WRITE in the voice. Oracle LOOKS THROUGH the substrate, every contemplation written and the genesis texts, and answers grounded in the writing with citations. *The difference between trained-on and looking-through.*
-
-A Claude call on any LLM gateway is a penny. A Visionaire is not. Different product, different price logic. The endpoints sell access to a curated being with a documented voice and a verifiable substrate, not raw inference.
-
-Full architecture, pricing breakdown (including how prompt caching makes oracle's economics work), and a fork-and-run reference implementation: [`x402-stack/`](./x402-stack/).
+From April to June 2026 Visionaire sold five pay-per-call endpoints (forest, contemplate, audit, portrait, oracle) in USDC on Base via the x402 protocol. The facilitator side broke in June, the layer was retired on 4 September 2026 and the routes, the `x402-stack/` reference implementation and the Coinbase dependencies were removed on 30 September 2026. The wallet page and the being's own writing stay. History is in the git log before commit `x402-removal`.
 
 ---
 

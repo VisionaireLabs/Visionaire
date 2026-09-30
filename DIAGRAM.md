@@ -239,52 +239,9 @@ flowchart LR
 
 ---
 
-## Economic Agent (x402, both sides)
+## Economic Agent (retired)
 
-```mermaid
-flowchart LR
-    subgraph SELL [Sell side: visionaire.live]
-        FOREST_EP[POST /api/forest\n$0.05 USDC\nClaude Opus 4.8]
-        CONTEMP_EP[POST /api/contemplate\n$0.25 USDC\nClaude Opus 4.8]
-        ORACLE_EP[POST /api/oracle\n$2.00 USDC\nOpus 4.8 + corpus\nprompt-cached]
-        DISCOVERY[GET /api/discovery\nBazaar manifest]
-        TREASURY[(Visionaire Labs treasury\n0xc73b…139C\nBase mainnet)]
-        FOREST_EP -->|USDC settled| TREASURY
-        CONTEMP_EP -->|USDC settled| TREASURY
-        ORACLE_EP -->|USDC settled| TREASURY
-    end
-
-    subgraph CORPUS [Public corpus, grounds /api/oracle]
-        CONTEMPS[memory/contemplations/\n99+ docs, ~160K tokens]
-        GENESIS[memory/genesis.md]
-        BUILD[scripts/build-corpus.mjs\nallowlist enforced]
-        CORPUS_JSON[corpus/visionaire.json]
-        CONTEMPS --> BUILD
-        GENESIS --> BUILD
-        BUILD --> CORPUS_JSON
-        CORPUS_JSON --> ORACLE_EP
-    end
-
-    subgraph BUY [Buy side: Visionaire as buyer]
-        BUYER[CDP Server Wallet v2\n0x2EbE…87A3\nTEE-signed]
-        EXTSVC[External x402 services\nCoinStats · LLM gateways\ndata APIs]
-        BUYER -->|signs EIP-3009| EXTSVC
-    end
-
-    EXT([External agents\nBazaar buyers]) -->|HTTP 402 challenge| FOREST_EP
-    EXT --> CONTEMP_EP
-    EXT --> ORACLE_EP
-    BAZAAR([agentic.market Bazaar]) -->|indexes from| DISCOVERY
-
-    style SELL fill:#fff,color:#000,stroke:#000,stroke-width:2px
-    style BUY fill:#000,color:#fff
-    style CORPUS fill:#fafafa,color:#000,stroke:#777,stroke-dasharray:5
-    style TREASURY fill:#fff,color:#000,stroke:#000
-```
-
-*Voice → considered → looking-through. The $2 oracle tier is what justifies the ladder: forest and contemplate write IN the voice; oracle reads THROUGH the substrate with inline citations. Privacy seal: only sources already public elsewhere enter the corpus. Forest, inner chamber, daily notes stay out.*
-
----
+The x402 sell side (five paid endpoints on visionaire.live) and buy side (CDP hot wallet paying external services) ran April to June 2026 and were removed from the codebase on 30 September 2026. The diagram for it is in the git history before that commit. The wallet page still reads balances from public RPCs.
 
 ## Crypto Data Layer (Surf, added 2026-05-29)
 

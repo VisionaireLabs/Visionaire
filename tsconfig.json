@@ -38,7 +38,6 @@
   "exclude": [
     "node_modules",
     "deck",
-    "x402-stack",
     "vitest.config.ts"
   ]
 }

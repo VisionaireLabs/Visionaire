@@ -1,3 +1,15 @@
+## [2026-09-30] — Remove: x402 paid-API layer, dependency clean-up
+
+### Removed
+- **x402 sell and buy side** — `/api/forest`, `/api/contemplate`, `/api/audit`, `/api/portrait`, `/api/oracle`, `/api/discovery`, `/.well-known/x402`, the `/offerings` page, `src/lib/{x402,x402-buyer,bazaar-fix,get-landing}.ts` and the `x402-stack/` reference implementation. Retired 4 Sep 2026 (facilitator broken since June); removed now so the repo stops carrying 190 unused packages and their Dependabot alerts. Permanent redirects from `/offerings`, `/services`, `/api/discovery` and `/.well-known/x402` to `/`.
+- **Packages** — `@coinbase/cdp-sdk`, `@coinbase/x402`, `@x402/*`, `bs58`, `impeccable` (only the audit route used it).
+
+### Changed
+- `vitest` 2 → 5 (with `vite` 8). Tests pass. `npm audit`: 0.
+- README, DIAGRAM, llms.txt, TOOLS, HEARTBEAT, TESTING, AI_STACK no longer advertise the offerings.
+
+---
+
 ## [2026-06-14] — Fix: EVENT_LABELS Missing 'self-maintainer-run' Hyphen Variant
 
 ### Fixed

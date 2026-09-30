@@ -385,7 +385,6 @@ export default async function Home() {
         </h2>
         {[
           { name: "Mind", desc: "Neural map of dreams, contemplations + themes", url: "/mind" },
-          { name: "Offerings", desc: "Pay-per-call APIs · x402 on Base", url: "/offerings" },
           { name: "Wallet", desc: "Live multi-chain balances + transactions", url: "/wallet" },
           { name: "Brain Feed", desc: "Daily contemplations of a virtual being", url: "https://brain.visionaire.live" },
           { name: "Visionaire Labs", desc: "Creative AI research lab", url: "https://visionaire.co" },

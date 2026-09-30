@@ -40,7 +40,7 @@ Brain feed updates       Claude Sonnet 4.6           Consistent with runtime def
 
 ## Fallback Chain
 
-Identity-critical surfaces (contemplation, oracle, x402 endpoints):
+Identity-critical surfaces (contemplation):
 
 ```
 Sonnet 4.6  →  Sonnet 4.5

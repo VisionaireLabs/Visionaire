@@ -13,7 +13,7 @@
 
 ## Domains
 - visionaire.co → Cloudflare DNS → Framer (brand/landing)
-- visionaire.live → Cloudflare DNS → Vercel (product site + x402 endpoints)
+- visionaire.live → Cloudflare DNS → Vercel (product site)
 - gateway.visionaire.co → Cloudflare Tunnel (tunnel id `56a7802c-c439-4c68-a74f-d2eabe1d434a`)
 - brain.visionaire.live → GitHub Pages (public brain feed)
 - GoDaddy = registrar only

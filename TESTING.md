@@ -41,7 +41,7 @@ Future coverage should include:
 - Wallet allowlist validation
 - Link checking logic
 - Corpus building
-- API routes (x402 endpoints)
+- API routes (none since 30 Sep 2026; x402 endpoints removed)
 - UI components
 
 ## CI Integration
